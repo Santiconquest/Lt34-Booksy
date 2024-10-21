@@ -43,3 +43,27 @@ class Critico(db.Model):
            
             # do not serialize the password, its a security breach
         }
+
+
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    titulo = db.Column(db.String(200), nullable=False)  
+    cantidad_paginas = db.Column(db.Integer, nullable=False)
+    genero = db.Column(db.String(80), nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    autor = db.Column(db.String(120), nullable=False)
+    cover = db.Column(db.String(200), nullable=False)  
+
+    def __repr__(self):
+        return f'<Libro {self.autor} - {self.genero}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "titulo": self.titulo,
+            "cantidad_paginas": self.cantidad_paginas,
+            "genero": self.genero,
+            "year": self.year,
+            "autor": self.autor,
+            "cover": self.cover
+        }
