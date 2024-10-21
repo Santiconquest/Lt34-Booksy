@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			books : []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,7 +47,76 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+
+			getBooks: async () => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + "/api/book");
+                    const data = await response.json();
+                    setStore({ books: data });
+                } catch (error) {
+                    console.log("Error fetching books", error);
+                }
+            },
+
+            addBook: async (newBook) => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + "/api/book", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(newBook)
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        getActions().getBooks(); 
+                        return data;
+                    } else {
+                        throw new Error("Error adding book");
+                    }
+                } catch (error) {
+                    console.log("Error adding book", error);
+                }
+            },
+
+            updateBook: async (bookId, updatedBook) => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/api/book/${bookId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(updatedBook)
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        getActions().getBooks(); 
+                        return data;
+                    } else {
+                        throw new Error("Error updating book");
+                    }
+                } catch (error) {
+                    console.log("Error updating book", error);
+                }
+            },
+
+            deleteBook: async (bookId) => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/api/book/${bookId}`, {
+                        method: "DELETE"
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        getActions().getBooks();
+                        return data;
+                    } else {
+                        throw new Error("Error deleting book");
+                    }
+                } catch (error) {
+                    console.log("Error deleting book", error);
+                }
+			}	
 		}
 	};
 };

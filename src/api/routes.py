@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Critico
+from api.models import db, User, Critico, Book
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -79,3 +79,65 @@ def delete_critico(critico_id):
     db.session.delete(critico)
     db.session.commit()
     return jsonify(critico_data), 200
+
+
+@api.route('/book', methods=['GET'])
+def get_books():
+    all_books = Book.query.all()
+    results = list(map(lambda book: book.serialize(), all_books))
+    return jsonify(results), 200
+
+@api.route('/book', methods=['POST'])
+def add_book():
+    body = request.get_json()  
+
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    required_fields = ['titulo', 'cantidad_paginas', 'genero', 'year', 'autor', 'cover']
+    missing_fields = [field for field in required_fields if field not in body]
+    if missing_fields:
+        return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
+
+    nuevo_libro = Book(
+        titulo=body['titulo'],
+        cantidad_paginas=body['cantidad_paginas'],
+        genero=body['genero'],
+        year=body['year'],
+        autor=body['autor'],
+        cover=body['cover']
+    )
+
+    try:
+        db.session.add(nuevo_libro)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al crear el libro"}), 500
+
+    return jsonify({"msg": "Libro creado exitosamente", "book": nuevo_libro.serialize()}), 201  
+
+@api.route('/book/<int:book_id>', methods=['PUT'])
+def update_book(book_id):
+    body = request.get_json()
+    book = Book.query.get(book_id)
+
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+
+    for key, value in body.items():
+        setattr(book, key, value)
+
+    db.session.commit()
+    return jsonify({"msg": "Libro actualizado exitosamente", "book": book.serialize()}), 200
+
+@api.route('/book/<int:book_id>', methods=['DELETE'])
+def delete_book(book_id):
+    book = Book.query.filter_by(id=book_id).first()
+
+    if book is None:
+        return jsonify({"error": "Libro no encontrado"}), 404
+
+    db.session.delete(book)
+    db.session.commit()
+    return jsonify({"msg": "Libro eliminado exitosamente"}), 200
+
