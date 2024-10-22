@@ -33,7 +33,7 @@ export const Navbar = () => {
 						</button>
 						<ul className="dropdown-menu">
 							<Link className="dropdown-item" to="/signup-reader">Como Lector</Link>
-							<Link className="dropdown-item" to="/signup-critic">Como Crítico</Link>
+							<Link className="dropdown-item" to="/signupCritico">Como Crítico</Link>
 						</ul>
 					</div>
                 </div>
