@@ -14,11 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-<<<<<<< HEAD
 			auth: false,
-=======
 			books : []
->>>>>>> develop
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
