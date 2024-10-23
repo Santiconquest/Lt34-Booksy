@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			auth: false,
-			books : []
+			books : [],
+			readers:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -50,7 +51,76 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(data)
 					});
 			},
+			addLector:(email,password,name,lastName,suscriptionDate)=>{
+				console.log(email,password,name,lastName,suscriptionDate)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(email,password,name,lastName,suscriptionDate),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/signupLector`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.readers.concat(result))
+							return true
+						}
+					})
+					
+			},
+			deleteLector: (idLectorToEdit) => {
+				//console.log("Remove lector from flux"+ idToDelete)
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}api/lector/`+idLectorToEdit, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+						// fetch(`${process.env.BACKEND_URL}`)
+						// .then((response)=>response.json())
+						// .then((data)=>setStore({readers:data.contacts}))
+					})
+			},
+			editLector:(readerToEdit, idLectorToEdit)=>{
+				console.log("Edito lector id: "+idLectorToEdit)
+				const store = getStore();
+				const actions = getActions()
 
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(readerToEdit),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}admin/lector/`+idLectorToEdit, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						actions.loadSomeData()
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.readers.concat(result))
+						return true
+					}
+				})
+
+			},
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
