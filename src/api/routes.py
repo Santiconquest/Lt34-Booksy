@@ -150,7 +150,7 @@ def get_lector():
 
     return jsonify(results), 200
 
-@api.route('/lector', methods=['POST'])
+@api.route('/signupLector', methods=['POST'])
 def add_lector():
     body = request.get_json()  
 
@@ -183,6 +183,30 @@ def add_lector():
     }
     
     return jsonify(response_body), 201  
+
+@api.route('/lector/<int:lector_id>', methods=['PUT'])
+def edit_lector(lector_id):
+    body = request.get_json()
+    reader = Lector.query.get(lector_id)
+
+    if not lector_id or lector_id=="":
+        return jsonify({"error": "lector_id is required"}),400
+    
+    lector_actualizado = Lector(
+    name=body['name'],
+    lastname=body['lastname'],
+    email=body['email'],
+    password=body['password'], 
+    suscription_date=body['suscription_date'],
+    is_active=body['is_active']
+    )
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Lector actualizado exitosamente",
+          "lector": lector_actualizado.serialize()
+    }), 200
+
 
 @api.route('/lector/<int:lector_id>', methods=['DELETE'])
 def delete_lector(lector_id):
