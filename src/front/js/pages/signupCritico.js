@@ -18,7 +18,7 @@ const SignupCritico = () => {
         e.preventDefault(); 
 
      
-        actions.signup(email,password,name,lastName,gender,aboutMe);
+        actions.signupCritico(email,password,name,lastName,gender,aboutMe);
     }
 
     return (

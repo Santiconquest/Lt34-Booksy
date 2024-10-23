@@ -23,7 +23,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-			signup: (email,password,name,lastName,gender,aboutMe) => {
+			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
 				
 				const requestOptions = {
 					method: 'POST',
@@ -50,7 +50,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 						localStorage.setItem("token",data.access_token)
 						console.log(data)
 					});
-			},
+				},
+
+				loginCritico: (email, password) => {
+					
+					const resquestOptions = {
+						method: 'POST',
+						headers: {'content-Type' : 'application/json'},
+						body: JSON.stringify({
+							"email": email,
+							"password" : password
+						})
+					};
+					fetch(`${process.env.BACKEND_URL}/api/loginCritico`, resquestOptions)
+						.then(response => {
+							console.log (response.status)
+							if (response.status == 200){
+								setStore( {auth : true});
+							}
+							return response.json()
+						})
+						.then(data => {
+							localStorage.setItem("token",data.access_token)
+							console.log(data)
+						});
+				},
 			addLector:(email,password,name,lastName,suscriptionDate)=>{
 				console.log(email,password,name,lastName,suscriptionDate)
 				const store = getStore()
