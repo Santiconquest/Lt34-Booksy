@@ -6,6 +6,10 @@ from api.models import db, User, Critico, Book, Lector
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 
 api = Blueprint('api', __name__)
 
@@ -79,6 +83,22 @@ def delete_critico(critico_id):
     db.session.delete(critico)
     db.session.commit()
     return jsonify(critico_data), 200
+
+@api.route("/loginCritico", methods=["POST"])
+def login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    user = Critico.query.filter_by(email=email).first()
+
+    if user == None:
+        return jsonify({"msg": "Could not find you email"}), 401
+
+    if email != user.email or password != user.password:
+        return jsonify({"msg": "Bad email or password"}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
 
 
 @api.route('/book', methods=['GET'])
@@ -225,3 +245,6 @@ def delete_lector(lector_id):
     }
 
     return jsonify(response_body), 200
+
+
+
