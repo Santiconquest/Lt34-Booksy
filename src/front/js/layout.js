@@ -13,6 +13,7 @@ import injectContext from "./store/appContext";
 import SignupCritico from "./pages/signupCritico";
 import SignupLector from "./pages/signupLector";
 import Lector from "./pages/lector";
+import { LoginLector } from "./pages/loginLector";
 import LoginCritico from "./pages/loginCritico";
 import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
 import { Navbar } from "./component/navbar";
@@ -43,6 +44,7 @@ const Layout = () => {
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
+                        <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<Lector />} path="/lector/:idLectorToEdit" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
