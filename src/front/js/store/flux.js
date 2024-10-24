@@ -23,6 +23,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+			logoutCritico: () => {
+				localStorage.removeItem("token")
+				setStore( {auth : false});
+			},
 			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
 				
 				const requestOptions = {
