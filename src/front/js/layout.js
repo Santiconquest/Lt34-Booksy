@@ -14,7 +14,7 @@ import SignupCritico from "./pages/signupCritico";
 import SignupLector from "./pages/signupLector";
 import Lector from "./pages/lector";
 import LoginCritico from "./pages/loginCritico";
-
+import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 
@@ -38,6 +38,7 @@ const Layout = () => {
                         <Route element={<SignupCritico />} path="/signupCritico" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<LoginCritico />} path="/loginCritico" />
+                        <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
                         <Route element={<Books />} path="/books" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
