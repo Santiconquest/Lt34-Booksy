@@ -15,6 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			auth: false,
+			userEmail: null,
 			books : [],
 			readers:[]
 		},
@@ -25,7 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			logoutCritico: () => {
 				localStorage.removeItem("token")
-				setStore( {auth : false});
+				setStore({ auth: false, userEmail: null });
 			},
 			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
 				
@@ -46,7 +47,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(response => {
 						console.log (response.status)
 						if (response.status == 200){
-							setStore( {auth : true});
+							setStore({ auth: true, userEmail: email });
+					
 						}
 						return response.json()
 					})
@@ -70,7 +72,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						.then(response => {
 							console.log (response.status)
 							if (response.status == 200){
-								setStore( {auth : true});
+								setStore({ 
+									auth: true,
+									userEmail: email 
+								});
+
 							}
 							return response.json()
 						})
