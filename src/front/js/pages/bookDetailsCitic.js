@@ -6,8 +6,8 @@ export const BookDetailsCritic = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
     const [bookData, setBookData] = useState(null);
-    const [review, setReview] = useState(""); // Estado para la reseña
-    const [reviews, setReviews] = useState([]); // Estado para las reseñas
+    const [review, setReview] = useState(""); 
+    const [reviews, setReviews] = useState([]); 
 
     useEffect(() => {
         const fetchBookData = async () => {
@@ -17,8 +17,8 @@ export const BookDetailsCritic = () => {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-                setBookData(data.book); // Asumiendo que la respuesta contiene un objeto `book`
-                setReviews(data.reviews || []); // Asumiendo que la respuesta también contiene reseñas
+                setBookData(data.book); 
+                setReviews(data.reviews || []); 
             } catch (error) {
                 console.error("Error fetching book data:", error);
             }
@@ -29,17 +29,16 @@ export const BookDetailsCritic = () => {
 
     const handleReviewSubmit = (e) => {
         e.preventDefault();
-        
-        // Aquí asegúrate de usar el email del usuario logueado
+
         const newReview = { 
             text: review, 
-            userEmail: store.userEmail, // Usa el email del usuario logueado
+            userEmail: store.userEmail, 
             id: reviews.length + 1 
         };
        
-        // Actualiza el estado local (en un caso real, también deberías enviar esto al backend)
+        
         setReviews([...reviews, newReview]);
-        setReview(""); // Limpiar el campo de la reseña
+        setReview(""); 
     };
 
     if (!bookData) return <p>Loading book details...</p>;
@@ -54,7 +53,7 @@ export const BookDetailsCritic = () => {
             <img src={bookData.cover} alt={bookData.titulo} style={{ width: '300px', height: '300px' }} />
             <hr className="my-4" />
 
-            {/* Formulario para agregar reseñas */}
+           
             <form onSubmit={handleReviewSubmit}>
                 <div className="mb-3">
                     <label htmlFor="review" className="form-label">Agregar una reseña</label>
@@ -69,7 +68,7 @@ export const BookDetailsCritic = () => {
                 <button type="submit" className="btn btn-primary">Enviar Reseña</button>
             </form>
 
-            {/* Mostrar reseñas */}
+           
             <h2 className="mt-4">Reseñas</h2>
             <ul className="list-group">
                 {reviews.map((r) => (
