@@ -300,15 +300,17 @@ def edit_category(category_id):
     body = request.get_json()
     category = Category.query.get(category_id)
 
-    if not category_id or category_id=="":
-        return jsonify({"error": "category_id is required"}),400
+    if not category:
+        return jsonify({"error": "category is required"}),400
     
-    category_actualizada = Category(
-    name=body['name'],
-    )
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    category.name=body['name']
+   
 
     db.session.commit()
     return jsonify({
         "msg": "Categoria actualizado exitosamente",
-          "categoria": category_actualizada.serialize()
+          "categoria": category.serialize()
     }), 200

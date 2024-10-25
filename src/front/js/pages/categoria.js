@@ -36,8 +36,8 @@ const Categoria = () => {
                         />
                     </div>
                 </div>
-                <button type="button" className="btn btn-primary my-5" onClick={()=>addCategory()}>Add</button>
-                <button type="button" className="btn btn-primary my-5" onClick={()=>handleSubmitCategory()}>Edit</button>
+                <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory()}>Add</button>
+                <button type="button" className="btn btn-primary my-5" onClick={()=>actions.editCategory()}>Edit</button>
                 <button className="btn btn-danger" onClick={()=>actions.deleteCategory(idCategory)}> Delete</button>
             </form>
             <Link to="/">
