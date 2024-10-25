@@ -14,6 +14,7 @@ import SignupCritico from "./pages/signupCritico";
 import SignupLector from "./pages/signupLector";
 import Lector from "./pages/lector";
 import LoginCritico from "./pages/loginCritico";
+import Categoria from "./pages/categoria";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -42,6 +43,7 @@ const Layout = () => {
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
+                        <Route element={<Categoria />} path="/categoria" /> 
                         <Route element={<Lector />} path="/lector/:idLectorToEdit" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>

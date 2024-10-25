@@ -1,0 +1,50 @@
+import React, { useState, useContext } from "react";
+import { Context } from "../store/appContext";
+import { Link, useParams } from "react-router-dom";
+
+const Categoria = () => {
+
+    const [name, setName] = useState('');
+
+    const { store, actions } = useContext(Context);
+
+    let { idCategory } = useParams()
+
+	const handleSubmitCategory=() =>{
+		const editCategory={
+			name:name,
+		}
+		const result = actions.editCategory(editCategory, idCategory)
+		console.log(result)
+		
+			//navigate("/demo")
+	}
+
+    return (
+        <div>
+            <h1 className="w-50 mx-auto m-5">Category</h1>
+            <form className="w-50 mx-auto">
+                <div className="row g-3">
+                    <div className="col-md-4">
+                        <label htmlFor="inputName" className="form-label">Name</label>
+                        <input 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                            type="text" 
+                            className="form-control" 
+                            id="inputName" 
+                        />
+                    </div>
+                </div>
+                <button type="button" className="btn btn-primary my-5" onClick={()=>addCategory()}>Add</button>
+                <button type="button" className="btn btn-primary my-5" onClick={()=>handleSubmitCategory()}>Edit</button>
+                <button className="btn btn-danger" onClick={()=>actions.deleteCategory(idCategory)}> Delete</button>
+            </form>
+            <Link to="/">
+                <button className="btn btn-primary">Back Booksy</button>
+            </Link>
+        </div>
+    );
+};
+
+export default Categoria;
