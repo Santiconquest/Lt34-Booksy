@@ -150,6 +150,15 @@ def update_book(book_id):
     db.session.commit()
     return jsonify({"msg": "Libro actualizado exitosamente", "book": book.serialize()}), 200
 
+@api.route('/book/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+    book = Book.query.get(book_id)
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+    return jsonify({"book": book.serialize()}), 200
+
+
+
 @api.route('/book/<int:book_id>', methods=['DELETE'])
 def delete_book(book_id):
     book = Book.query.filter_by(id=book_id).first()
