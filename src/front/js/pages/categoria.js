@@ -36,9 +36,10 @@ const Categoria = () => {
                         />
                     </div>
                 </div>
-                <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory()}>Add</button>
-                <button type="button" className="btn btn-primary my-5" onClick={()=>actions.editCategory()}>Edit</button>
-                <button className="btn btn-danger" onClick={()=>actions.deleteCategory(idCategory)}> Delete</button>
+                <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory(name)}>Add</button>
+                {/* En esta instancia del proyecto no necesitamos EDIT / DELETE. Dejo los botones creados y cuando lo necesitemos se terminan de definir */}
+                {/* <button type="button" className="btn btn-primary my-5" onClick={()=>actions.editCategory(editCategory, idCategory)}>Edit</button>
+                <button className="btn btn-danger" onClick={()=>actions.deleteCategory(idCategory)}> Delete</button> */}
             </form>
             <Link to="/">
                 <button className="btn btn-primary">Back Booksy</button>

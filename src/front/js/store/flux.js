@@ -179,7 +179,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const requestOptions = {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(name),
+					body: JSON.stringify({"name":name}),
 				  };
 				  
 				  fetch(`${process.env.BACKEND_URL}/api/category`, requestOptions)
