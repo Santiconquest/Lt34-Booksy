@@ -149,6 +149,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 
 			},
+
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -243,7 +244,35 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.log("Error deleting book", error);
                 }
-			}	
+			},
+			
+			loginLector: async (email, password) => {
+                const requestOptions = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                };
+
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
+                    if (response.ok) {
+                        const data = await response.json();
+                        localStorage.setItem("token", data.access_token); 
+                        setStore({ auth: true }); 
+                        console.log("Login successful", data);
+                    } else {
+                        console.error("Login failed", response.status);
+                    }
+                } catch (error) {
+                    console.error("Error logging in", error);
+                }
+            },
+
+            logoutLector: () => {
+                localStorage.removeItem("token"); 
+                setStore({ auth: false }); 
+                console.log("Logged out");
+            },		
 		}
 	};
 };
