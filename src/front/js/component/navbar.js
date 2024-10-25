@@ -1,11 +1,19 @@
-import React from "react";
+
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+    const navigate = useNavigate()
+	const { store, actions } = useContext(Context);
+	function handleLogoutCritico(){
+		actions.logoutCritico()
+		navigate("/loginCritico")
+	}
     return (
         <nav className="navbar navbar-light bg-light">
             <div className="container d-flex justify-content-between">
-                {/* Logo y pestaña Books */}
                 <div className="d-flex align-items-center">
                     <Link to="/" className="navbar-brand">
                         <img
@@ -21,9 +29,12 @@ export const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Login y Sign Up */}
                 <div className="d-flex align-items-center">
-                    <div className="dropdown">
+                    {store.auth ? (
+                        <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
+                    ) : (
+                        <Link to="/login">
+                            <div className="dropdown">
 						<button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Login
 						</button>
@@ -32,6 +43,8 @@ export const Navbar = () => {
 							<Link className="dropdown-item" to="/loginCritico">Como Crítico</Link>
 						</ul>
 					</div>
+                        </Link>
+                    )}
 
                     <div className="dropdown">
 						<button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
