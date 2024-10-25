@@ -150,6 +150,15 @@ def update_book(book_id):
     db.session.commit()
     return jsonify({"msg": "Libro actualizado exitosamente", "book": book.serialize()}), 200
 
+@api.route('/book/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+    book = Book.query.get(book_id)
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+    return jsonify({"book": book.serialize()}), 200
+
+
+
 @api.route('/book/<int:book_id>', methods=['DELETE'])
 def delete_book(book_id):
     book = Book.query.filter_by(id=book_id).first()
@@ -245,6 +254,34 @@ def delete_lector(lector_id):
     }
 
     return jsonify(response_body), 200
+
+@api.route('/loginLector', methods=['POST'])
+def login_lector():
+    body = request.get_json()
+
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    email = body.get('email')
+    password = body.get('password')
+
+    if not email or not password:
+        return jsonify({"msg": "Faltan los campos 'email' o 'password'"}), 400
+
+    lector = Lector.query.filter_by(email=email).first()
+
+    if not lector or lector.password != password:
+        return jsonify({"msg": "Credenciales inválidas"}), 401
+
+    access_token = create_access_token(identity=lector.id)
+
+    response_body = {
+        "msg": "Inicio de sesión exitoso",
+        "access_token": access_token
+    }
+
+    return jsonify(response_body), 200
+
 
 @api.route('/category', methods=['GET'])
 def get_category():

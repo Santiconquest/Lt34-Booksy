@@ -13,12 +13,13 @@ import injectContext from "./store/appContext";
 import SignupCritico from "./pages/signupCritico";
 import SignupLector from "./pages/signupLector";
 import Lector from "./pages/lector";
+import { LoginLector } from "./pages/loginLector";
 import LoginCritico from "./pages/loginCritico";
-import Categoria from "./pages/categoria";
+import { ListaLibrosCritico } from "./pages/listaLibrosCritico";import Categoria from "./pages/categoria";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-
+import { BookDetailsCritic } from "./pages/bookDetailsCitic";
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -39,11 +40,12 @@ const Layout = () => {
                         <Route element={<SignupCritico />} path="/signupCritico" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<LoginCritico />} path="/loginCritico" />
+                        <Route element={<BookDetailsCritic />} path="/books/:book_id" />
+                        <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
                         <Route element={<Books />} path="/books" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
-                        <Route element={<Categoria />} path="/categoria" /> 
                         <Route element={<Lector />} path="/lector/:idLectorToEdit" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
