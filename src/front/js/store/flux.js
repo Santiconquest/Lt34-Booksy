@@ -17,7 +17,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			auth: false,
 			userEmail: null,
 			books : [],
-			readers:[]
+			readers:[],
+			categories:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -182,7 +183,71 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+			addCategory:(name)=>{
+				console.log(name)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.categories.concat(result))
+							return true
+						}
+					})
+					
+			},
+			editCategory:(editCategory, idCategory)=>{
+				console.log("Edito categoria id: "+idCategory)
+				const store = getStore();
+				const actions = getActions()
 
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(editCategory),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.categories.concat(result))
+						return true
+					}
+				})
+
+			},
+			deleteCategory: (idCategory) => {
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+					})
+			},
 			getBooks: async () => {
                 try {
                     const response = await fetch(process.env.BACKEND_URL + "/api/book");

@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Critico, Book, Lector
+from api.models import db, User, Critico, Book, Lector, Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -283,5 +283,71 @@ def login_lector():
     return jsonify(response_body), 200
 
 
+@api.route('/category', methods=['GET'])
+def get_category():
 
+    all_categories = Category.query.all()
+    results = list(map(lambda category: category.serialize(), all_categories))
+    
 
+    return jsonify(results), 200
+
+@api.route('/category', methods=['POST'])
+def add_category():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    new_category = Category(
+        name= body['name']
+    )
+    
+    try:
+        db.session.add(new_category)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Esta Categoria ya fue creada"}), 500
+
+    response_body = {
+        "msg": "Categoria creada exitosamente",
+        "critico": new_category.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/category/<int:category_id>', methods=['DELETE'])
+def delete_category(category_id):
+    category = Category.query.filter_by(id=category_id).first()
+    
+    if category is None:
+        return jsonify({"error": "Categoria no encontrada"}), 404
+    
+    
+    db.session.delete(category)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino categoria"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/category/<int:category_id>', methods=['PUT'])
+def edit_category(category_id):
+    body = request.get_json()
+    category = Category.query.get(category_id)
+
+    if not category:
+        return jsonify({"error": "category is required"}),400
+    
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    category.name=body['name']
+   
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Categoria actualizado exitosamente",
+          "categoria": category.serialize()
+    }), 200
