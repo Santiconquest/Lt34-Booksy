@@ -43,6 +43,9 @@ export const ListaLibrosCritico = () => {
                                         <strong>Género:</strong> {book.genero} <br />
                                         <strong>Año Publicado:</strong> {book.year}
                                     </p>
+									<Link to={`/books/${book.id}`} className="btn btn-primary">
+                                        Ver detalles
+                                    </Link>
                                 </div>
                             </div>
                         </div>
