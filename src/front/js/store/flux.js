@@ -20,7 +20,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			readers:[],
 			lectorName: localStorage.getItem("lectorName") || "",
 			categories:[],
-			autores:[]
+			autores:[],
+			favorites: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -316,14 +317,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 			},
 			getBooks: async () => {
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + "/api/book");
-                    const data = await response.json();
-                    setStore({ books: data });
-                } catch (error) {
-                    console.log("Error fetching books", error);
-                }
-            },
+				let isMounted = true; // controlar si el componente está montado
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/book");
+					const data = await response.json();
+					if (isMounted) {
+						setStore({ books: data });
+					}
+				} catch (error) {
+					console.log("Error fetching books", error);
+				}
+				return () => {
+					isMounted = false; 
+				};
+			},
 
             addBook: async (newBook) => {
                 try {
