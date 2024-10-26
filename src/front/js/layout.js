@@ -20,6 +20,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { BookDetailsCritic } from "./pages/bookDetailsCitic";
 import { ReadersListOfBooks } from "./pages/readersListOfBooks";
+import { BookDetail } from "./pages/bookDetail";
 
 //create your first component
 const Layout = () => {
@@ -49,6 +50,7 @@ const Layout = () => {
                         <Route element={<SignupLector />} path="/signupLector" /> 
                         <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<ReadersListOfBooks />} path="/readersListOfBooks" />
+                        <Route path="/bookdetails/:id" element={<BookDetail />} /> 
                         <Route element={<Lector />} path="/lector/:idLectorToEdit" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
