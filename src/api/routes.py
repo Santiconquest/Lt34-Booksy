@@ -157,7 +157,7 @@ def add_lector():
     if not body:
         return jsonify({"msg": "No se proporcionó información"}), 400
 
-    required_fields = ['name', 'lastname', 'email', 'password', 'suscription_date', 'is_active']
+    required_fields = ['name', 'lastname', 'email', 'password']
     missing_fields = [field for field in required_fields if field not in body]
     if missing_fields:
         return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
@@ -166,9 +166,7 @@ def add_lector():
         name=body['name'],
         lastname=body['lastname'],
         email=body['email'],
-        password=body['password'], 
-        suscription_date=body['suscription_date'],
-        is_active=body['is_active']
+        password=body['password']
     )
 
     try:
@@ -189,22 +187,20 @@ def edit_lector(lector_id):
     body = request.get_json()
     reader = Lector.query.get(lector_id)
 
-    if not lector_id or lector_id=="":
-        return jsonify({"error": "lector_id is required"}),400
+    if not reader:
+        return jsonify({"error": "reader is required"}),400
     
     lector_actualizado = Lector(
     name=body['name'],
     lastname=body['lastname'],
     email=body['email'],
-    password=body['password'], 
-    suscription_date=body['suscription_date'],
-    is_active=body['is_active']
+    password=body['password']
     )
 
     db.session.commit()
     return jsonify({
         "msg": "Lector actualizado exitosamente",
-          "lector": lector_actualizado.serialize()
+        "lector": lector_actualizado.serialize()
     }), 200
 
 
