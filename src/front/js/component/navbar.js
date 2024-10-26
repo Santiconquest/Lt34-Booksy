@@ -9,7 +9,7 @@ export const Navbar = () => {
 	const { store, actions } = useContext(Context);
 	function handleLogoutCritico(){
 		actions.logoutCritico()
-		navigate("/loginCritico")
+		navigate("/")
 	}
     return (
         <nav className="navbar navbar-light bg-light">
