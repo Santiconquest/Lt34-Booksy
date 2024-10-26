@@ -18,7 +18,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userEmail: null,
 			books : [],
 			readers:[],
-			categories:[]
+			categories:[],
+			autores:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -243,6 +244,71 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  };
 				  
 				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+					})
+			},
+			addAutor:(name)=>{
+				console.log(name)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.autores.concat(result))
+							return true
+						}
+					})
+					
+			},
+			editAutor:(editAutor, idAutor)=>{
+				console.log("Edito autor id: "+idCategory)
+				const store = getStore();
+				const actions = getActions()
+
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(editAutor),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor/`+idAutor, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.autores.concat(result))
+						return true
+					}
+				})
+
+			},
+			deleteCategory: (idAutor) => {
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor/`+idAutor, requestOptions)
 					.then((response) => response.text())
 					.then((result) => {
 						console.log(result)
