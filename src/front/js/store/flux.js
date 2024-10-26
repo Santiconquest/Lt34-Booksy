@@ -409,6 +409,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false; 
 				}
 			},
+			logoutLector: () => {
+				localStorage.removeItem("token");
+				localStorage.removeItem("lectorName");
+				setStore({ auth: false, lectorName: "" }); 
+			},
 		
 		}
 	};
