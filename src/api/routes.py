@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Critico, Book, Lector, Category
+from api.models import db, User, Critico, Book, Lector, Category, Autor
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -310,7 +310,7 @@ def add_category():
 
     response_body = {
         "msg": "Categoria creada exitosamente",
-        "critico": new_category.serialize() 
+        "category": new_category.serialize() 
     }
     
     return jsonify(response_body), 201  
@@ -350,4 +350,73 @@ def edit_category(category_id):
     return jsonify({
         "msg": "Categoria actualizado exitosamente",
           "categoria": category.serialize()
+    }), 200
+
+@api.route('/autor', methods=['GET'])
+def get_autor():
+
+    all_autores = Autor.query.all()
+    results = list(map(lambda autor: autor.serialize(), all_autores))
+    
+
+    return jsonify(results), 200
+
+@api.route('/autor', methods=['POST'])
+def add_autor():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    new_autor = Autor(
+        name= body['name']
+    )
+    
+    try:
+        db.session.add(new_autor)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Este Autor ya fue creado"}), 500
+
+    response_body = {
+        "msg": "Autor creada exitosamente",
+        "autor": new_autor.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/autor/<int:autor_id>', methods=['DELETE'])
+def delete_autor(autor_id):
+    autor = Autor.query.filter_by(id=autor_id).first()
+    
+    if autor is None:
+        return jsonify({"error": "Autor no encontrado"}), 404
+    
+    
+    db.session.delete(autor)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino autor"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/autor/<int:autor_id>', methods=['PUT'])
+def edit_autor(autor_id):
+    body = request.get_json()
+    autor = Autor.query.get(autor_id)
+
+    if not autor:
+        return jsonify({"error": "autor is required"}),400
+    
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    autor.name=body['name']
+   
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Autor actualizado exitosamente",
+        "autor": autor.serialize()
     }), 200
