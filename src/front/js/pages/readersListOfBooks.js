@@ -4,17 +4,18 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
+import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons'; // Importar el icono de basurero
 import "../../styles/readersListOfBooks.css";
 
 export const ReadersListOfBooks = () => {
     const { store, actions } = useContext(Context);
-    const [activeTab, setActiveTab] = useState("genero"); 
+    const [activeTab, setActiveTab] = useState("genero");
+    const [showFavorites, setShowFavorites] = useState(false); 
 
     useEffect(() => {
         actions.getBooks();
     }, []);
 
-    
     const groupBooks = (key) => {
         return store.books.reduce((acc, book) => {
             const groupKey = book[key];
@@ -29,9 +30,12 @@ export const ReadersListOfBooks = () => {
     const booksByGenero = groupBooks("genero");
     const booksByAutor = groupBooks("autor");
 
-    
     const handleFavoriteToggle = (bookId) => {
         actions.toggleFavorite(bookId); 
+    };
+
+    const handleToggleFavorites = () => {
+        setShowFavorites(prevState => !prevState);
     };
 
     return (
@@ -45,6 +49,47 @@ export const ReadersListOfBooks = () => {
                     Por Autor
                 </button>
             </div>
+
+            <div className="favorites-dropdown">
+    <button onClick={handleToggleFavorites} className="btn btn-primary">
+        Favoritos
+    </button>
+    {showFavorites && (
+        <div className="dropdown-content p-3">
+            {store.favorites.length === 0 ? (
+                <p>No hay elementos que mostrar</p>
+            ) : (
+                <div>
+                    <div className="row">
+                        {store.favorites.map((favoriteId) => {
+                            const favoriteBook = store.books.find(book => book.id === favoriteId);
+                            return (
+                                <div key={favoriteId} className="col-12 mb-2">
+                                    <div className="card">
+                                        <div className="card-body d-flex justify-content-between align-items-center">
+                                            <Link to={`/bookdetails/${favoriteBook.id}`} className="card-title mb-0 text-decoration-none text-dark">
+                                                {favoriteBook.titulo}
+                                            </Link>
+                                            <span 
+                                                onClick={() => actions.removeFavorite(favoriteId)} 
+                                                className="remove-favorite-icon"
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                <FontAwesomeIcon icon={trashIcon} />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <Link to="/favoritosLector" className="btn btn-secondary mt-2">Ver todos</Link>
+                </div>
+            )}
+        </div>
+    )}
+</div>
+
 
             <div className="row">
                 {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
