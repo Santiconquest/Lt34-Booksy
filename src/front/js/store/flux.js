@@ -15,15 +15,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			auth: false,
+			userEmail: null,
 			books : [],
-			readers:[]
+			readers:[],
+			lectorName: localStorage.getItem("lectorName") || "",
+			categories:[],
+			autores:[],
+			favorites: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-			signup: (email,password,name,lastName,gender,aboutMe) => {
+			logoutCritico: () => {
+				localStorage.removeItem("token")
+				setStore({ auth: false, userEmail: null });
+			},
+			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
 				
 				const requestOptions = {
 					method: 'POST',
@@ -42,7 +51,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(response => {
 						console.log (response.status)
 						if (response.status == 200){
-							setStore( {auth : true});
+							setStore({ auth: true, userEmail: email });
+					
 						}
 						return response.json()
 					})
@@ -50,7 +60,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 						localStorage.setItem("token",data.access_token)
 						console.log(data)
 					});
-			},
+				},
+
+				loginCritico: (email, password) => {
+					
+					const resquestOptions = {
+						method: 'POST',
+						headers: {'content-Type' : 'application/json'},
+						body: JSON.stringify({
+							"email": email,
+							"password" : password
+						})
+					};
+					fetch(`${process.env.BACKEND_URL}/api/loginCritico`, resquestOptions)
+						.then(response => {
+							console.log (response.status)
+							if (response.status == 200){
+								setStore({ 
+									auth: true,
+									userEmail: email 
+								});
+
+							}
+							return response.json()
+						})
+						.then(data => {
+							localStorage.setItem("token",data.access_token)
+							console.log(data)
+						});
+				},
 			addLector:(email,password,name,lastName)=>{
 				console.log(email,password,name,lastName)
 				const store = getStore()
@@ -125,6 +163,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 
 			},
+
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -151,16 +190,151 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+			addCategory:(name)=>{
+				console.log(name)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.categories.concat(result))
+							return true
+						}
+					})
+					
+			},
+			editCategory:(editCategory, idCategory)=>{
+				console.log("Edito categoria id: "+idCategory)
+				const store = getStore();
+				const actions = getActions()
 
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(editCategory),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.categories.concat(result))
+						return true
+					}
+				})
+
+			},
+			deleteCategory: (idCategory) => {
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+					})
+			},
+			addAutor:(name)=>{
+				console.log(name)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.autores.concat(result))
+							return true
+						}
+					})
+					
+			},
+			editAutor:(editAutor, idAutor)=>{
+				console.log("Edito autor id: "+idCategory)
+				const store = getStore();
+				const actions = getActions()
+
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(editAutor),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor/`+idAutor, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.autores.concat(result))
+						return true
+					}
+				})
+
+			},
+			deleteCategory: (idAutor) => {
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor/`+idAutor, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+					})
+			},
 			getBooks: async () => {
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + "/api/book");
-                    const data = await response.json();
-                    setStore({ books: data });
-                } catch (error) {
-                    console.log("Error fetching books", error);
-                }
-            },
+				let isMounted = true; // controlar si el componente está montado
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/book");
+					const data = await response.json();
+					if (isMounted) {
+						setStore({ books: data });
+					}
+				} catch (error) {
+					console.log("Error fetching books", error);
+				}
+				return () => {
+					isMounted = false; 
+				};
+			},
 
             addBook: async (newBook) => {
                 try {
@@ -219,7 +393,39 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.log("Error deleting book", error);
                 }
-			}	
+			},
+			
+			loginLector: async (email, password) => {
+				const requestOptions = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email, password })
+				};
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
+					if (response.ok) {
+						const data = await response.json();
+						localStorage.setItem("token", data.access_token);
+						localStorage.setItem("lectorName", data.name);
+						setStore({ auth: true, lectorName: data.name });
+						console.log("Login successful", data);
+						return true; 
+					} else {
+						console.error("Login failed", response.status);
+						return false; 
+					}
+				} catch (error) {
+					console.error("Error logging in", error);
+					return false; 
+				}
+			},
+			logoutLector: () => {
+				localStorage.removeItem("token");
+				localStorage.removeItem("lectorName");
+				setStore({ auth: false, lectorName: "" }); 
+			},
+		
 		}
 	};
 };

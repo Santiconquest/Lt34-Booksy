@@ -2,10 +2,14 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Critico, Book, Lector
+from api.models import db, User, Critico, Book, Lector, Category, Autor
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 
 api = Blueprint('api', __name__)
 
@@ -80,6 +84,22 @@ def delete_critico(critico_id):
     db.session.commit()
     return jsonify(critico_data), 200
 
+@api.route("/loginCritico", methods=["POST"])
+def login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    user = Critico.query.filter_by(email=email).first()
+
+    if user == None:
+        return jsonify({"msg": "Could not find you email"}), 401
+
+    if email != user.email or password != user.password:
+        return jsonify({"msg": "Bad email or password"}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+
 
 @api.route('/book', methods=['GET'])
 def get_books():
@@ -129,6 +149,15 @@ def update_book(book_id):
 
     db.session.commit()
     return jsonify({"msg": "Libro actualizado exitosamente", "book": book.serialize()}), 200
+
+@api.route('/book/<int:book_id>', methods=['GET'])
+def get_book(book_id):
+    book = Book.query.get(book_id)
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+    return jsonify({"book": book.serialize()}), 200
+
+
 
 @api.route('/book/<int:book_id>', methods=['DELETE'])
 def delete_book(book_id):
@@ -221,3 +250,169 @@ def delete_lector(lector_id):
     }
 
     return jsonify(response_body), 200
+
+@api.route('/loginLector', methods=['POST'])
+def login_lector():
+    body = request.get_json()
+
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    email = body.get('email')
+    password = body.get('password')
+
+    if not email or not password:
+        return jsonify({"msg": "Faltan los campos 'email' o 'password'"}), 400
+
+    lector = Lector.query.filter_by(email=email).first()
+
+    if not lector or lector.password != password:
+        return jsonify({"msg": "Credenciales inválidas"}), 401
+
+    access_token = create_access_token(identity=lector.id)
+
+    response_body = {
+        "msg": "Inicio de sesión exitoso",
+        "access_token": access_token
+    }
+
+    return jsonify(response_body), 200
+
+
+@api.route('/category', methods=['GET'])
+def get_category():
+
+    all_categories = Category.query.all()
+    results = list(map(lambda category: category.serialize(), all_categories))
+    
+
+    return jsonify(results), 200
+
+@api.route('/category', methods=['POST'])
+def add_category():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    new_category = Category(
+        name= body['name']
+    )
+    
+    try:
+        db.session.add(new_category)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Esta Categoria ya fue creada"}), 500
+
+    response_body = {
+        "msg": "Categoria creada exitosamente",
+        "category": new_category.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/category/<int:category_id>', methods=['DELETE'])
+def delete_category(category_id):
+    category = Category.query.filter_by(id=category_id).first()
+    
+    if category is None:
+        return jsonify({"error": "Categoria no encontrada"}), 404
+    
+    
+    db.session.delete(category)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino categoria"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/category/<int:category_id>', methods=['PUT'])
+def edit_category(category_id):
+    body = request.get_json()
+    category = Category.query.get(category_id)
+
+    if not category:
+        return jsonify({"error": "category is required"}),400
+    
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    category.name=body['name']
+   
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Categoria actualizado exitosamente",
+          "categoria": category.serialize()
+    }), 200
+
+@api.route('/autor', methods=['GET'])
+def get_autor():
+
+    all_autores = Autor.query.all()
+    results = list(map(lambda autor: autor.serialize(), all_autores))
+    
+
+    return jsonify(results), 200
+
+@api.route('/autor', methods=['POST'])
+def add_autor():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    new_autor = Autor(
+        name= body['name']
+    )
+    
+    try:
+        db.session.add(new_autor)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Este Autor ya fue creado"}), 500
+
+    response_body = {
+        "msg": "Autor creada exitosamente",
+        "autor": new_autor.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/autor/<int:autor_id>', methods=['DELETE'])
+def delete_autor(autor_id):
+    autor = Autor.query.filter_by(id=autor_id).first()
+    
+    if autor is None:
+        return jsonify({"error": "Autor no encontrado"}), 404
+    
+    
+    db.session.delete(autor)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino autor"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/autor/<int:autor_id>', methods=['PUT'])
+def edit_autor(autor_id):
+    body = request.get_json()
+    autor = Autor.query.get(autor_id)
+
+    if not autor:
+        return jsonify({"error": "autor is required"}),400
+    
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    autor.name=body['name']
+   
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Autor actualizado exitosamente",
+        "autor": autor.serialize()
+    }), 200

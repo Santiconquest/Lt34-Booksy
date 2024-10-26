@@ -1,15 +1,23 @@
-import React from "react";
+
+import React, { useContext } from "react";
+import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+    const navigate = useNavigate()
+	const { store, actions } = useContext(Context);
+	function handleLogoutCritico(){
+		actions.logoutCritico()
+		navigate("/")
+	}
     return (
         <nav className="navbar navbar-light bg-light">
             <div className="container d-flex justify-content-between">
-                {/* Logo y pestaña Books */}
                 <div className="d-flex align-items-center">
                     <Link to="/" className="navbar-brand">
                         <img
-                            src="logo-url.png" // Reemplaza con la URL de tu logo
+                            src="logo-url.png" 
                             alt="Booksy Logo"
                             width="40"
                             height="40"
@@ -21,11 +29,22 @@ export const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Login y Sign Up */}
                 <div className="d-flex align-items-center">
-                    <Link to="/login">
-                        <button className="btn btn-outline-primary mr-3">Login</button>
-                    </Link>
+                    {store.auth ? (
+                        <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
+                    ) : (
+                        <Link to="/login">
+                            <div className="dropdown">
+						<button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Login
+						</button>
+						<ul className="dropdown-menu">
+							<Link className="dropdown-item" to="/loginLector">Como Lector</Link>
+							<Link className="dropdown-item" to="/loginCritico">Como Crítico</Link>
+						</ul>
+					</div>
+                        </Link>
+                    )}
 
                     <div className="dropdown">
 						<button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

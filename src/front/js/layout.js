@@ -13,9 +13,14 @@ import injectContext from "./store/appContext";
 import SignupCritico from "./pages/signupCritico";
 import SignupLector from "./pages/signupLector";
 import Lector from "./pages/lector";
-
+import { LoginLector } from "./pages/loginLector";
+import LoginCritico from "./pages/loginCritico";
+import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { BookDetailsCritic } from "./pages/bookDetailsCitic";
+import { ReadersListOfBooks } from "./pages/readersListOfBooks";
+import { BookDetail } from "./pages/bookDetail";
 
 //create your first component
 const Layout = () => {
@@ -36,10 +41,16 @@ const Layout = () => {
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<SignupCritico />} path="/signupCritico" />
                         <Route element={<Single />} path="/single/:theid" />
+                        <Route element={<LoginCritico />} path="/loginCritico" />
+                        <Route element={<BookDetailsCritic />} path="/books/:book_id" />
+                        <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
                         <Route element={<Books />} path="/books" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
+                        <Route element={<LoginLector />} path="/loginLector" /> 
+                        <Route element={<ReadersListOfBooks />} path="/readersListOfBooks" />
+                        <Route path="/bookdetails/:id" element={<BookDetail />} /> 
                         <Route element={<Lector />} path="/lector/:idLector" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
