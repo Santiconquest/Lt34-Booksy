@@ -89,14 +89,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log(data)
 						});
 				},
-			addLector:(email,password,name,lastName,suscriptionDate)=>{
-				console.log(email,password,name,lastName,suscriptionDate)
+			addLector:(email,password,name,lastName)=>{
+				console.log(email,password,name,lastName)
 				const store = getStore()
 				const actions = getActions()
 				const requestOptions = {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(email,password,name,lastName,suscriptionDate),
+					body: JSON.stringify(email,password,name,lastName),
 				  };
 				  
 				  fetch(`${process.env.BACKEND_URL}/api/signupLector`, requestOptions)
@@ -114,7 +114,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					
 			},
-			deleteLector: (idLectorToEdit) => {
+			deleteLector: (idLector) => {
 				//console.log("Remove lector from flux"+ idToDelete)
 				const store = getStore();
 				
@@ -123,7 +123,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					redirect: "follow"
 				  };
 				  
-				  fetch(`${process.env.BACKEND_URL}api/lector/`+idLectorToEdit, requestOptions)
+				  fetch(`${process.env.BACKEND_URL}api/lector/`+idLector, requestOptions)
 					.then((response) => response.text())
 					.then((result) => {
 						console.log(result)
@@ -132,18 +132,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// .then((data)=>setStore({readers:data.contacts}))
 					})
 			},
-			editLector:(readerToEdit, idLectorToEdit)=>{
-				console.log("Edito lector id: "+idLectorToEdit)
+			editLector:(idLector,email,password,name,lastName)=>{
+				
 				const store = getStore();
 				const actions = getActions()
 
 				const requestOptions = {
 					method: "PUT",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(readerToEdit),
+					body: JSON.stringify({
+						"name":name,
+						"lastname":lastName,
+						"email":email,
+						"password":password}),
 				  };
 				  
-				  fetch(`${process.env.BACKEND_URL}admin/lector/`+idLectorToEdit, requestOptions)
+				  fetch(`${process.env.BACKEND_URL}admin/lector/`+idLector, requestOptions)
 				  .then((response) => {
 					console.log(response)
 					if(response.ok){

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
@@ -53,7 +53,7 @@ const Layout = () => {
                         <Route element={<ReadersListOfBooks />} path="/readersListOfBooks" />
                         <Route element={<FavoritosLector />} path="/favoritosLector" />
                         <Route path="/bookdetails/:id" element={<BookDetail />} /> 
-                        <Route element={<Lector />} path="/lector/:idLectorToEdit" />
+                        <Route element={<Lector />} path="/lector/:idLector" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
                     <Footer />
