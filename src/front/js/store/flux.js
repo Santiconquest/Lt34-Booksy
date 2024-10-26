@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userEmail: null,
 			books : [],
 			readers:[],
+			lectorName: localStorage.getItem("lectorName") || "",
 			categories:[],
 			autores:[]
 		},
@@ -384,32 +385,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			
 			loginLector: async (email, password) => {
-                const requestOptions = {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                };
-
-                try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
-                    if (response.ok) {
-                        const data = await response.json();
-                        localStorage.setItem("token", data.access_token); 
-                        setStore({ auth: true }); 
-                        console.log("Login successful", data);
-                    } else {
-                        console.error("Login failed", response.status);
-                    }
-                } catch (error) {
-                    console.error("Error logging in", error);
-                }
-            },
-
-            logoutLector: () => {
-                localStorage.removeItem("token"); 
-                setStore({ auth: false }); 
-                console.log("Logged out");
-            },		
+				const requestOptions = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email, password })
+				};
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
+					if (response.ok) {
+						const data = await response.json();
+						localStorage.setItem("token", data.access_token);
+						localStorage.setItem("lectorName", data.name);
+						setStore({ auth: true, lectorName: data.name });
+						console.log("Login successful", data);
+						return true; 
+					} else {
+						console.error("Login failed", response.status);
+						return false; 
+					}
+				} catch (error) {
+					console.error("Error logging in", error);
+					return false; 
+				}
+			},
+		
 		}
 	};
 };
