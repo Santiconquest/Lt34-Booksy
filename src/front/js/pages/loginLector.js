@@ -18,14 +18,15 @@ export const LoginLector = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); 
-        const loginSuccess = await actions.loginLector(email, password); 
-
-        if (loginSuccess) {
-            navigate("/books");
+        const loginData = await actions.loginLector(email, password); // Actualiza esto para recibir el nombre.
+    
+        if (loginData) {
+            navigate("/readersListOfBooks"); // Redirige a la nueva ruta.
         } else {
             setError("Email o contraseña incorrectos");
         }
     };
+    
 
     return (
         <>
