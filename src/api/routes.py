@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Critico, Book, Lector, Category, Autor
+from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -415,4 +415,76 @@ def edit_autor(autor_id):
     return jsonify({
         "msg": "Autor actualizado exitosamente",
         "autor": autor.serialize()
+    }), 200
+
+@api.route('/booksyAdmin', methods=['GET'])
+def get_administrador():
+
+    all_admins = BooksyAdmin.query.all()
+    results = list(map(lambda booksyAdmin: booksyAdmin.serialize(), all_admins))
+
+    return jsonify(results), 200
+
+@api.route('/booksyAdmin', methods=['POST'])
+def add_administrador():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    
+    new_administrador = BooksyAdmin(
+        name= body['name'],
+        lastname=body['lastname'],
+        email=body['email'],
+        password=body['password']
+    )
+    
+    try:
+        db.session.add(new_administrador)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Este Administrador ya fue creado"}), 500
+
+    response_body = {
+        "msg": "Administrador creada exitosamente",
+        "category": new_administrador.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/booksyAdmin/<int:booksyAdmin_id>', methods=['DELETE'])
+def delete_administrador(booksyAdmin_id):
+    administrador = BooksyAdmin.query.filter_by(id=booksyAdmin_id).first()
+    
+    if administrador is None:
+        return jsonify({"error": "Administrador no encontrado"}), 404
+    
+    
+    db.session.delete(administrador)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino adminisitrador"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/booksyAdmin/<int:booksyAdmin_id>', methods=['PUT'])
+def edit_administrador(booksyAdmin_id):
+    body = request.get_json()
+    administrador = BooksyAdmin.query.get(booksyAdmin_id)
+
+    if not administrador:
+        return jsonify({"error": "administrador is required"}),400
+    
+    administrador.name=body['name'],
+    administrador.lastname=body['lastname'],
+    administrador.email=body['email'],
+    administrador.password=body['password']
+
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Administrador actualizado exitosamente",
+        "administrador": administrador.serialize()
     }), 200
