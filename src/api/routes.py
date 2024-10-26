@@ -219,17 +219,16 @@ def edit_lector(lector_id):
     if not reader:
         return jsonify({"error": "reader is required"}),400
     
-    lector_actualizado = Lector(
-    name=body['name'],
-    lastname=body['lastname'],
-    email=body['email'],
-    password=body['password']
-    )
+    reader.name=body['name'],
+    reader.lastname=body['lastname'],
+    reader.email=body['email'],
+    reader.password=body['password']
+    
 
     db.session.commit()
     return jsonify({
         "msg": "Lector actualizado exitosamente",
-        "lector": lector_actualizado.serialize()
+        "lector": reader.serialize()
     }), 200
 
 
