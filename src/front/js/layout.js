@@ -15,7 +15,9 @@ import SignupLector from "./pages/signupLector";
 import Lector from "./pages/lector";
 import { LoginLector } from "./pages/loginLector";
 import LoginCritico from "./pages/loginCritico";
-import { ListaLibrosCritico } from "./pages/listaLibrosCritico";import Categoria from "./pages/categoria";
+import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
+import Categoria from "./pages/categoria";
+import Autor from "./pages/autor";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -43,6 +45,8 @@ const Layout = () => {
                         <Route element={<BookDetailsCritic />} path="/books/:book_id" />
                         <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
                         <Route element={<Books />} path="/books" /> 
+                        <Route element={<Categoria />} path="/categoria" /> 
+                        <Route element={<Autor />} path="/autor" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
