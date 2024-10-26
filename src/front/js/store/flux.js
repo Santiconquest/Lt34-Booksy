@@ -421,6 +421,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("lectorName");
 				setStore({ auth: false, lectorName: "" }); 
 			},
+			toggleFavorite: (bookId) => {
+                const store = getStore();
+                const favorites = store.favorites;
+
+                
+                if (favorites.includes(bookId)) {
+                    
+                    const updatedFavorites = favorites.filter(id => id !== bookId);
+                    setStore({ favorites: updatedFavorites });
+                } else {
+                    
+                    const updatedFavorites = [...favorites, bookId];
+                    setStore({ favorites: updatedFavorites });
+                }
+            },	
+			
+			
+			removeFavorite: (bookId) => {
+				const store = getStore();
+				const updatedFavorites = store.favorites.filter(id => id !== bookId);
+				setStore({ favorites: updatedFavorites });
+			},
+			
+			
 		
 		}
 	};
