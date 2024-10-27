@@ -165,7 +165,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 
 			},
+			loginAdmin: (email, password) => {
+					
+				const resquestOptions = {
+					method: 'POST',
+					headers: {'content-Type' : 'application/json'},
+					body: JSON.stringify({
+						"email": email,
+						"password" : password
+					})
+				};
+				fetch(`${process.env.BACKEND_URL}/api/loginAdmin`, resquestOptions)
+					.then(response => {
+						console.log (response.status)
+						if (response.status == 200){
+							setStore({ 
+								auth: true,
+								userEmail: email 
+							});
 
+						}
+						return response.json()
+					})
+					.then(data => {
+						localStorage.setItem("token",data.access_token)
+						console.log(data)
+					});
+			},
 			getMessage: async () => {
 				try{
 					// fetching data from the backend

@@ -487,3 +487,19 @@ def edit_administrador(booksyAdmin_id):
         "msg": "Administrador actualizado exitosamente",
         "administrador": administrador.serialize()
     }), 200
+
+@api.route("/loginAdmin", methods=["POST"])
+def login_Admin():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    user = BooksyAdmin.query.filter_by(email=email).first()
+
+    if user == None:
+        return jsonify({"msg": "Could not find you email"}), 401
+
+    if email != user.email or password != user.password:
+        return jsonify({"msg": "Bad email or password"}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)

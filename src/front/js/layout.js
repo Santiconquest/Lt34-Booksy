@@ -25,6 +25,7 @@ import { FavoritosLector } from './pages/favoritosLector';
 import { WishlistLector } from "./pages/wishlistLector";
 import BooksyAdmin from "./pages/booksyadministrador";
 import PrivateRoute from "./pages/privateRoute";
+import LoginAdmin from "./pages/loginAdmin";
 
 //create your first component
 const Layout = () => {
@@ -53,6 +54,7 @@ const Layout = () => {
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
+                        <Route element={<LoginAdmin />} path="/loginAdmin" /> 
                         <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<PrivateRoute element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
                         <Route element={<PrivateRoute element={<FavoritosLector />} />} path="/favoritosLector" />
