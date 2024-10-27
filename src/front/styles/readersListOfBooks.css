@@ -26,50 +26,68 @@
     gap: 20px;
 }
 
-.heart-icon {
+.favorite-icon {
     cursor: pointer;
-    font-size: 30px; 
-    color: gray; 
+    font-size: 1rem; /* Cambia esto al tamaño que desees */
+    color: gray; /* Color gris por defecto */
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.heart-icon.favorite {
-    color: red; 
+.favorite-icon.favorite {
+    color: gray; /* Gris más oscuro cuando es favorito */
     transform: scale(1.2); 
 }
 
-.heart-icon:hover {
-    color: red; 
+.favorite-icon:hover {
+    color: gray; /* Gris oscuro al pasar el ratón */
     transform: scale(1.2); 
 }
 
-.favorites-dropdown {
+
+.favorites-dropdown, .wishlist-dropdown {
     position: relative;
-    margin-top: 20px;
+    margin-top: 20px; /* Margen superior para separar del contenido superior */
+    margin-right: 10px; /* Separación entre dropdowns */
 }
 
 .dropdown-content {
     position: absolute;
     background-color: white;
     border: 1px solid #ccc;
-    min-width: 200px;
+    min-width: 200px; /* Ancho mínimo */
     z-index: 1;
     padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para el dropdown */
+    display: none; /* Oculta el dropdown por defecto */
 }
 
-
+.favorites-dropdown:hover .dropdown-content,
+.wishlist-dropdown:hover .dropdown-content {
+    display: block; /* Muestra el dropdown al pasar el ratón */
+}
 
 .dropdown-content ul {
-    list-style-type: none; /* Quitar viñetas */
-    padding: 0; /* Quitar padding */
-    margin: 0; /* Quitar margen */
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
 }
 
-.remove-favorite-icon {
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    color: red; /* Color del icono de basurero */
-    margin-left: 8px; /* Añade margen a la izquierda del icono */
+.remove-favorite-icon, .remove-wishlist-icon {
+    cursor: pointer; 
+    color: red; 
+    margin-left: 8px;
 }
 
+.wishlist-icon {
+    cursor: pointer;
+    font-size: 1rem; 
+    color: gray; /* Color por defecto */
+}
 
+.wishlist-icon.text-primary {
+    color: blue; 
+}
 
+.wishlist-icon.text-muted {
+    color: grey; 
+}

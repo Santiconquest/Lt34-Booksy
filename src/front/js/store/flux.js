@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			categories:[],
 			autores:[],
 			favorites: [],
+			wishlist: [],
 			administradores:[]
 		},
 		actions: {
@@ -467,12 +468,39 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },	
 			
-			
-			removeFavorite: (bookId) => {
+			toggleWishlist: (bookId) => {
 				const store = getStore();
-				const updatedFavorites = store.favorites.filter(id => id !== bookId);
-				setStore({ favorites: updatedFavorites });
+				const wishlist = store.wishlist;
+			
+				if (wishlist.includes(bookId)) {
+					const updatedWishlist = wishlist.filter(id => id !== bookId);
+					setStore({ wishlist: updatedWishlist });
+				} else {
+					const updatedWishlist = [...wishlist, bookId];
+					setStore({ wishlist: updatedWishlist });
+				}
 			},
+			
+		
+			removeFavorite: (bookId) => {
+				console.log("Removing from favorites:", bookId);
+				const store = getStore();
+				setStore({
+					...store,
+					favorites: store.favorites.filter(id => id !== bookId)
+				});
+			},
+			
+			removeWishlist: (bookId) => {
+				console.log("Removing from wishlist:", bookId);
+				const store = getStore();
+				setStore({
+					...store,
+					wishlist: store.wishlist.filter(id => id !== bookId)
+				});
+			},
+			
+			
 			
 			
 		

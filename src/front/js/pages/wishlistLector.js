@@ -1,39 +1,39 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import "../../styles/favoritosLector.css"; 
+import "../../styles/wishlistLector.css"; // Asegúrate de tener un archivo CSS para estilos
 
-export const FavoritosLector = () => {
+export const WishlistLector = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        
+        // Puedes cargar datos aquí si es necesario
     }, []);
 
     return (
         <div className="container">
-            <h1 className="mt-5">Favoritos del Lector</h1>
-            {store.favorites.length === 0 ? (
-                <p>No hay libros en tus favoritos.</p>
+            <h1 className="mt-5">Lista de Deseos del Lector</h1>
+            {store.wishlist.length === 0 ? (
+                <p>No hay libros en tu lista de deseos.</p>
             ) : (
                 <div className="row">
-                    {store.favorites.map((favoriteId) => {
-                        const favoriteBook = store.books.find(book => book.id === favoriteId);
+                    {store.wishlist.map((wishlistId) => {
+                        const wishlistBook = store.books.find(book => book.id === wishlistId);
                         return (
-                            <div key={favoriteId} className="col-md-4 mb-4">
+                            <div key={wishlistId} className="col-md-4 mb-4">
                                 <div className="card">
                                     <img
-                                        src={favoriteBook.cover}
-                                        alt={favoriteBook.titulo}
+                                        src={wishlistBook.cover}
+                                        alt={wishlistBook.titulo}
                                         className="card-img-top"
                                         style={{ height: '300px', objectFit: 'cover' }}
                                     />
                                     <div className="card-body">
-                                        <h5 className="card-title">{favoriteBook.titulo}</h5>
+                                        <h5 className="card-title">{wishlistBook.titulo}</h5>
                                         <p className="card-text">
-                                            <strong>Autor:</strong> {favoriteBook.autor}
+                                            <strong>Autor:</strong> {wishlistBook.autor}
                                         </p>
-                                        <Link to={`/bookdetails/${favoriteBook.id}`} className="btn btn-primary">Ver Detalles</Link>
+                                        <Link to={`/bookdetails/${wishlistBook.id}`} className="btn btn-primary">Ver Detalles</Link>
                                     </div>
                                 </div>
                             </div>
