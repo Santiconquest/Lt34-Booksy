@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Critico, Book, Lector
+from api.models import db, User, Critico, Book, Lector, Review
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -98,7 +98,7 @@ def login():
         return jsonify({"msg": "Bad email or password"}), 401
 
     access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)
+    return jsonify(access_token=access_token, id=user.id)
 
 
 @api.route('/book', methods=['GET'])
@@ -283,5 +283,79 @@ def login_lector():
     return jsonify(response_body), 200
 
 
+@api.route('/reviews', methods=['GET'])
+def get_reviews():
+
+    all_reviews = Review.query.all()
+    results = list(map(lambda review: review.serialize(), all_reviews))
+    
+
+    return jsonify(results), 200
 
 
+@api.route('/reviews', methods=['POST'])
+def add_review():
+    body = request.get_json()  
+
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    required_fields = ['id_critico', 'id_book', 'comentario']
+    missing_fields = [field for field in required_fields if field not in body]
+    if missing_fields:
+        return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
+
+    nueva_review = Review(
+        id_critico=body['id_critico'],
+        id_book=body['id_book'],
+        comentario=body['comentario'],
+    )
+
+    try:
+        db.session.add(nueva_review)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Error al crear la reseña"}), 500
+
+    response_body = {
+        "msg": "Reseña creada exitosamente",
+        "review": nueva_review.serialize() 
+    }
+    
+    return jsonify(response_body), 201
+
+@api.route('/reviews/<int:review_id>', methods=['DELETE'])
+def delete_review(review_id):
+    review = Review.query.filter_by(id=review_id).first()
+    
+    if review is None:
+        return jsonify({"error": "Reseña no encontrada"}), 404
+    
+    db.session.delete(review)
+    db.session.commit()
+    
+    return jsonify({"msg": "Reseña eliminada exitosamente"}), 200
+
+
+@api.route('/reviews/<int:review_id>', methods=['PUT'])
+def update_review(review_id):
+    body = request.get_json()
+    review = Review.query.get(review_id)
+    
+    if review is None:
+        return jsonify({"error": "Reseña no encontrada"}), 404
+
+    # Actualizar campos de la reseña
+    review.comentario = body.get('comentario', review.comentario)
+    
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar la reseña"}), 500
+
+    response_body = {
+        "msg": "Reseña actualizada exitosamente",
+        "review": review.serialize()
+    }
+    
+    return jsonify(response_body), 200
