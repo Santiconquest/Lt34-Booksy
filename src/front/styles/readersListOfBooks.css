@@ -43,6 +43,36 @@
     transform: scale(1.2); 
 }
 
+.favorites-dropdown {
+    position: relative;
+    margin-top: 20px;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    min-width: 200px;
+    z-index: 1;
+    padding: 10px;
+}
+
+
+
+.dropdown-content ul {
+    list-style-type: none; /* Quitar viñetas */
+    padding: 0; /* Quitar padding */
+    margin: 0; /* Quitar margen */
+}
+
+.remove-favorite-icon {
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    color: red; /* Color del icono de basurero */
+    margin-left: 8px; /* Añade margen a la izquierda del icono */
+}
+
+
+
 
 .favorites-dropdown, .wishlist-dropdown {
     position: relative;

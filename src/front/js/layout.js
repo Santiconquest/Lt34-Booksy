@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
@@ -21,8 +21,8 @@ import { Footer } from "./component/footer";
 import { BookDetailsCritic } from "./pages/bookDetailsCitic";
 import { ReadersListOfBooks } from "./pages/readersListOfBooks";
 import { BookDetail } from "./pages/bookDetail";
-import { WishlistLector } from "./pages/wishlistLector";
 import { FavoritosLector } from './pages/favoritosLector';
+import { WishlistLector } from "./pages/wishlistLector";
 
 //create your first component
 const Layout = () => {
@@ -55,7 +55,7 @@ const Layout = () => {
                         <Route element={<WishlistLector />} path="/wishlistLector" />
                         <Route element={<FavoritosLector />} path="/favoritosLector" />
                         <Route path="/bookdetails/:id" element={<BookDetail />} /> 
-                        <Route element={<Lector />} path="/lector/:idLectorToEdit" />
+                        <Route element={<Lector />} path="/lector/:idLector" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
                     <Footer />

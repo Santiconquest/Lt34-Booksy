@@ -9,11 +9,11 @@ const Lector = () => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [suscriptionDate, setSuscriptionDate] = useState('');
+    
 
     const { store, actions } = useContext(Context);
 
-    let { idLectorToEdit } = useParams()
+    let { idLector } = useParams()
 
 	const handleSubmitLector=() =>{
 		const editLector={
@@ -21,10 +21,9 @@ const Lector = () => {
             lastname:lastName,
             password:password,
 			email:email,
-            suscriptionDate:suscriptionDate,
 			
 		}
-		const result = actions.editLector(editLector, idLectorToEdit)
+		const result = actions.editLector(name,lastName,password,email)
 		console.log(result)
 		
 			//navigate("/demo")
@@ -55,28 +54,6 @@ const Lector = () => {
                             id="inputLastName" 
                         />
                     </div>
-                    <div className="col-md-4">
-                        <label htmlFor="inputGender" className="form-label">Suscription Date</label>
-                        <select 
-                            value={suscriptionDate} 
-                            onChange={(e) => setSuscriptionDate(e.target.value)} 
-                            className="form-select" 
-                            aria-label="Default select example"
-                        >
-                            <option value="" disabled>Select Date</option>
-                            {/* Ver como puedo agregar un calendario con la fecha actual */}
-                            {/* <label for="start">Start date:</label>
-
-                            <input 
-                                type="date" 
-                                id="start" 
-                                name="trip-start" 
-                                value="2024-10-22" 
-                                min="2024-01-01" 
-                                max="2028-12-31" /> */}
-
-                        </select>
-                    </div>
                 </div>
                 <div className="row g-3">
                     <div className="col-md-6">
@@ -102,7 +79,7 @@ const Lector = () => {
                     </div>
                 </div>
                 <button type="button" className="btn btn-primary my-5" onClick={()=>handleSubmitLector()}>Save changes</button>
-                <button className="btn btn-danger" onClick={()=>actions.deleteLector(idLectorToEdit)}> Delete</button>
+                <button className="btn btn-danger" onClick={()=>actions.deleteLector(idLector)}> Delete</button>
             </form>
             <Link to="/">
                 <button className="btn btn-primary">Back Booksy</button>
