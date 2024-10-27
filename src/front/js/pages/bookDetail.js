@@ -13,7 +13,7 @@ export const BookDetail = () => {
         const foundBook = store.books.find((b) => b.id === parseInt(id));
         if (foundBook) {
             setBook(foundBook);
-            fetchBookDescription(foundBook.titulo); // Llama a la función para obtener la descripción
+            fetchBookDescription(foundBook.titulo); 
         }
     }, [id, store.books]);
 

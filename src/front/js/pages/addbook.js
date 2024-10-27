@@ -12,6 +12,7 @@ const AddBook = () => {
         year: "",
         cover: ""
     });
+    const [suggestions, setSuggestions] = useState([]);
     const navigate = useNavigate();
 
     const handleAddBook = () => {
@@ -23,19 +24,59 @@ const AddBook = () => {
         navigate("/books");
     };
 
+    const fetchBookDetails = async (title) => {
+        try {
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=AIzaSyBwjy42UMUJBiaTBw-cLmkxixGvX0iyMD4`);
+            const data = await response.json();
+            if (data.items && data.items.length > 0) {
+                const books = data.items.map(item => item.volumeInfo);
+                setSuggestions(books.slice(0, 5)); 
+            } else {
+                setSuggestions([]); 
+            }
+        } catch (error) {
+            console.log("Error fetching book details", error);
+        }
+    };
+
+    const handleSuggestionClick = (book) => {
+        setNewBook({
+            ...newBook,
+            titulo: book.title,
+            autor: book.authors ? book.authors.join(", ") : "",
+            cantidad_paginas: book.pageCount || "",
+            genero: book.categories ? book.categories.join(", ") : "",
+            year: book.publishedDate ? book.publishedDate.split("-")[0] : "",
+            cover: book.imageLinks ? book.imageLinks.thumbnail : "",
+        });
+        setSuggestions([]); 
+    };
+
     return (
         <div className="container">
             <h1>Añadir Libro</h1>
             <form>
-                <div className="mb-3">
-                    <label htmlFor="titulo" className="form-label">Título</label>
+                <div className="mb-3 position-relative">
+                    <label htmlFor="titulo" className="form-label">Buscar Libro</label>
                     <input
                         type="text"
                         id="titulo"
                         className="form-control"
                         value={newBook.titulo}
-                        onChange={e => setNewBook({ ...newBook, titulo: e.target.value })}
+                        onChange={e => {
+                            setNewBook({ ...newBook, titulo: e.target.value });
+                            fetchBookDetails(e.target.value); 
+                        }}
                     />
+                    {suggestions.length > 0 && (
+                        <ul className="list-group position-absolute" style={{ zIndex: 1000, maxHeight: '200px', overflowY: 'auto' }}>
+                            {suggestions.map((book, index) => (
+                                <li key={index} className="list-group-item" onClick={() => handleSuggestionClick(book)}>
+                                    {book.title}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
                 <div className="mb-3">
                     <label htmlFor="autor" className="form-label">Autor</label>

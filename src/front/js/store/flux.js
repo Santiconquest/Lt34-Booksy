@@ -14,7 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			auth: false,
+			auth: !!localStorage.getItem("token"),
 			userEmail: null,
 			books : [],
 			readers:[],

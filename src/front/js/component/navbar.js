@@ -24,8 +24,11 @@ export const Navbar = () => {
                             className="d-inline-block align-top"
                         />
                     </Link>
+                    <Link to="/readersListOfBooks " className="nav-link ml-2">
+                        Lista de Libros
+                    </Link>
                     <Link to="/books" className="nav-link ml-2">
-                        Books
+                        Añadir/Quitar/Editar Libro
                     </Link>
                 </div>
 

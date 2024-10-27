@@ -14,13 +14,18 @@ export const ReadersListOfBooks = () => {
     const [activeTab, setActiveTab] = useState("genero");
     const [showFavorites, setShowFavorites] = useState(false); 
     const [showWishlist, setShowWishlist] = useState(false); 
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         actions.getBooks();
     }, []);
 
+    const filteredBooks = store.books.filter(book =>
+        book.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const groupBooks = (key) => {
-        return store.books.reduce((acc, book) => {
+        return filteredBooks.reduce((acc, book) => {
             const groupKey = book[key];
             if (!acc[groupKey]) {
                 acc[groupKey] = [];
@@ -49,18 +54,25 @@ export const ReadersListOfBooks = () => {
         setShowWishlist(prevState => !prevState);
     };
 
-    // Función para obtener los 3 elementos más recientes
     const getRecentItems = (items) => {
         return items
-            .map(itemId => store.books.find(book => book.id === itemId)) // Busca los libros en store.books
-            .filter(Boolean) // Elimina valores undefined
-            .sort((a, b) => new Date(b.fechaAgregado) - new Date(a.fechaAgregado)) // Ordena por fecha
-            .slice(0, 3); // Toma los 3 más recientes
+            .map(itemId => store.books.find(book => book.id === itemId)) 
+            .filter(Boolean) 
+            .sort((a, b) => new Date(b.fechaAgregado) - new Date(a.fechaAgregado)) 
+            .slice(0, 3); 
     };
 
     return (
         <div className="container">
             <h1 className="m-5">Lista de Libros para Lectores</h1>
+            <input
+                type="text"
+                className="form-control mb-3"
+                placeholder="Buscar por título..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+
             <div className="tabs">
                 <button className={`tab ${activeTab === "genero" ? "active" : ""}`} onClick={() => setActiveTab("genero")}>
                     Por Género

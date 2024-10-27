@@ -24,6 +24,7 @@ import { BookDetail } from "./pages/bookDetail";
 import { FavoritosLector } from './pages/favoritosLector';
 import { WishlistLector } from "./pages/wishlistLector";
 import BooksyAdmin from "./pages/booksyadministrador";
+import PrivateRoute from "./pages/privateRoute";
 
 //create your first component
 const Layout = () => {
@@ -53,10 +54,10 @@ const Layout = () => {
                         <Route element={<SignupLector />} path="/signupLector" /> 
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginLector />} path="/loginLector" /> 
-                        <Route element={<ReadersListOfBooks />} path="/readersListOfBooks" />
-                        <Route element={<WishlistLector />} path="/wishlistLector" />
-                        <Route element={<FavoritosLector />} path="/favoritosLector" />
-                        <Route path="/bookdetails/:id" element={<BookDetail />} /> 
+                        <Route element={<PrivateRoute element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
+                        <Route element={<PrivateRoute element={<FavoritosLector />} />} path="/favoritosLector" />
+                        <Route element={<PrivateRoute element={<WishlistLector />} />} path="/wishlistLector" />
+                        <Route element={<PrivateRoute element={<BookDetail />} />} path="/bookdetails/:id" /> 
                         <Route element={<Lector />} path="/lector/:idLector" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
