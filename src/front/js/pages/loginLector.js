@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +10,6 @@ export const LoginLector = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    
     const astronautIcon = "https://via.placeholder.com/150";
     const emailIcon = "https://via.placeholder.com/50/0000FF/808080?text=Email";
     const passwordIcon = "https://via.placeholder.com/50/FF0000/FFFFFF?text=Pass";
@@ -18,15 +17,21 @@ export const LoginLector = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); 
-        const loginData = await actions.loginLector(email, password); // Actualiza esto para recibir el nombre.
+        const loginData = await actions.loginLector(email, password);
     
         if (loginData) {
-            navigate("/readersListOfBooks"); // Redirige a la nueva ruta.
+            navigate("/readersListOfBooks");
         } else {
             setError("Email o contraseña incorrectos");
         }
     };
-    
+
+    useEffect(() => {
+        // Redirige si el usuario ya está autenticado
+        if (store.isAuthenticated) {
+            navigate("/readersListOfBooks");
+        }
+    }, [store.isAuthenticated, navigate]);
 
     return (
         <>
