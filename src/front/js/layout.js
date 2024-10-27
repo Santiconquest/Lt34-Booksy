@@ -23,6 +23,7 @@ import { ReadersListOfBooks } from "./pages/readersListOfBooks";
 import { BookDetail } from "./pages/bookDetail";
 import { FavoritosLector } from './pages/favoritosLector';
 import { WishlistLector } from "./pages/wishlistLector";
+import BooksyAdmin from "./pages/booksyadministrador";
 
 //create your first component
 const Layout = () => {
@@ -50,6 +51,7 @@ const Layout = () => {
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
                         <Route element={<SignupLector />} path="/signupLector" /> 
+                        <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<ReadersListOfBooks />} path="/readersListOfBooks" />
                         <Route element={<WishlistLector />} path="/wishlistLector" />

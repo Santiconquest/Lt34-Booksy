@@ -22,7 +22,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			categories:[],
 			autores:[],
 			favorites: [],
-			wishlist: []
+			wishlist: [],
+			administradores:[]
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -394,6 +395,31 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.log("Error deleting book", error);
                 }
+			},
+			addAdmin:(email,password,name,lastName)=>{
+				console.log(email,password,name,lastName)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name,"lastName":lastName,"email":email,"password":password}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/booksyAdmin`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.administradores.concat(result))
+							return true
+						}
+					})
+					
 			},
 			
 			loginLector: async (email, password) => {
