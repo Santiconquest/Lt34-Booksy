@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import "../../styles/favoritosLector.css"; // Asegúrate de tener un archivo CSS para estilos
+import "../../styles/favoritosLector.css"; 
 
 export const FavoritosLector = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        // Puedes cargar datos aquí si es necesario
+        
     }, []);
 
     return (
