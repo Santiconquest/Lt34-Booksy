@@ -433,7 +433,7 @@ def add_administrador():
     
     new_administrador = BooksyAdmin(
         name= body['name'],
-        lastname=body['lastname'],
+        lastname=body['lastName'],
         email=body['email'],
         password=body['password']
     )
