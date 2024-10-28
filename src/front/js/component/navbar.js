@@ -31,7 +31,12 @@ export const Navbar = () => {
 
                 <div className="d-flex align-items-center">
                     {store.auth ? (
-                        <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
+                        <>
+                            <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
+                            <Link to="/verReviewCritico">
+                            <button className="btn btn-primary">My Reviews</button> 
+                            </Link>
+                        </>
                     ) : (
                         <Link to="/login">
                             <div className="dropdown">

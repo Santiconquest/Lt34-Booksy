@@ -19,6 +19,7 @@ import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { BookDetailsCritic } from "./pages/bookDetailsCitic";
+import { CriticReviews } from "./pages/verReviewCritico";
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -41,6 +42,7 @@ const Layout = () => {
                         <Route element={<LoginCritico />} path="/loginCritico" />
                         <Route element={<BookDetailsCritic />} path="/books/:book_id" />
                         <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
+                        <Route element={<CriticReviews />} path="/verReviewCritico" />
                         <Route element={<Books />} path="/books" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
