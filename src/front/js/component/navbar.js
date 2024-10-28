@@ -36,7 +36,13 @@ export const Navbar = () => {
                     {store.auth ? (
                         <>
                             <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
+<<<<<<< HEAD
+                            <Link to="/verReviewCritico">
+                            <button className="btn btn-primary">My Reviews</button> 
+                            </Link>
+=======
                             <Link to="/perfil" className="btn btn-secondary ml-2">Perfil</Link>
+>>>>>>> develop
                         </>
                     ) : (
                         <>

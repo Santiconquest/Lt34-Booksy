@@ -16,14 +16,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			auth: !!localStorage.getItem("token"),
 			userEmail: null,
+			userId: null,
 			books : [],
 			readers:[],
+<<<<<<< HEAD
+			reviews: []
+
+=======
 			lectorName: localStorage.getItem("lectorName") || "",
 			categories:[],
 			autores:[],
 			favorites: [],
 			wishlist: [],
 			administradores:[]
+>>>>>>> develop
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -76,11 +82,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					};
 					fetch(`${process.env.BACKEND_URL}/api/loginCritico`, resquestOptions)
 						.then(response => {
-							console.log (response.status)
-							if (response.status == 200){
+							console.log (response)
+							if (response.status == 200)
+								{
 								setStore({ 
 									auth: true,
-									userEmail: email 
+									userEmail: email, 
 								});
 
 							}
@@ -88,6 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						})
 						.then(data => {
 							localStorage.setItem("token",data.access_token)
+							setStore({userId: data.id})
 							console.log(data)
 						});
 				},
@@ -466,6 +474,52 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const updatedFavorites = [...favorites, bookId];
                     setStore({ favorites: updatedFavorites });
                 }
+<<<<<<< HEAD
+            },
+
+            logoutLector: () => {
+                localStorage.removeItem("token"); 
+                setStore({ auth: false }); 
+                console.log("Logged out");
+            },	
+			addReview: async (id_critico, id_book, comentario) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/reviews`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							id_critico,
+							id_book,
+							comentario,
+						}),
+					});
+			
+					if (!response.ok) {
+						const errorData = await response.json();
+						console.error("Error al crear la reseña:", errorData);
+						return null;
+					}
+			
+					const data = await response.json();
+					console.log("Reseña creada:", data);
+					return data; 
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+				}
+			},
+			getReviews: async () => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/reviews`);
+                    const data = await response.json();
+                    setStore({ reviews: data });
+                } catch (error) {
+                    console.log("Error fetching reviews", error);
+                }
+            },
+				
+=======
             },	
 			
 			toggleWishlist: (bookId) => {
@@ -504,6 +558,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			
 		
+>>>>>>> develop
 		}
 	};
 };
