@@ -103,6 +103,26 @@ class Category(db.Model):
             # do not serialize the password, its a security breach
         }
 
+
+class Review(db.Model):
+    __tablename__ = 'review' 
+    id = db.Column(db.Integer, primary_key=True)
+    id_critico = db.Column(db.Integer, db.ForeignKey('critico.id'), nullable=True)  
+    id_book = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)     
+    comentario = db.Column(db.String(255), nullable=False)
+
+    critico = db.relationship('Critico', backref=db.backref('reviews', lazy=True))
+
+    def __repr__(self):
+        return f'<Review {self.comentario}>'
+    def serialize(self):
+        return {
+            "id_critico": self.id_critico,
+            "email_critico": self.critico.email if self.critico else None,
+            "comentario": self.comentario,
+        }
+    
+
 class Autor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
@@ -117,6 +137,8 @@ class Autor(db.Model):
             "name": self.name,
             # do not serialize the password, its a security breach
         }
+
+
 
 class BooksyAdmin(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -93,6 +93,7 @@ const SignupCritico = () => {
                         ></textarea>
                     </div>
                 </div>
+                
                 <button type="submit" className="btn btn-primary my-5">Register</button>
             </form>
             <Link to="/">

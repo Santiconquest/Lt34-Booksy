@@ -25,6 +25,8 @@ import { FavoritosLector } from './pages/favoritosLector';
 import { WishlistLector } from "./pages/wishlistLector";
 import BooksyAdmin from "./pages/booksyadministrador";
 import PrivateRoute from "./pages/privateRoute";
+import { CriticReviews } from "./pages/verReviewCritico";
+import ProfileCritico from "./pages/perfilCritico";
 import LoginAdmin from "./pages/loginAdmin";
 
 //create your first component
@@ -49,6 +51,8 @@ const Layout = () => {
                         <Route element={<LoginCritico />} path="/loginCritico" />
                         <Route element={<BookDetailsCritic />} path="/books/:book_id" />
                         <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
+                        <Route element={<CriticReviews />} path="/verReviewCritico" />
+                        <Route element={<ProfileCritico />} path="/perfilCritico" />
                         <Route element={<Books />} path="/books" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
                         <Route element={<EditBook />} path="/editbook/:id" /> 
