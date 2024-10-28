@@ -192,6 +192,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+			getCategories:()=>{
+
+				  fetch(`${process.env.BACKEND_URL}/api/category`)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore({categories:result})
+							return true
+						}
+					})
+					
+			},
 			addCategory:(name)=>{
 				console.log(name)
 				const store = getStore()

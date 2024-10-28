@@ -53,7 +53,7 @@ class Book(db.Model):
     year = db.Column(db.Integer, nullable=False)
     autor = db.Column(db.String(120), nullable=False)
     cover = db.Column(db.String(200), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)  
+    book_categories = db.relationship('Book_Category', back_populates='book',lazy=True)
 
     def __repr__(self):
         return f'<Libro {self.autor} - {self.genero}>'
@@ -66,7 +66,8 @@ class Book(db.Model):
             "genero": self.genero,
             "year": self.year,
             "autor": self.autor,
-            "cover": self.cover
+            "cover": self.cover,
+            "categories": [category.serialize() for category in self.book_categories] if len(self.book_categories) > 0 else []
         }
 
 class Lector(db.Model):
@@ -92,7 +93,7 @@ class Lector(db.Model):
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
-    book = db.relationship('Book',backref='category',lazy=True)
+    book_categories = db.relationship('Book_Category', back_populates='category',lazy=True)
 
     def __repr__(self):
         return '<Category %r>' % self.name
@@ -103,6 +104,19 @@ class Category(db.Model):
             "name": self.name,
             # do not serialize the password, its a security breach
         }
+
+class Book_Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)  
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)  
+    book = db.relationship(Book)
+    category = db.relationship(Category)
+
+    def __repr__(self):
+        return '<Book_Category %r>' % self.name
+
+    def serialize(self):
+        return self.category.serialize()
 
 class Autor(db.Model):
     id = db.Column(db.Integer, primary_key=True)

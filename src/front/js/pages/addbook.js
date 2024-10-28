@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
-    const { actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [newBook, setNewBook] = useState({
         titulo: "",
         autor: "",
@@ -13,6 +13,8 @@ const AddBook = () => {
         cover: ""
     });
     const [suggestions, setSuggestions] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
 
     const handleAddBook = () => {
@@ -51,7 +53,7 @@ const AddBook = () => {
         });
         setSuggestions([]); 
     };
-
+    console.log(categories)
     return (
         <div className="container">
             <h1>Añadir Libro</h1>
@@ -128,6 +130,19 @@ const AddBook = () => {
                         onChange={e => setNewBook({ ...newBook, cover: e.target.value })}
                     />
                 </div>
+                <div className="mb-3">
+                    <label htmlFor="genero" className="form-label">Categoria</label>
+                    <select defaultValue={0} onChange={(e)=>setSelectedCategory(e.target.value)} class="form-select" aria-label="Default select example">
+                        <option value={0} disabled>Selecciona una categoria</option>
+                        {store.categories && store.categories.length > 0 && store.categories.map(item => {
+                            return (
+                                <option key={item.id} value={item.id}>{item.name}</option>
+                            )
+                        })}
+                    </select>
+                    <button type="button" className="btn btn-primary" onClick={()=> setCategories([...categories, selectedCategory])}>Agregar categoria</button>
+                </div>
+
                 <button type="button" className="btn btn-primary" onClick={handleAddBook}>
                     Añadir Libro
                 </button>
