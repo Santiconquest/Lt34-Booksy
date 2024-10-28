@@ -52,7 +52,8 @@ class Book(db.Model):
     genero = db.Column(db.String(80), nullable=False)
     year = db.Column(db.Integer, nullable=False)
     autor = db.Column(db.String(120), nullable=False)
-    cover = db.Column(db.String(200), nullable=False)  
+    cover = db.Column(db.String(200), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)  
 
     def __repr__(self):
         return f'<Libro {self.autor} - {self.genero}>'
@@ -91,7 +92,7 @@ class Lector(db.Model):
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
-
+    book = db.relationship('Book',backref='category',lazy=True)
 
     def __repr__(self):
         return '<Category %r>' % self.name
