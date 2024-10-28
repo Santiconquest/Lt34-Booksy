@@ -2,7 +2,11 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
+<<<<<<< HEAD
 from api.models import db, User, Critico, Book, Lector, Review
+=======
+from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin
+>>>>>>> develop
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -186,7 +190,7 @@ def add_lector():
     if not body:
         return jsonify({"msg": "No se proporcionó información"}), 400
 
-    required_fields = ['name', 'lastname', 'email', 'password', 'suscription_date', 'is_active']
+    required_fields = ['name', 'lastname', 'email', 'password']
     missing_fields = [field for field in required_fields if field not in body]
     if missing_fields:
         return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
@@ -195,9 +199,7 @@ def add_lector():
         name=body['name'],
         lastname=body['lastname'],
         email=body['email'],
-        password=body['password'], 
-        suscription_date=body['suscription_date'],
-        is_active=body['is_active']
+        password=body['password']
     )
 
     try:
@@ -218,22 +220,19 @@ def edit_lector(lector_id):
     body = request.get_json()
     reader = Lector.query.get(lector_id)
 
-    if not lector_id or lector_id=="":
-        return jsonify({"error": "lector_id is required"}),400
+    if not reader:
+        return jsonify({"error": "reader is required"}),400
     
-    lector_actualizado = Lector(
-    name=body['name'],
-    lastname=body['lastname'],
-    email=body['email'],
-    password=body['password'], 
-    suscription_date=body['suscription_date'],
-    is_active=body['is_active']
-    )
+    reader.name=body['name'],
+    reader.lastname=body['lastname'],
+    reader.email=body['email'],
+    reader.password=body['password']
+    
 
     db.session.commit()
     return jsonify({
         "msg": "Lector actualizado exitosamente",
-          "lector": lector_actualizado.serialize()
+        "lector": reader.serialize()
     }), 200
 
 
@@ -283,6 +282,7 @@ def login_lector():
     return jsonify(response_body), 200
 
 
+<<<<<<< HEAD
 @api.route('/reviews', methods=['GET'])
 def get_reviews():
 
@@ -359,3 +359,214 @@ def update_review(review_id):
     }
     
     return jsonify(response_body), 200
+=======
+@api.route('/category', methods=['GET'])
+def get_category():
+
+    all_categories = Category.query.all()
+    results = list(map(lambda category: category.serialize(), all_categories))
+    
+
+    return jsonify(results), 200
+
+@api.route('/category', methods=['POST'])
+def add_category():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    new_category = Category(
+        name= body['name']
+    )
+    
+    try:
+        db.session.add(new_category)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Esta Categoria ya fue creada"}), 500
+
+    response_body = {
+        "msg": "Categoria creada exitosamente",
+        "category": new_category.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/category/<int:category_id>', methods=['DELETE'])
+def delete_category(category_id):
+    category = Category.query.filter_by(id=category_id).first()
+    
+    if category is None:
+        return jsonify({"error": "Categoria no encontrada"}), 404
+    
+    
+    db.session.delete(category)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino categoria"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/category/<int:category_id>', methods=['PUT'])
+def edit_category(category_id):
+    body = request.get_json()
+    category = Category.query.get(category_id)
+
+    if not category:
+        return jsonify({"error": "category is required"}),400
+    
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    category.name=body['name']
+   
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Categoria actualizado exitosamente",
+          "categoria": category.serialize()
+    }), 200
+
+@api.route('/autor', methods=['GET'])
+def get_autor():
+
+    all_autores = Autor.query.all()
+    results = list(map(lambda autor: autor.serialize(), all_autores))
+    
+
+    return jsonify(results), 200
+
+@api.route('/autor', methods=['POST'])
+def add_autor():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    new_autor = Autor(
+        name= body['name']
+    )
+    
+    try:
+        db.session.add(new_autor)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Este Autor ya fue creado"}), 500
+
+    response_body = {
+        "msg": "Autor creada exitosamente",
+        "autor": new_autor.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/autor/<int:autor_id>', methods=['DELETE'])
+def delete_autor(autor_id):
+    autor = Autor.query.filter_by(id=autor_id).first()
+    
+    if autor is None:
+        return jsonify({"error": "Autor no encontrado"}), 404
+    
+    
+    db.session.delete(autor)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino autor"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/autor/<int:autor_id>', methods=['PUT'])
+def edit_autor(autor_id):
+    body = request.get_json()
+    autor = Autor.query.get(autor_id)
+
+    if not autor:
+        return jsonify({"error": "autor is required"}),400
+    
+    if 'name' not in body or body['name']=="":
+        return jsonify({"error": "name is required"}),400
+    
+    autor.name=body['name']
+   
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Autor actualizado exitosamente",
+        "autor": autor.serialize()
+    }), 200
+
+@api.route('/booksyAdmin', methods=['GET'])
+def get_administrador():
+
+    all_admins = BooksyAdmin.query.all()
+    results = list(map(lambda booksyAdmin: booksyAdmin.serialize(), all_admins))
+
+    return jsonify(results), 200
+
+@api.route('/booksyAdmin', methods=['POST'])
+def add_administrador():
+
+    body = request.get_json()
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+    
+    new_administrador = BooksyAdmin(
+        name= body['name'],
+        lastname=body['lastname'],
+        email=body['email'],
+        password=body['password']
+    )
+    
+    try:
+        db.session.add(new_administrador)
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Este Administrador ya fue creado"}), 500
+
+    response_body = {
+        "msg": "Administrador creada exitosamente",
+        "category": new_administrador.serialize() 
+    }
+    
+    return jsonify(response_body), 201  
+
+@api.route('/booksyAdmin/<int:booksyAdmin_id>', methods=['DELETE'])
+def delete_administrador(booksyAdmin_id):
+    administrador = BooksyAdmin.query.filter_by(id=booksyAdmin_id).first()
+    
+    if administrador is None:
+        return jsonify({"error": "Administrador no encontrado"}), 404
+    
+    
+    db.session.delete(administrador)
+    db.session.commit()
+
+    response_body={
+        "msg": "Se elimino adminisitrador"
+    }
+
+    return jsonify(response_body), 200
+
+@api.route('/booksyAdmin/<int:booksyAdmin_id>', methods=['PUT'])
+def edit_administrador(booksyAdmin_id):
+    body = request.get_json()
+    administrador = BooksyAdmin.query.get(booksyAdmin_id)
+
+    if not administrador:
+        return jsonify({"error": "administrador is required"}),400
+    
+    administrador.name=body['name'],
+    administrador.lastname=body['lastname'],
+    administrador.email=body['email'],
+    administrador.password=body['password']
+
+
+    db.session.commit()
+    return jsonify({
+        "msg": "Administrador actualizado exitosamente",
+        "administrador": administrador.serialize()
+    }), 200
+>>>>>>> develop

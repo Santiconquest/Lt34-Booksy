@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link, useParams } from "react-router-dom";
 
-const Lector = () => {
+const BooksyAdmin = () => {
 
     
     const [email, setEmail] = useState('');
@@ -13,7 +13,7 @@ const Lector = () => {
 
     const { store, actions } = useContext(Context);
 
-    let { idLector } = useParams()
+    let { idAdmin } = useParams()
 
 	const handleSubmitLector=() =>{
 		const editLector={
@@ -23,7 +23,7 @@ const Lector = () => {
 			email:email,
 			
 		}
-		const result = actions.editLector(name,lastName,password,email)
+		const result = actions.editAdmin(name,lastName,password,email)
 		console.log(result)
 		
 			//navigate("/demo")
@@ -31,7 +31,7 @@ const Lector = () => {
 
     return (
         <div>
-            <h1 className="w-50 mx-auto m-5">Edit Reader</h1>
+            <h1 className="w-50 mx-auto m-5">Administrador Booksy</h1>
             <form className="w-50 mx-auto">
                 <div className="row g-3">
                     <div className="col-md-4">
@@ -78,8 +78,9 @@ const Lector = () => {
                         />
                     </div>
                 </div>
-                <button type="button" className="btn btn-primary my-5" onClick={()=>handleSubmitLector()}>Save changes</button>
-                <button className="btn btn-danger" onClick={()=>actions.deleteLector(idLector)}> Delete</button>
+                <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addAdmin(email,password,name,lastName)}>Create</button>
+                {/* <button type="button" className="btn btn-primary my-5" onClick={()=>handleSubmitLector()}>Save changes</button>
+                <button className="btn btn-danger" onClick={()=>actions.deleteAdmin(idAdmin)}> Delete</button> */}
             </form>
             <Link to="/">
                 <button className="btn btn-primary">Back Booksy</button>
@@ -88,4 +89,4 @@ const Lector = () => {
     );
 };
 
-export default Lector;
+export default BooksyAdmin;

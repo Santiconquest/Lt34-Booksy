@@ -1,0 +1,239 @@
+[1mdiff --git a/package-lock.json b/package-lock.json[m
+[1mindex 7d5bb04..cf30f0d 100644[m
+[1m--- a/package-lock.json[m
+[1m+++ b/package-lock.json[m
+[36m@@ -9,6 +9,9 @@[m
+ 			"version": "1.0.1",[m
+ 			"license": "ISC",[m
+ 			"dependencies": {[m
+[32m+[m				[32m"@fortawesome/free-regular-svg-icons": "^6.6.0",[m
+[32m+[m				[32m"@fortawesome/free-solid-svg-icons": "^6.6.0",[m
+[32m+[m				[32m"@fortawesome/react-fontawesome": "^0.2.2",[m
+ 				"prop-types": "^15.6.1",[m
+ 				"react": "^16.8.4",[m
+ 				"react-dom": "^16.8.4",[m
+[36m@@ -1804,6 +1807,65 @@[m
+ 				"url": "https://github.com/sponsors/sindresorhus"[m
+ 			}[m
+ 		},[m
+[32m+[m		[32m"node_modules/@fortawesome/fontawesome-common-types": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-xyX0X9mc0kyz9plIyryrRbl7ngsA9jz77mCZJsUkLl+ZKs0KWObgaEBoSgQiYWAsSmjz/yjl0F++Got0Mdp4Rw==",[m
+[32m+[m			[32m"license": "MIT",[m
+[32m+[m			[32m"engines": {[m
+[32m+[m				[32m"node": ">=6"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"node_modules/@fortawesome/fontawesome-svg-core": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-KHwPkCk6oRT4HADE7smhfsKudt9N/9lm6EJ5BVg0tD1yPA5hht837fB87F8pn15D8JfTqQOjhKTktwmLMiD7Kg==",[m
+[32m+[m			[32m"license": "MIT",[m
+[32m+[m			[32m"peer": true,[m
+[32m+[m			[32m"dependencies": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-common-types": "6.6.0"[m
+[32m+[m			[32m},[m
+[32m+[m			[32m"engines": {[m
+[32m+[m				[32m"node": ">=6"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"node_modules/@fortawesome/free-regular-svg-icons": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-Yv9hDzL4aI73BEwSEh20clrY8q/uLxawaQ98lekBx6t9dQKDHcDzzV1p2YtBGTtolYtNqcWdniOnhzB+JPnQEQ==",[m
+[32m+[m			[32m"license": "(CC-BY-4.0 AND MIT)",[m
+[32m+[m			[32m"dependencies": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-common-types": "6.6.0"[m
+[32m+[m			[32m},[m
+[32m+[m			[32m"engines": {[m
+[32m+[m				[32m"node": ">=6"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"node_modules/@fortawesome/free-solid-svg-icons": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-IYv/2skhEDFc2WGUcqvFJkeK39Q+HyPf5GHUrT/l2pKbtgEIv1al1TKd6qStR5OIwQdN1GZP54ci3y4mroJWjA==",[m
+[32m+[m			[32m"license": "(CC-BY-4.0 AND MIT)",[m
+[32m+[m			[32m"dependencies": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-common-types": "6.6.0"[m
+[32m+[m			[32m},[m
+[32m+[m			[32m"engines": {[m
+[32m+[m				[32m"node": ">=6"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"node_modules/@fortawesome/react-fontawesome": {[m
+[32m+[m			[32m"version": "0.2.2",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.2.tgz",[m
+[32m+[m			[32m"integrity": "sha512-EnkrprPNqI6SXJl//m29hpaNzOp1bruISWaOiRtkMi/xSvHJlzc2j2JAYS7egxt/EbjSNV/k6Xy0AQI6vB2+1g==",[m
+[32m+[m			[32m"license": "MIT",[m
+[32m+[m			[32m"dependencies": {[m
+[32m+[m				[32m"prop-types": "^15.8.1"[m
+[32m+[m			[32m},[m
+[32m+[m			[32m"peerDependencies": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-svg-core": "~1 || ~6",[m
+[32m+[m				[32m"react": ">=16.3"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+ 		"node_modules/@humanwhocodes/config-array": {[m
+ 			"version": "0.9.2",[m
+ 			"resolved": "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.9.2.tgz",[m
+[36m@@ -7241,13 +7303,14 @@[m
+ 			}[m
+ 		},[m
+ 		"node_modules/prop-types": {[m
+[31m-			"version": "15.7.2",[m
+[31m-			"resolved": "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz",[m
+[31m-			"integrity": "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==",[m
+[32m+[m			[32m"version": "15.8.1",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz",[m
+[32m+[m			[32m"integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",[m
+[32m+[m			[32m"license": "MIT",[m
+ 			"dependencies": {[m
+ 				"loose-envify": "^1.4.0",[m
+ 				"object-assign": "^4.1.1",[m
+[31m-				"react-is": "^16.8.1"[m
+[32m+[m				[32m"react-is": "^16.13.1"[m
+ 			}[m
+ 		},[m
+ 		"node_modules/proxy-addr": {[m
+[36m@@ -10610,6 +10673,44 @@[m
+ 				}[m
+ 			}[m
+ 		},[m
+[32m+[m		[32m"@fortawesome/fontawesome-common-types": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-xyX0X9mc0kyz9plIyryrRbl7ngsA9jz77mCZJsUkLl+ZKs0KWObgaEBoSgQiYWAsSmjz/yjl0F++Got0Mdp4Rw=="[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"@fortawesome/fontawesome-svg-core": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-KHwPkCk6oRT4HADE7smhfsKudt9N/9lm6EJ5BVg0tD1yPA5hht837fB87F8pn15D8JfTqQOjhKTktwmLMiD7Kg==",[m
+[32m+[m			[32m"peer": true,[m
+[32m+[m			[32m"requires": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-common-types": "6.6.0"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"@fortawesome/free-regular-svg-icons": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-Yv9hDzL4aI73BEwSEh20clrY8q/uLxawaQ98lekBx6t9dQKDHcDzzV1p2YtBGTtolYtNqcWdniOnhzB+JPnQEQ==",[m
+[32m+[m			[32m"requires": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-common-types": "6.6.0"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"@fortawesome/free-solid-svg-icons": {[m
+[32m+[m			[32m"version": "6.6.0",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-6.6.0.tgz",[m
+[32m+[m			[32m"integrity": "sha512-IYv/2skhEDFc2WGUcqvFJkeK39Q+HyPf5GHUrT/l2pKbtgEIv1al1TKd6qStR5OIwQdN1GZP54ci3y4mroJWjA==",[m
+[32m+[m			[32m"requires": {[m
+[32m+[m				[32m"@fortawesome/fontawesome-common-types": "6.6.0"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+[32m+[m		[32m"@fortawesome/react-fontawesome": {[m
+[32m+[m			[32m"version": "0.2.2",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.2.tgz",[m
+[32m+[m			[32m"integrity": "sha512-EnkrprPNqI6SXJl//m29hpaNzOp1bruISWaOiRtkMi/xSvHJlzc2j2JAYS7egxt/EbjSNV/k6Xy0AQI6vB2+1g==",[m
+[32m+[m			[32m"requires": {[m
+[32m+[m				[32m"prop-types": "^15.8.1"[m
+[32m+[m			[32m}[m
+[32m+[m		[32m},[m
+ 		"@humanwhocodes/config-array": {[m
+ 			"version": "0.9.2",[m
+ 			"resolved": "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.9.2.tgz",[m
+[36m@@ -14596,13 +14697,13 @@[m
+ 			}[m
+ 		},[m
+ 		"prop-types": {[m
+[31m-			"version": "15.7.2",[m
+[31m-			"resolved": "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz",[m
+[31m-			"integrity": "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==",[m
+[32m+[m			[32m"version": "15.8.1",[m
+[32m+[m			[32m"resolved": "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz",[m
+[32m+[m			[32m"integrity": "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==",[m
+ 			"requires": {[m
+ 				"loose-envify": "^1.4.0",[m
+ 				"object-assign": "^4.1.1",[m
+[31m-				"react-is": "^16.8.1"[m
+[32m+[m				[32m"react-is": "^16.13.1"[m
+ 			}[m
+ 		},[m
+ 		"proxy-addr": {[m
+[1mdiff --git a/package.json b/package.json[m
+[1mindex 75cd273..238f0d4 100755[m
+[1m--- a/package.json[m
+[1m+++ b/package.json[m
+[36m@@ -73,6 +73,9 @@[m
+ 		][m
+ 	},[m
+ 	"dependencies": {[m
+[32m+[m		[32m"@fortawesome/free-regular-svg-icons": "^6.6.0",[m
+[32m+[m		[32m"@fortawesome/free-solid-svg-icons": "^6.6.0",[m
+[32m+[m		[32m"@fortawesome/react-fontawesome": "^0.2.2",[m
+ 		"prop-types": "^15.6.1",[m
+ 		"react": "^16.8.4",[m
+ 		"react-dom": "^16.8.4",[m
+[1mdiff --git a/src/front/js/layout.js b/src/front/js/layout.js[m
+[1mindex 6d28bb4..9c63e58 100755[m
+[1m--- a/src/front/js/layout.js[m
+[1m+++ b/src/front/js/layout.js[m
+[36m@@ -19,6 +19,7 @@[m [mimport { ListaLibrosCritico } from "./pages/listaLibrosCritico";[m
+ import { Navbar } from "./component/navbar";[m
+ import { Footer } from "./component/footer";[m
+ import { BookDetailsCritic } from "./pages/bookDetailsCitic";[m
+[32m+[m[32mimport { ReadersListOfBooks } from "./pages/readersListOfBooks";[m
+ [m
+ //create your first component[m
+ const Layout = () => {[m
+[36m@@ -47,6 +48,7 @@[m [mconst Layout = () => {[m
+                         <Route element={<EditBook />} path="/editbook/:id" /> [m
+                         <Route element={<SignupLector />} path="/signupLector" /> [m
+                         <Route element={<LoginLector />} path="/loginLector" /> [m
+[32m+[m[32m                        <Route element={<ReadersListOfBooks />} path="/readersListOfBooks" />[m
+                         <Route element={<Lector />} path="/lector/:idLectorToEdit" />[m
+                         <Route element={<h1>Not found!</h1>} path="*" /> [m
+                     </Routes>[m
+[1mdiff --git a/src/front/js/store/flux.js b/src/front/js/store/flux.js[m
+[1mindex dc1da1b..536a14e 100755[m
+[1m--- a/src/front/js/store/flux.js[m
+[1m+++ b/src/front/js/store/flux.js[m
+[36m@@ -20,7 +20,8 @@[m [mconst getState = ({ getStore, getActions, setStore }) => {[m
+ 			readers:[],[m
+ 			lectorName: localStorage.getItem("lectorName") || "",[m
+ 			categories:[],[m
+[31m-			autores:[][m
+[32m+[m			[32mautores:[],[m
+[32m+[m			[32mfavorites: [][m
+ 		},[m
+ 		actions: {[m
+ 			// Use getActions to call a function within a fuction[m
+[36m@@ -316,14 +317,20 @@[m [mconst getState = ({ getStore, getActions, setStore }) => {[m
+ 					})[m
+ 			},[m
+ 			getBooks: async () => {[m
+[31m-                try {[m
+[31m-                    const response = await fetch(process.env.BACKEND_URL + "/api/book");[m
+[31m-                    const data = await response.json();[m
+[31m-                    setStore({ books: data });[m
+[31m-                } catch (error) {[m
+[31m-                    console.log("Error fetching books", error);[m
+[31m-                }[m
+[31m-            },[m
+[32m+[m				[32mlet isMounted = true; // controlar si el componente está montado[m
+[32m+[m				[32mtry {[m
+[32m+[m					[32mconst response = await fetch(process.env.BACKEND_URL + "/api/book");[m
+[32m+[m					[32mconst data = await response.json();[m
+[32m+[m					[32mif (isMounted) {[m
+[32m+[m						[32msetStore({ books: data });[m
+[32m+[m					[32m}[m
+[32m+[m				[32m} catch (error) {[m
+[32m+[m					[32mconsole.log("Error fetching books", error);[m
+[32m+[m				[32m}[m
+[32m+[m				[32mreturn () => {[m
+[32m+[m					[32misMounted = false;[m[41m [m
+[32m+[m				[32m};[m
+[32m+[m			[32m},[m
+ [m
+             addBook: async (newBook) => {[m
+                 try {[m

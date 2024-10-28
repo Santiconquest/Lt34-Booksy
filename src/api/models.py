@@ -74,8 +74,6 @@ class Lector(db.Model):
     lastname = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
-    suscription_date = db.Column(db.String(120), unique=False, nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
   
 
 
@@ -87,12 +85,25 @@ class Lector(db.Model):
             "id": self.id,
             "email": self.email,
             "name": self.name,
-            "lastname": self.lastname,
-            "suscription_date": self.suscription_date,
-            "active": self.is_active,
+            "lastname": self.lastname
+        }
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=False, nullable=False)
+
+
+    def __repr__(self):
+        return '<Category %r>' % self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
             # do not serialize the password, its a security breach
         }
 
+<<<<<<< HEAD
 
 class Review(db.Model):
     __tablename__ = 'review' 
@@ -107,11 +118,46 @@ class Review(db.Model):
     # Se puede omitir email_critico, ya que se puede acceder a través de la relación
     def __repr__(self):
         return f'<Review {self.comentario}>'
+=======
+class Autor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=False, nullable=False)
+
+
+    def __repr__(self):
+        return '<Autor %r>' % self.name
+>>>>>>> develop
 
     def serialize(self):
         return {
             "id": self.id,
+<<<<<<< HEAD
             "id_critico": self.id_critico,
             "email_critico": self.critico.email if self.critico else None,
             "comentario": self.comentario,
         }
+=======
+            "name": self.name,
+            # do not serialize the password, its a security breach
+        }
+
+class BooksyAdmin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), unique=False, nullable=False)
+    lastname = db.Column(db.String(120), unique=False, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(80), unique=False, nullable=False)
+  
+
+
+    def __repr__(self):
+        return '<BooksyAdmin %r>' % self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "name": self.name,
+            "lastname": self.lastname
+        }
+>>>>>>> develop

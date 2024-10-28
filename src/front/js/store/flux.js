@@ -14,13 +14,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			auth: false,
+			auth: !!localStorage.getItem("token"),
 			userEmail: null,
 			userId: null,
 			books : [],
 			readers:[],
+<<<<<<< HEAD
 			reviews: []
 
+=======
+			lectorName: localStorage.getItem("lectorName") || "",
+			categories:[],
+			autores:[],
+			favorites: [],
+			wishlist: [],
+			administradores:[]
+>>>>>>> develop
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -90,14 +99,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log(data)
 						});
 				},
-			addLector:(email,password,name,lastName,suscriptionDate)=>{
-				console.log(email,password,name,lastName,suscriptionDate)
+			addLector:(email,password,name,lastName)=>{
+				console.log(email,password,name,lastName)
 				const store = getStore()
 				const actions = getActions()
 				const requestOptions = {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(email,password,name,lastName,suscriptionDate),
+					body: JSON.stringify(email,password,name,lastName),
 				  };
 				  
 				  fetch(`${process.env.BACKEND_URL}/api/signupLector`, requestOptions)
@@ -115,7 +124,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					
 			},
-			deleteLector: (idLectorToEdit) => {
+			deleteLector: (idLector) => {
 				//console.log("Remove lector from flux"+ idToDelete)
 				const store = getStore();
 				
@@ -124,7 +133,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					redirect: "follow"
 				  };
 				  
-				  fetch(`${process.env.BACKEND_URL}api/lector/`+idLectorToEdit, requestOptions)
+				  fetch(`${process.env.BACKEND_URL}api/lector/`+idLector, requestOptions)
 					.then((response) => response.text())
 					.then((result) => {
 						console.log(result)
@@ -133,18 +142,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// .then((data)=>setStore({readers:data.contacts}))
 					})
 			},
-			editLector:(readerToEdit, idLectorToEdit)=>{
-				console.log("Edito lector id: "+idLectorToEdit)
+			editLector:(idLector,email,password,name,lastName)=>{
+				
 				const store = getStore();
 				const actions = getActions()
 
 				const requestOptions = {
 					method: "PUT",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(readerToEdit),
+					body: JSON.stringify({
+						"name":name,
+						"lastname":lastName,
+						"email":email,
+						"password":password}),
 				  };
 				  
-				  fetch(`${process.env.BACKEND_URL}admin/lector/`+idLectorToEdit, requestOptions)
+				  fetch(`${process.env.BACKEND_URL}admin/lector/`+idLector, requestOptions)
 				  .then((response) => {
 					console.log(response)
 					if(response.ok){
@@ -187,16 +200,151 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+			addCategory:(name)=>{
+				console.log(name)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.categories.concat(result))
+							return true
+						}
+					})
+					
+			},
+			editCategory:(editCategory, idCategory)=>{
+				console.log("Edito categoria id: "+idCategory)
+				const store = getStore();
+				const actions = getActions()
 
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(editCategory),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.categories.concat(result))
+						return true
+					}
+				})
+
+			},
+			deleteCategory: (idCategory) => {
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/category/`+idCategory, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+					})
+			},
+			addAutor:(name)=>{
+				console.log(name)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.autores.concat(result))
+							return true
+						}
+					})
+					
+			},
+			editAutor:(editAutor, idAutor)=>{
+				console.log("Edito autor id: "+idCategory)
+				const store = getStore();
+				const actions = getActions()
+
+				const requestOptions = {
+					method: "PUT",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify(editAutor),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor/`+idAutor, requestOptions)
+				  .then((response) => {
+					console.log(response)
+					if(response.ok){
+						return response.json()
+					}
+				})
+				.then((result) => {
+					if(result){
+						setStore(store.autores.concat(result))
+						return true
+					}
+				})
+
+			},
+			deleteCategory: (idAutor) => {
+				const store = getStore();
+				
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/autor/`+idAutor, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log(result)
+					})
+			},
 			getBooks: async () => {
-                try {
-                    const response = await fetch(process.env.BACKEND_URL + "/api/book");
-                    const data = await response.json();
-                    setStore({ books: data });
-                } catch (error) {
-                    console.log("Error fetching books", error);
-                }
-            },
+				let isMounted = true; // controlar si el componente está montado
+				try {
+					const response = await fetch(process.env.BACKEND_URL + "/api/book");
+					const data = await response.json();
+					if (isMounted) {
+						setStore({ books: data });
+					}
+				} catch (error) {
+					console.log("Error fetching books", error);
+				}
+				return () => {
+					isMounted = false; 
+				};
+			},
 
             addBook: async (newBook) => {
                 try {
@@ -256,27 +404,77 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.log("Error deleting book", error);
                 }
 			},
+			addAdmin:(email,password,name,lastName)=>{
+				console.log(email,password,name,lastName)
+				const store = getStore()
+				const actions = getActions()
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({"name":name,"lastName":lastName,"email":email,"password":password}),
+				  };
+				  
+				  fetch(`${process.env.BACKEND_URL}/api/booksyAdmin`, requestOptions)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore(store.administradores.concat(result))
+							return true
+						}
+					})
+					
+			},
 			
 			loginLector: async (email, password) => {
-                const requestOptions = {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                };
+				const requestOptions = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ email, password })
+				};
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
+					if (response.ok) {
+						const data = await response.json();
+						localStorage.setItem("token", data.access_token);
+						localStorage.setItem("lectorName", data.name);
+						setStore({ auth: true, lectorName: data.name });
+						console.log("Login successful", data);
+						return true; 
+					} else {
+						console.error("Login failed", response.status);
+						return false; 
+					}
+				} catch (error) {
+					console.error("Error logging in", error);
+					return false; 
+				}
+			},
+			logoutLector: () => {
+				localStorage.removeItem("token");
+				localStorage.removeItem("lectorName");
+				setStore({ auth: false, lectorName: "" }); 
+			},
+			toggleFavorite: (bookId) => {
+                const store = getStore();
+                const favorites = store.favorites;
 
-                try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
-                    if (response.ok) {
-                        const data = await response.json();
-                        localStorage.setItem("token", data.access_token); 
-                        setStore({ auth: true }); 
-                        console.log("Login successful", data);
-                    } else {
-                        console.error("Login failed", response.status);
-                    }
-                } catch (error) {
-                    console.error("Error logging in", error);
+                
+                if (favorites.includes(bookId)) {
+                    
+                    const updatedFavorites = favorites.filter(id => id !== bookId);
+                    setStore({ favorites: updatedFavorites });
+                } else {
+                    
+                    const updatedFavorites = [...favorites, bookId];
+                    setStore({ favorites: updatedFavorites });
                 }
+<<<<<<< HEAD
             },
 
             logoutLector: () => {
@@ -321,6 +519,46 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 				
+=======
+            },	
+			
+			toggleWishlist: (bookId) => {
+				const store = getStore();
+				const wishlist = store.wishlist;
+			
+				if (wishlist.includes(bookId)) {
+					const updatedWishlist = wishlist.filter(id => id !== bookId);
+					setStore({ wishlist: updatedWishlist });
+				} else {
+					const updatedWishlist = [...wishlist, bookId];
+					setStore({ wishlist: updatedWishlist });
+				}
+			},
+			
+		
+			removeFavorite: (bookId) => {
+				console.log("Removing from favorites:", bookId);
+				const store = getStore();
+				setStore({
+					...store,
+					favorites: store.favorites.filter(id => id !== bookId)
+				});
+			},
+			
+			removeWishlist: (bookId) => {
+				console.log("Removing from wishlist:", bookId);
+				const store = getStore();
+				setStore({
+					...store,
+					wishlist: store.wishlist.filter(id => id !== bookId)
+				});
+			},
+			
+			
+			
+			
+		
+>>>>>>> develop
 		}
 	};
 };

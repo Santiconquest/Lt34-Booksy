@@ -1,22 +1,36 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
 
 export const Books = () => {
     const { store, actions } = useContext(Context);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         actions.getBooks();
     }, []);
+
+    const filteredBooks = store.books?.filter(book =>
+        book.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <>
             <div className="container">
                 <h1 className="m-5">Books</h1>
                 <Link to="/addbook" className="btn btn-primary mb-3">Añadir un nuevo libro</Link>
+                
+                <input
+                    type="text"
+                    className="form-control mb-3"
+                    placeholder="Buscar por título"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                
                 <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
-                    {store.books && store.books.map((book, index) => (
+                    {filteredBooks && filteredBooks.map((book, index) => (
                         <div key={index} className="col-md-4">
                             <div className="card" style={{ width: '18rem' }}>
                                 <img
