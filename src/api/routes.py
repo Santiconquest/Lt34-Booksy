@@ -2,11 +2,8 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-<<<<<<< HEAD
 from api.models import db, User, Critico, Book, Lector, Review
-=======
 from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin
->>>>>>> develop
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -282,7 +279,6 @@ def login_lector():
     return jsonify(response_body), 200
 
 
-<<<<<<< HEAD
 @api.route('/reviews', methods=['GET'])
 def get_reviews():
 
@@ -359,7 +355,6 @@ def update_review(review_id):
     }
     
     return jsonify(response_body), 200
-=======
 @api.route('/category', methods=['GET'])
 def get_category():
 
@@ -569,4 +564,3 @@ def edit_administrador(booksyAdmin_id):
         "msg": "Administrador actualizado exitosamente",
         "administrador": administrador.serialize()
     }), 200
->>>>>>> develop

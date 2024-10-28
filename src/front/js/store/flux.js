@@ -19,20 +19,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userId: null,
 			books : [],
 			readers:[],
-<<<<<<< HEAD
-			reviews: []
-
-=======
+			reviews: [],
 			lectorName: localStorage.getItem("lectorName") || "",
 			categories:[],
 			autores:[],
 			favorites: [],
 			wishlist: [],
-			administradores:[]
->>>>>>> develop
+			administradores:[],
+			critico: []
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
+			getCritico: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+					const data = await response.json();
+					console.log("Critico data fetched:", data[0].nombre); 
+					setStore({ critico: data[0] });
+				} catch (error) {
+					console.log("Error fetching critic:", error);
+				}
+			},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
@@ -474,7 +480,6 @@ const getState = ({ getStore, getActions, setStore }) => {
                     const updatedFavorites = [...favorites, bookId];
                     setStore({ favorites: updatedFavorites });
                 }
-<<<<<<< HEAD
             },
 
             logoutLector: () => {
@@ -508,6 +513,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error("Error en la solicitud:", error);
 				}
+				
 			},
 			getReviews: async () => {
                 try {
@@ -517,9 +523,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.log("Error fetching reviews", error);
                 }
-            },
+            	}
 				
-=======
             },	
 			
 			toggleWishlist: (bookId) => {
@@ -533,6 +538,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const updatedWishlist = [...wishlist, bookId];
 					setStore({ wishlist: updatedWishlist });
 				}
+				
 			},
 			
 		
@@ -553,14 +559,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					wishlist: store.wishlist.filter(id => id !== bookId)
 				});
 			},
-			
-			
-			
-			
+			getCritico: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+					const data = await response.json();
+					console.log("Critico data fetched:", data); 
+					setStore({ critico: data });
+				} catch (error) {
+					console.log("Error fetching critic:", error);
+				}
+			},
 		
->>>>>>> develop
 		}
 	};
-};
 
 export default getState;
