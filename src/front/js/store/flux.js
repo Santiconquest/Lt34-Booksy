@@ -26,7 +26,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorites: [],
 			wishlist: [],
 			administradores:[],
-			critico: []
+			critico: [],
+			imageUrl: "", 
+            loading: false
 		},
 		actions: {
 			getCritico: async () => {
@@ -41,6 +43,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
+			},
+			uploadImage: (files) => {
+                const store = getStore();
+                const preset_name = "imagenes";                         
+   				const cloud_name = "dul7enfrl"  
+                const data = new FormData();
+                data.append("file", files[0]);
+                data.append("upload_preset", preset_name);
+
+                setStore({ loading: true });
+
+                fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+                    method: "POST",
+                    body: data
+                })
+                .then(response => response.json())
+                .then(file => {
+                    setStore({ imageUrl: file.secure_url, loading: false });
+                })
+                .catch(error => {
+                    console.error("Error uploading image:", error);
+                    setStore({ loading: false });
+                });
+		
 			},
 			logoutCritico: () => {
 				localStorage.removeItem("token")

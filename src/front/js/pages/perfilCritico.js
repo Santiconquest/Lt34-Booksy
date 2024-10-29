@@ -2,9 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
+
 const ProfileCritico = () => {
     const { store, actions } = useContext(Context);
-    const [critic, setCritic] = useState([]); 
+    const [critic, setCritic] = useState([]);                  
+
+    const handleImageUpload = (e) => {
+        const files = e.target.files;
+        actions.uploadImage(files);
+    };
 
     useEffect(() => {
         const fetchCritico = async () => {
@@ -20,8 +26,21 @@ const ProfileCritico = () => {
     return (
         <div className="container">
             <h1 className="my-5">Critic Profile</h1>
+            <div>
+                <h1>Upload Profile Image</h1>
+                <input type="file" onChange={handleImageUpload} />
+                {store.loading ? (
+                    <p>Loading...</p>
+                ) : store.imageUrl ? (
+                    <img src={store.imageUrl} alt="Uploaded" style={{ width: "150px", height: "auto" }} />
+
+                ) : (
+                    <p>No image uploaded</p>
+                )}
+        </div>
+            
             {critic ? (
-                <div className="card">
+                <div className="card my-5">
                     <div className="card-body">
                         <h5 className="card-title">{critic.nombre} {critic.apellido}</h5>
                         <p className="card-text"><strong>Email:</strong> {critic.email}</p>
