@@ -7,33 +7,50 @@ export const FavoritosLector = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        
-    }, []);
+        // Cargar libros cuando el componente se monta
+        actions.getBooks(); // Llama a getBooks para obtener la lista de libros
+    }, [actions]); // Dependencia actions para evitar advertencias
+
+    const truncateTitle = (title, maxLength) => {
+        return title.length > maxLength ? title.slice(0, maxLength) + '...' : title;
+    };
 
     return (
         <div className="container">
             <h1 className="mt-5">Favoritos del Lector</h1>
-            {store.favorites.length === 0 ? (
+            {store.books.length === 0 ? (
+                <p>Cargando libros...</p> // Mensaje de carga
+            ) : store.favorites.length === 0 ? (
                 <p>No hay libros en tus favoritos.</p>
             ) : (
                 <div className="row">
                     {store.favorites.map((favoriteId) => {
                         const favoriteBook = store.books.find(book => book.id === favoriteId);
+                        if (!favoriteBook) return null;
+
                         return (
-                            <div key={favoriteId} className="col-md-4 mb-4">
-                                <div className="card">
+                            <div key={favoriteId} className="col-md-3 mb-4"> 
+                                <div className="card" style={{ height: '365px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                                     <img
                                         src={favoriteBook.cover}
                                         alt={favoriteBook.titulo}
                                         className="card-img-top"
-                                        style={{ height: '300px', objectFit: 'cover' }}
+                                        style={{ maxHeight: '200px', width: '100%', objectFit: 'contain', margin: 'auto' }} 
                                     />
                                     <div className="card-body">
-                                        <h5 className="card-title">{favoriteBook.titulo}</h5>
-                                        <p className="card-text">
-                                            <strong>Autor:</strong> {favoriteBook.autor}
+                                        <h5 className="card-title" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateTitle(favoriteBook.titulo, 40)}</h5> 
+                                        <p className="card-text" style={{ marginTop: '10px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            <strong>Autor:</strong> {truncateTitle(favoriteBook.autor, 20)}
                                         </p>
-                                        <Link to={`/bookdetails/${favoriteBook.id}`} className="btn btn-primary">Ver Detalles</Link>
+                                        <div className="d-flex justify-content-between">
+                                            <Link to={`/bookdetails/${favoriteBook.id}`} className="btn btn-primary">Ver Detalles</Link>
+                                            <button 
+                                                className="btn btn-danger ml-2" 
+                                                onClick={() => actions.removeWishlist(wishlistBook.id)} 
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
