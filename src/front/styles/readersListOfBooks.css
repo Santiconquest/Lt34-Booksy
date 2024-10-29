@@ -91,3 +91,12 @@
 .wishlist-icon.text-muted {
     color: grey; 
 }
+
+.custom-details-button {
+    margin-left: 20px; /* Ajusta el valor según sea necesario */
+}
+
+.card-body {
+    min-height: 200px; /* Ajusta según lo que necesites */
+}
+
