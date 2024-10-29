@@ -7,7 +7,18 @@ export const BookDetailsCritic = () => {
     const params = useParams();
     const [bookData, setBookData] = useState(null);
     const [review, setReview] = useState(""); 
-    const [reviews, setReviews] = useState([]); 
+    const [reviews, setReviews] = useState(store.reviews);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            await actions.getReviews();
+        };
+        fetchReviews();
+    }, []);
+
+    useEffect(() => {
+        setReviews(store.reviews);
+    }, [store.reviews]);
 
     useEffect(() => {
         const fetchBookData = async () => {
@@ -27,18 +38,15 @@ export const BookDetailsCritic = () => {
         fetchBookData();
     }, [params.book_id]);
 
-    const handleReviewSubmit = (e) => {
+    const handleReviewSubmit = async (e) => {
         e.preventDefault();
-
-        const newReview = { 
-            text: review, 
-            userEmail: store.userEmail, 
-            id: reviews.length + 1 
-        };
-       
-        
-        setReviews([...reviews, newReview]);
-        setReview(""); 
+        const newReview = await actions.addReview(store.userId, params.book_id, review);
+        if (newReview) {
+            setReviews([...reviews, newReview]); 
+            setReview("");
+        } else {
+            console.error("Error al agregar la reseña.");
+        }
     };
 
     if (!bookData) return <p>Loading book details...</p>;
@@ -53,7 +61,6 @@ export const BookDetailsCritic = () => {
             <img src={bookData.cover} alt={bookData.titulo} style={{ width: '300px', height: '300px' }} />
             <hr className="my-4" />
 
-           
             <form onSubmit={handleReviewSubmit}>
                 <div className="mb-3">
                     <label htmlFor="review" className="form-label">Agregar una reseña</label>
@@ -68,23 +75,26 @@ export const BookDetailsCritic = () => {
                 <button type="submit" className="btn btn-primary">Enviar Reseña</button>
             </form>
 
-           
             <h2 className="mt-4">Reseñas</h2>
             <ul className="list-group">
                 {reviews.map((r) => (
                     <li key={r.id} className="list-group-item">
-                        <strong>{r.userEmail}:</strong> {r.text}
+                        <strong>{r.id_critico}:</strong> {r.comentario}
                     </li>
                 ))}
             </ul>
 
-            <Link to="/">
+
+            <Link to="/listaLibrosCritico">
                 <span className="btn btn-primary btn-lg" role="button">
-                    Back home
+                    Back to list
                 </span>
             </Link>
         </div>
     );
 };
+
+
+
 
 
