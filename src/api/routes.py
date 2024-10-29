@@ -193,10 +193,10 @@ def add_lector():
         return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
 
     nuevo_lector = Lector(
-        name=body['name'],
-        lastname=body['lastname'],
-        email=body['email'],
-        password=body['password']
+    name=body['name'],
+    lastname=body['lastname'],
+    email=body['email'],
+    password=body['password']
     )
 
     try:

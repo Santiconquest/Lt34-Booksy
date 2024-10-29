@@ -133,14 +133,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log(data)
 						});
 				},
-			addLector:(email,password,name,lastName)=>{
-				console.log(email,password,name,lastName)
+			addLector:(email,password,name,lastname)=>{
+				console.log(email,password,name,lastname)
 				const store = getStore()
 				const actions = getActions()
 				const requestOptions = {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(email,password,name,lastName),
+					body: JSON.stringify({"name":name,"lastname":lastname,"email":email,"password":password}),
 				  };
 				  
 				  fetch(`${process.env.BACKEND_URL}/api/signupLector`, requestOptions)
@@ -176,7 +176,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// .then((data)=>setStore({readers:data.contacts}))
 					})
 			},
-			editLector:(idLector,email,password,name,lastName)=>{
+			editLector:(idLector,email,password,name,lastname)=>{
 				
 				const store = getStore();
 				const actions = getActions()
@@ -186,7 +186,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify({
 						"name":name,
-						"lastname":lastName,
+						"lastname":lastname,
 						"email":email,
 						"password":password}),
 				  };
