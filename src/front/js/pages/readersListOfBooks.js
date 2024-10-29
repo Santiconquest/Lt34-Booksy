@@ -15,8 +15,8 @@ export const ReadersListOfBooks = () => {
     const [showFavorites, setShowFavorites] = useState(false); 
     const [showWishlist, setShowWishlist] = useState(false); 
     const [searchTerm, setSearchTerm] = useState("");
-    const [searchAuthor, setSearchAuthor] = useState(""); // Nuevo estado para buscar por autor
-    const [searchGenero, setSearchGenero] = useState(""); // Nuevo estado para buscar por género
+    const [searchAuthor, setSearchAuthor] = useState(""); 
+    const [searchGenero, setSearchGenero] = useState(""); 
 
     useEffect(() => {
         actions.getBooks();
@@ -25,7 +25,7 @@ export const ReadersListOfBooks = () => {
     const filteredBooks = store.books.filter(book =>
         book.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
         book.autor.toLowerCase().includes(searchAuthor.toLowerCase()) && 
-        book.genero.toLowerCase().includes(searchGenero.toLowerCase()) // Filtra por género también
+        book.genero.toLowerCase().includes(searchGenero.toLowerCase())
     );
 
     const groupBooks = (key) => {
@@ -66,11 +66,17 @@ export const ReadersListOfBooks = () => {
             .slice(0, 3); 
     };
 
+    // Función para limitar el texto a un número máximo de palabras
+    const truncateText = (text, maxWords) => {
+        const words = text.split(' ');
+        if (words.length <= maxWords) return text;
+        return words.slice(0, maxWords).join(' ') + '...';
+    };
+
     return (
         <div className="container">
             <h1 className="m-5">Booksy</h1>
 
-            {/* Contenedor flex para los inputs de búsqueda */}
             <div className="d-flex mb-3">
                 <input
                     type="text"
@@ -107,7 +113,6 @@ export const ReadersListOfBooks = () => {
                 </button>
             </div>
 
-            {/* Contenedor flex para los botones de Favoritos y Wishlist */}
             <div className="d-flex justify-content-start mb-3">
                 <div className="favorites-dropdown me-2">
                     <button className="btn btn-primary" onClick={handleToggleFavorites}>Favoritos</button>
@@ -123,7 +128,7 @@ export const ReadersListOfBooks = () => {
                                                 <div className="card">
                                                     <div className="card-body d-flex justify-content-between align-items-center">
                                                         <Link to={`/bookdetails/${favoriteBook.id}`} className="card-title mb-0 text-decoration-none text-dark">
-                                                            {favoriteBook.titulo}
+                                                            {truncateText(favoriteBook.titulo, 5)} 
                                                         </Link>
                                                         <span 
                                                             onClick={() => actions.removeFavorite(favoriteBook.id)} 
@@ -144,7 +149,6 @@ export const ReadersListOfBooks = () => {
                     )}
                 </div>
 
-                {/* Wishlist Dropdown */}
                 <div className="wishlist-dropdown">
                     <button className="btn btn-success" onClick={handleToggleWishlist}>Wishlist</button>
                     {showWishlist && (
@@ -159,7 +163,7 @@ export const ReadersListOfBooks = () => {
                                                 <div className="card">
                                                     <div className="card-body d-flex justify-content-between align-items-center">
                                                         <Link to={`/bookdetails/${wishlistBook.id}`} className="card-title mb-0 text-decoration-none text-dark">
-                                                            {wishlistBook.titulo}
+                                                            {truncateText(wishlistBook.titulo, 5)} 
                                                         </Link>
                                                         <span 
                                                             onClick={() => actions.removeWishlist(wishlistBook.id)} 
@@ -192,12 +196,12 @@ export const ReadersListOfBooks = () => {
                                         src={book.cover}
                                         alt={book.titulo}
                                         className="card-img-top"
-                                        style={{ width: '300px', height: '300px' }}
+                                        style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
                                     />
                                     <div className="card-body">
-                                        <h5 className="card-title">{book.titulo}</h5>
+                                        <h5 className="card-title">{truncateText(book.titulo, 5)}</h5> 
                                         <p className="card-text">
-                                            <strong>Autor:</strong> {book.autor} <br />
+                                            <strong>Autor:</strong>{truncateText(book.autor, 4)}<br />
                                             <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
                                             <strong>Año Publicado:</strong> {book.year}
                                         </p>
@@ -213,11 +217,9 @@ export const ReadersListOfBooks = () => {
                                         >
                                             <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
                                         </span>
-
-                                        <Link to={`/bookdetails/${book.id}`} className="btn btn-secondary ms-2">Más</Link>
                                     </div>
                                 </div>
-                            ))} 
+                            ))}
                         </div>
                     </div>
                 ))}
@@ -232,12 +234,12 @@ export const ReadersListOfBooks = () => {
                                         src={book.cover}
                                         alt={book.titulo}
                                         className="card-img-top"
-                                        style={{ width: '300px', height: '300px' }}
+                                        style={{ width: '100%', height: '200px', objectFit: 'cover' }} // Ajustar imagen
                                     />
                                     <div className="card-body">
-                                        <h5 className="card-title">{book.titulo}</h5>
+                                        <h5 className="card-title">{truncateText(book.titulo, 5)}</h5> 
                                         <p className="card-text">
-                                            <strong>Autor:</strong> {book.autor} <br />
+                                            <strong>Género:</strong> {book.genero} <br />
                                             <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
                                             <strong>Año Publicado:</strong> {book.year}
                                         </p>
@@ -253,11 +255,9 @@ export const ReadersListOfBooks = () => {
                                         >
                                             <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
                                         </span>
-
-                                        <Link to={`/bookdetails/${book.id}`} className="btn btn-secondary ms-2">Más</Link>
                                     </div>
                                 </div>
-                            ))} 
+                            ))}
                         </div>
                     </div>
                 ))}

@@ -28,7 +28,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			administradores:[],
 			critico: [],
 			imageUrl: "", 
-            loading: false
+            loading: false,
+			favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+			wishlist: JSON.parse(localStorage.getItem('wishlist')) || []
 		},
 		actions: {
 			getCritico: async () => {
@@ -536,21 +538,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ auth: false, lectorName: "" }); 
 			},
 			toggleFavorite: (bookId) => {
-                const store = getStore();
-                const favorites = store.favorites;
-
-                
-                if (favorites.includes(bookId)) {
-                    
-                    const updatedFavorites = favorites.filter(id => id !== bookId);
-                    setStore({ favorites: updatedFavorites });
-                } else {
-                    
-                    const updatedFavorites = [...favorites, bookId];
-                    setStore({ favorites: updatedFavorites });
-                }
-            },
-
+				const store = getStore();
+				let updatedFavorites;
+			
+				if (store.favorites.includes(bookId)) {
+					// Si ya está en favoritos, lo quitamos
+					updatedFavorites = store.favorites.filter(id => id !== bookId);
+				} else {
+					// Si no está, lo agregamos
+					updatedFavorites = [...store.favorites, bookId];
+				}
+			
+				// Actualiza el store
+				setStore({ favorites: updatedFavorites });
+			
+				// Guarda los favoritos en localStorage
+				localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+			},
+			
             logoutLector: () => {
                 localStorage.removeItem("token"); 
                 setStore({ auth: false }); 
@@ -596,19 +601,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				toggleWishlist: (bookId) => {
 					const store = getStore();
-					const wishlist = store.wishlist;
+					let updatedWishlist;
 				
-					if (wishlist.includes(bookId)) {
-						const updatedWishlist = wishlist.filter(id => id !== bookId);
-						setStore({ wishlist: updatedWishlist });
+					if (store.wishlist.includes(bookId)) {
+						updatedWishlist = store.wishlist.filter(id => id !== bookId);
 					} else {
-						const updatedWishlist = [...wishlist, bookId];
-						setStore({ wishlist: updatedWishlist });
+						updatedWishlist = [...store.wishlist, bookId];
 					}
-					
+				
+					setStore({ wishlist: updatedWishlist });
+					localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
 				},
 				
-			
 				removeFavorite: (bookId) => {
 					console.log("Removing from favorites:", bookId);
 					const store = getStore();
