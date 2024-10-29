@@ -15,13 +15,17 @@ export const ReadersListOfBooks = () => {
     const [showFavorites, setShowFavorites] = useState(false); 
     const [showWishlist, setShowWishlist] = useState(false); 
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchAuthor, setSearchAuthor] = useState(""); // Nuevo estado para buscar por autor
+    const [searchGenero, setSearchGenero] = useState(""); // Nuevo estado para buscar por género
 
     useEffect(() => {
         actions.getBooks();
     }, []);
 
     const filteredBooks = store.books.filter(book =>
-        book.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+        book.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        book.autor.toLowerCase().includes(searchAuthor.toLowerCase()) && 
+        book.genero.toLowerCase().includes(searchGenero.toLowerCase()) // Filtra por género también
     );
 
     const groupBooks = (key) => {
@@ -64,14 +68,35 @@ export const ReadersListOfBooks = () => {
 
     return (
         <div className="container">
-            <h1 className="m-5">Lista de Libros para Lectores</h1>
-            <input
-                type="text"
-                className="form-control mb-3"
-                placeholder="Buscar por título..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <h1 className="m-5">Booksy</h1>
+
+            {/* Contenedor flex para los inputs de búsqueda */}
+            <div className="d-flex mb-3">
+                <input
+                    type="text"
+                    className="form-control me-2"
+                    placeholder="Buscar por título..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ flex: 1 }} 
+                />
+                <input
+                    type="text"
+                    className="form-control me-2"
+                    placeholder="Buscar por autor..."
+                    value={searchAuthor}
+                    onChange={(e) => setSearchAuthor(e.target.value)}
+                    style={{ flex: 1 }} 
+                />
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Buscar por género..."
+                    value={searchGenero}
+                    onChange={(e) => setSearchGenero(e.target.value)}
+                    style={{ flex: 1 }} 
+                />
+            </div>
 
             <div className="tabs">
                 <button className={`tab ${activeTab === "genero" ? "active" : ""}`} onClick={() => setActiveTab("genero")}>
@@ -212,7 +237,7 @@ export const ReadersListOfBooks = () => {
                                     <div className="card-body">
                                         <h5 className="card-title">{book.titulo}</h5>
                                         <p className="card-text">
-                                            <strong>Género:</strong> {book.genero} <br />
+                                            <strong>Autor:</strong> {book.autor} <br />
                                             <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
                                             <strong>Año Publicado:</strong> {book.year}
                                         </p>
