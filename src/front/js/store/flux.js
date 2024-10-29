@@ -592,53 +592,53 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.log("Error fetching reviews", error);
                 }
-            	}
+            	},
+
+				toggleWishlist: (bookId) => {
+					const store = getStore();
+					const wishlist = store.wishlist;
+				
+					if (wishlist.includes(bookId)) {
+						const updatedWishlist = wishlist.filter(id => id !== bookId);
+						setStore({ wishlist: updatedWishlist });
+					} else {
+						const updatedWishlist = [...wishlist, bookId];
+						setStore({ wishlist: updatedWishlist });
+					}
+					
+				},
+				
+			
+				removeFavorite: (bookId) => {
+					console.log("Removing from favorites:", bookId);
+					const store = getStore();
+					setStore({
+						...store,
+						favorites: store.favorites.filter(id => id !== bookId)
+					});
+				},
+				
+				removeWishlist: (bookId) => {
+					console.log("Removing from wishlist:", bookId);
+					const store = getStore();
+					setStore({
+						...store,
+						wishlist: store.wishlist.filter(id => id !== bookId)
+					});
+				},
+				getCritico: async () => {
+					try {
+						const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+						const data = await response.json();
+						console.log("Critico data fetched:", data); 
+						setStore({ critico: data });
+					} catch (error) {
+						console.log("Error fetching critic:", error);
+					}
+				}
 				
             },	
 			
-			toggleWishlist: (bookId) => {
-				const store = getStore();
-				const wishlist = store.wishlist;
-			
-				if (wishlist.includes(bookId)) {
-					const updatedWishlist = wishlist.filter(id => id !== bookId);
-					setStore({ wishlist: updatedWishlist });
-				} else {
-					const updatedWishlist = [...wishlist, bookId];
-					setStore({ wishlist: updatedWishlist });
-				}
-				
-			},
-			
-		
-			removeFavorite: (bookId) => {
-				console.log("Removing from favorites:", bookId);
-				const store = getStore();
-				setStore({
-					...store,
-					favorites: store.favorites.filter(id => id !== bookId)
-				});
-			},
-			
-			removeWishlist: (bookId) => {
-				console.log("Removing from wishlist:", bookId);
-				const store = getStore();
-				setStore({
-					...store,
-					wishlist: store.wishlist.filter(id => id !== bookId)
-				});
-			},
-			getCritico: async () => {
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
-					const data = await response.json();
-					console.log("Critico data fetched:", data); 
-					setStore({ critico: data });
-				} catch (error) {
-					console.log("Error fetching critic:", error);
-				}
-			},
-		
 		}
 	};
 
