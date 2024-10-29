@@ -15,6 +15,7 @@ const AddBook = () => {
     const [suggestions, setSuggestions] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [name, setName] = useState('');
     const navigate = useNavigate();
 
     const handleAddBook = () => {
@@ -140,7 +141,19 @@ const AddBook = () => {
                             )
                         })}
                     </select>
-                    <button type="button" className="btn btn-primary" onClick={()=> setCategories([...categories, selectedCategory])}>Agregar categoria</button>
+                    <div className="col-md-4">
+                        <label htmlFor="inputName" className="form-label">En caso de no ver categoria deseada, crea una nueva</label>
+                        <input 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                            type="text" 
+                            className="form-control" 
+                            id="inputName" 
+                        />
+                    </div>
+                    <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory(name)}>Crear Categoria</button>
+
+                    {/* <button type="button" className="btn btn-primary" onClick={()=> setCategories([...categories, selectedCategory])}>Ver categorias existentes</button> */}
                 </div>
 
                 <button type="button" className="btn btn-primary" onClick={handleAddBook}>
