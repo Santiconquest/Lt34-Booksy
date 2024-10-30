@@ -199,24 +199,29 @@ export const ReadersListOfBooks = () => {
                                         style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
                                     />
                                     <div className="card-body">
-                                        <h5 className="card-title">{truncateText(book.titulo, 5)}</h5> 
+                                        <h5 className="card-title" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
                                         <p className="card-text">
-                                            <strong>Autor:</strong>{truncateText(book.autor, 4)}<br />
+                                            <strong>Autor:</strong> {truncateText(book.autor, 4)}<br />
                                             <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
                                             <strong>Año Publicado:</strong> {book.year}
                                         </p>
-                                        <span 
-                                            onClick={() => handleFavoriteToggle(book.id)} 
-                                            className="favorite-icon"
-                                        >
-                                            <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
-                                        </span>
-                                        <span 
-                                            onClick={() => handleWishlistToggle(book.id)} 
-                                            className="wishlist-icon ms-2"
-                                        >
-                                            <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
-                                        </span>
+                                        <div className="d-flex align-items-center justify-content-between mt-2">
+                                            <div className="d-flex align-items-center">
+                                                <span 
+                                                    onClick={() => handleFavoriteToggle(book.id)} 
+                                                    className="favorite-icon"
+                                                >
+                                                    <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
+                                                </span>
+                                                <span 
+                                                    onClick={() => handleWishlistToggle(book.id)} 
+                                                    className="wishlist-icon ms-2"
+                                                >
+                                                    <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
+                                                </span>
+                                            </div>
+                                            <Link to={`/bookdetails/${book.id}`} className="btn btn-info">Detalles</Link>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
