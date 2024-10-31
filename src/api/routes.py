@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Critico, Book, Lector, Review
-from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin
+from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -115,7 +115,7 @@ def add_book():
     if not body:
         return jsonify({"msg": "No se proporcionó información"}), 400
 
-    required_fields = ['titulo', 'cantidad_paginas', 'genero', 'year', 'autor', 'cover']
+    required_fields = ['titulo', 'cantidad_paginas', 'genero', 'year', 'autor', 'cover','book_categories']
     missing_fields = [field for field in required_fields if field not in body]
     if missing_fields:
         return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
@@ -131,6 +131,12 @@ def add_book():
 
     try:
         db.session.add(nuevo_libro)
+        db.session.commit()
+        db.session.refresh(nuevo_libro)
+
+        for category_id in body['book_categories']:
+            new_book_category = Book_Category(book_id=nuevo_libro.id,category_id=category_id)
+            db.session.add(new_book_category)
         db.session.commit()
     except Exception as e:
         return jsonify({"msg": "Error al crear el libro"}), 500

@@ -23,6 +23,7 @@ const AddBook = () => {
             ...newBook,
             cantidad_paginas: Number(newBook.cantidad_paginas),
             year: Number(newBook.year),
+            book_categories: categories
         });
         navigate("/books");
     };
@@ -141,6 +142,16 @@ const AddBook = () => {
                             )
                         })}
                     </select>
+                        <ul>
+                    {categories.map(item => {
+                        const result = store.categories.find(element => element.id == item)
+                        if (result){
+                            return (
+                                <li key={result.id} >{result.name}</li>
+                            )
+                        }
+                    })}
+                        </ul>
                     <div className="col-md-4">
                         <label htmlFor="inputName" className="form-label">En caso de no ver categoria deseada, crea una nueva</label>
                         <input 
@@ -151,9 +162,9 @@ const AddBook = () => {
                             id="inputName" 
                         />
                     </div>
-                    <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory(name)}>Crear Categoria</button>
+                    <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory(name)}>Agregar Categoria</button>
 
-                    {/* <button type="button" className="btn btn-primary" onClick={()=> setCategories([...categories, selectedCategory])}>Ver categorias existentes</button> */}
+                    <button type="button" className="btn btn-primary" onClick={()=> selectedCategory && !categories.includes(selectedCategory) && setCategories([...categories, selectedCategory ])}>Seleccionar categoria</button>
                 </div>
 
                 <button type="button" className="btn btn-primary" onClick={handleAddBook}>

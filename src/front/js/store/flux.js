@@ -296,7 +296,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then((result) => {
 						if(result){
-							setStore(store.categories.concat(result))
+							setStore({categories: store.categories.concat(result.category)})
 							return true
 						}
 					})
