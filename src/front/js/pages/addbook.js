@@ -14,8 +14,11 @@ const AddBook = () => {
     });
     const [suggestions, setSuggestions] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedAutor, setSelectedAutor] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [autores, setAutores] = useState([]);
     const [name, setName] = useState('');
+    const [nameAutor, setNameAutor] = useState('');
     const navigate = useNavigate();
 
     const handleAddBook = () => {
@@ -23,7 +26,8 @@ const AddBook = () => {
             ...newBook,
             cantidad_paginas: Number(newBook.cantidad_paginas),
             year: Number(newBook.year),
-            book_categories: categories
+            book_categories: categories,
+            book_autores:autores
         });
         navigate("/books");
     };
@@ -55,7 +59,8 @@ const AddBook = () => {
         });
         setSuggestions([]); 
     };
-    console.log(categories)
+    // console.log(categories)
+    console.log(autores)
     return (
         <div className="container">
             <h1>Añadir Libro</h1>
@@ -165,6 +170,41 @@ const AddBook = () => {
                     <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory(name)}>Agregar Categoria</button>
 
                     <button type="button" className="btn btn-primary" onClick={()=> selectedCategory && !categories.includes(selectedCategory) && setCategories([...categories, selectedCategory ])}>Seleccionar categoria</button>
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="autor" className="form-label">Autor</label>
+                    <select defaultValue={0} onChange={(e)=>setSelectedAutor(e.target.value)} class="form-select" aria-label="Default select example">
+                        <option value={0} disabled>Seleccione un autor</option>
+                        {store.autores && store.autores.length > 0 && store.autores.map(item => {
+                            return (
+                                <option key={item.id} value={item.id}>{item.name}</option>
+                            )
+                        })}
+                    </select>
+                        <ul>
+                    {autores.map(item => {
+                        const result2 = store.autores.find(element => element.id == item)
+                        if (result2){
+                            return (
+                                <li key={result2.id} >{result2.name}</li>
+                            )
+                        }
+                    })}
+                        </ul>
+                    <div className="col-md-4">
+                        <label htmlFor="inputNameAutor" className="form-label">En caso de no ver autor deseado, cree uno nuevo</label>
+                        <input 
+                            value={nameAutor} 
+                            onChange={(e) => setNameAutor(e.target.value)} 
+                            type="text" 
+                            className="form-control" 
+                            id="inputNameAutor" 
+                        />
+                    </div>
+                    <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addAutor(nameAutor)}>Agregar Autor</button>
+
+                    <button type="button" className="btn btn-primary" onClick={()=> selectedAutor && !autores.includes(selectedAutor) && setAutores([...autores, selectedAutor ])}>Seleccionar autor</button>
                 </div>
 
                 <button type="button" className="btn btn-primary" onClick={handleAddBook}>

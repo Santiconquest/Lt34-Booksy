@@ -141,7 +141,7 @@ class Book_Category(db.Model):
 class Autor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
-
+    book_autor = db.relationship('Book_Autor', back_populates='autor',lazy=True)
 
     def __repr__(self):
         return '<Autor %r>' % self.name
@@ -152,6 +152,22 @@ class Autor(db.Model):
             "name": self.name,
             # do not serialize the password, its a security breach
         }
+
+
+class Book_Autor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)  
+    author_id = db.Column(db.Integer, db.ForeignKey('autor.id'), nullable=False)  
+    book = db.relationship(Book)
+    autor = db.relationship(Autor)
+    
+    def __repr__(self):
+        return '<Book_Autor %r>' % self.name
+
+    def serialize(self):
+        return self.autor.serialize()
+
+
 
 
 
