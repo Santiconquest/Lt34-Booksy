@@ -11,6 +11,11 @@ export const Navbar = () => {
         navigate("/");
     }
 
+    function handleLogoutLector() {
+        actions.logoutLector(); // Asegúrate de definir esta acción en el flux
+        navigate("/");
+    }
+
     return (
         <nav className="navbar navbar-light bg-light">
             <div className="container d-flex justify-content-between">
@@ -24,7 +29,7 @@ export const Navbar = () => {
                             className="d-inline-block align-top"
                         />
                     </Link>
-                    <Link to="/readersListOfBooks " className="nav-link ml-2">
+                    <Link to="/readersListOfBooks" className="nav-link ml-2">
                         Lista de Libros
                     </Link>
                     <Link to="/books" className="nav-link ml-2">
@@ -35,11 +40,20 @@ export const Navbar = () => {
                 <div className="d-flex align-items-center">
                     {store.auth ? (
                         <>
-                            <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
-                            <Link to="/verReviewCritico">
-                            <button className="btn btn-primary">My Reviews</button> 
-                            </Link>
-                            <Link to="/perfilCritico" className="btn btn-secondary ml-2">Perfil</Link>
+                            {store.userType === "critic" ? (
+                                <>
+                                    <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
+                                    <Link to="/verReviewCritico">
+                                        <button className="btn btn-primary">My Reviews</button> 
+                                    </Link>
+                                    <Link to="/perfilCritico" className="btn btn-secondary ml-2">Perfil</Link>
+                                </>
+                            ) : (
+                                <>
+                                    <button onClick={handleLogoutLector} className="btn btn-primary">Logout</button>
+                                    <Link to="/perfilLector" className="btn btn-secondary ml-2">Perfil</Link>
+                                </>
+                            )}
                         </>
                     ) : (
                         <>

@@ -28,7 +28,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			administradores:[],
 			critico: [],
 			imageUrl: "", 
-            loading: false
+            loading: false, 
+			lector: [],
+			userEmailLector: null,
+			userType: null
 		},
 		actions: {
 			getCritico: async () => {
@@ -37,6 +40,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log("Critico data fetched:", data[0].nombre); 
 					setStore({ critico: data[0] });
+				} catch (error) {
+					console.log("Error fetching critic:", error);
+				}
+			},
+			getLector: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
+					const data = await response.json();
+					console.log("Lector data fetched:", data[0].name); 
+					setStore({ lector: data[0] });
 				} catch (error) {
 					console.log("Error fetching critic:", error);
 				}
@@ -72,6 +85,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("token")
 				setStore({ auth: false, userEmail: null });
 			},
+
 			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
 				
 				const requestOptions = {
@@ -119,7 +133,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 								{
 								setStore({ 
 									auth: true,
-									userEmail: email, 
+									userEmail: email,
+									userType: "critic", 
 								});
 
 							}
@@ -475,7 +490,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						localStorage.setItem("token", data.access_token);
 						localStorage.setItem("lectorName", data.name);
-						setStore({ auth: true, lectorName: data.name });
+						setStore({ auth: true, lectorName: data.name, userEmailLector: email });
 						console.log("Login successful", data);
 						return true; 
 					} else {
@@ -585,17 +600,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					wishlist: store.wishlist.filter(id => id !== bookId)
 				});
 			},
-			getCritico: async () => {
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
-					const data = await response.json();
-					console.log("Critico data fetched:", data); 
-					setStore({ critico: data });
-				} catch (error) {
-					console.log("Error fetching critic:", error);
-				}
-			},
-		
 		}
 	};
 
