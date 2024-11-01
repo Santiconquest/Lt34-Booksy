@@ -31,7 +31,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             loading: false, 
 			lector: [],
 			userEmailLector: null,
-			userType: null
+			userType: null,
+            loading: false,
+			favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+			wishlist: JSON.parse(localStorage.getItem('wishlist')) || []
 		},
 		actions: {
 			getCritico: async () => {
@@ -146,14 +149,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log(data)
 						});
 				},
-			addLector:(email,password,name,lastName)=>{
-				console.log(email,password,name,lastName)
+			addLector:(email,password,name,lastname)=>{
+				console.log(email,password,name,lastname)
 				const store = getStore()
 				const actions = getActions()
 				const requestOptions = {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify(email,password,name,lastName),
+					body: JSON.stringify({"name":name,"lastname":lastname,"email":email,"password":password}),
 				  };
 				  
 				  fetch(`${process.env.BACKEND_URL}/api/signupLector`, requestOptions)
@@ -189,7 +192,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						// .then((data)=>setStore({readers:data.contacts}))
 					})
 			},
-			editLector:(idLector,email,password,name,lastName)=>{
+			editLector:(idLector,email,password,name,lastname)=>{
 				
 				const store = getStore();
 				const actions = getActions()
@@ -199,7 +202,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: {"Content-Type": "application/json"},
 					body: JSON.stringify({
 						"name":name,
-						"lastname":lastName,
+						"lastname":lastname,
 						"email":email,
 						"password":password}),
 				  };
@@ -220,7 +223,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 
 			},
+			loginAdmin: (email, password) => {
+					
+				const resquestOptions = {
+					method: 'POST',
+					headers: {'content-Type' : 'application/json'},
+					body: JSON.stringify({
+						"email": email,
+						"password" : password
+					})
+				};
+				fetch(`${process.env.BACKEND_URL}/api/loginAdmin`, resquestOptions)
+					.then(response => {
+						console.log (response.status)
+						if (response.status == 200){
+							setStore({ 
+								auth: true,
+								userEmail: email 
+							});
 
+						}
+						return response.json()
+					})
+					.then(data => {
+						localStorage.setItem("token",data.access_token)
+						console.log(data)
+					});
+			},
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -247,6 +276,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+			getCategories:()=>{
+
+				  fetch(`${process.env.BACKEND_URL}/api/category`)
+					.then((response) => {
+						console.log(response)
+						if(response.ok){
+							return response.json()
+						}
+					})
+					.then((result) => {
+						if(result){
+							setStore({categories:result})
+							return true
+						}
+					})
+					
+			},
 			addCategory:(name)=>{
 				console.log(name)
 				const store = getStore()
@@ -266,7 +312,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then((result) => {
 						if(result){
-							setStore(store.categories.concat(result))
+							setStore({categories: store.categories.concat(result.category)})
 							return true
 						}
 					})
@@ -508,21 +554,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ auth: false, lectorName: "" }); 
 			},
 			toggleFavorite: (bookId) => {
-                const store = getStore();
-                const favorites = store.favorites;
-
-                
-                if (favorites.includes(bookId)) {
-                    
-                    const updatedFavorites = favorites.filter(id => id !== bookId);
-                    setStore({ favorites: updatedFavorites });
-                } else {
-                    
-                    const updatedFavorites = [...favorites, bookId];
-                    setStore({ favorites: updatedFavorites });
-                }
-            },
-
+				const store = getStore();
+				let updatedFavorites;
+			
+				if (store.favorites.includes(bookId)) {
+					// Si ya está en favoritos, lo quitamos
+					updatedFavorites = store.favorites.filter(id => id !== bookId);
+				} else {
+					// Si no está, lo agregamos
+					updatedFavorites = [...store.favorites, bookId];
+				}
+			
+				// Actualiza el store
+				setStore({ favorites: updatedFavorites });
+			
+				// Guarda los favoritos en localStorage
+				localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+			},
+			
             logoutLector: () => {
                 localStorage.removeItem("token"); 
                 setStore({ auth: false }); 
@@ -564,7 +613,49 @@ const getState = ({ getStore, getActions, setStore }) => {
                 } catch (error) {
                     console.log("Error fetching reviews", error);
                 }
-            	}
+            	},
+
+				toggleWishlist: (bookId) => {
+					const store = getStore();
+					let updatedWishlist;
+				
+					if (store.wishlist.includes(bookId)) {
+						updatedWishlist = store.wishlist.filter(id => id !== bookId);
+					} else {
+						updatedWishlist = [...store.wishlist, bookId];
+					}
+				
+					setStore({ wishlist: updatedWishlist });
+					localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+				},
+				
+				removeFavorite: (bookId) => {
+					console.log("Removing from favorites:", bookId);
+					const store = getStore();
+					setStore({
+						...store,
+						favorites: store.favorites.filter(id => id !== bookId)
+					});
+				},
+				
+				removeWishlist: (bookId) => {
+					console.log("Removing from wishlist:", bookId);
+					const store = getStore();
+					setStore({
+						...store,
+						wishlist: store.wishlist.filter(id => id !== bookId)
+					});
+				},
+				getCritico: async () => {
+					try {
+						const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+						const data = await response.json();
+						console.log("Critico data fetched:", data); 
+						setStore({ critico: data });
+					} catch (error) {
+						console.log("Error fetching critic:", error);
+					}
+				}
 				
             },	
 			

@@ -8,8 +8,8 @@ const SignupLector = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [suscriptionDate, setSuscriptionDate] = useState('');
+    const [lastname, setLastname] = useState('');
+   
 
     const { store, actions } = useContext(Context);
 
@@ -17,7 +17,7 @@ const SignupLector = () => {
         e.preventDefault(); 
 
      
-        actions.addLector(email,password,name,lastName,suscriptionDate);
+        actions.addLector(email,password,name,lastname);
     }
 
     return (
@@ -36,37 +36,16 @@ const SignupLector = () => {
                         />
                     </div>
                     <div className="col-md-4">
-                        <label htmlFor="inputLastName" className="form-label">Last Name</label>
+                        <label htmlFor="inputLastname" className="form-label">Last Name</label>
                         <input 
-                            value={lastName} 
-                            onChange={(e) => setLastName(e.target.value)} 
+                            value={lastname} 
+                            onChange={(e) => setLastname(e.target.value)} 
                             type="text" 
                             className="form-control" 
-                            id="inputLastName" 
+                            id="inputLastname" 
                         />
                     </div>
-                    <div className="col-md-4">
-                        <label htmlFor="inputGender" className="form-label">Suscription Date</label>
-                        <select 
-                            value={suscriptionDate} 
-                            onChange={(e) => setSuscriptionDate(e.target.value)} 
-                            className="form-select" 
-                            aria-label="Default select example"
-                        >
-                            <option value="" disabled>Select Date</option>
-                            {/* Ver como puedo agregar un calendario con la fecha actual */}
-                            <label for="start">Start date:</label>
-
-                            <input 
-                                type="date" 
-                                id="start" 
-                                name="trip-start" 
-                                value="2024-10-22" 
-                                min="2024-01-01" 
-                                max="2028-12-31" />
-
-                        </select>
-                    </div>
+                    
                 </div>
                 <div className="row g-3">
                     <div className="col-md-6">

@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 
 const AddBook = () => {
-    const { actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
     const [newBook, setNewBook] = useState({
         titulo: "",
         autor: "",
@@ -13,6 +13,9 @@ const AddBook = () => {
         cover: ""
     });
     const [suggestions, setSuggestions] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [name, setName] = useState('');
     const navigate = useNavigate();
 
     const handleAddBook = () => {
@@ -20,6 +23,7 @@ const AddBook = () => {
             ...newBook,
             cantidad_paginas: Number(newBook.cantidad_paginas),
             year: Number(newBook.year),
+            book_categories: categories
         });
         navigate("/books");
     };
@@ -51,7 +55,7 @@ const AddBook = () => {
         });
         setSuggestions([]); 
     };
-
+    console.log(categories)
     return (
         <div className="container">
             <h1>Añadir Libro</h1>
@@ -128,6 +132,41 @@ const AddBook = () => {
                         onChange={e => setNewBook({ ...newBook, cover: e.target.value })}
                     />
                 </div>
+                <div className="mb-3">
+                    <label htmlFor="genero" className="form-label">Categoria</label>
+                    <select defaultValue={0} onChange={(e)=>setSelectedCategory(e.target.value)} class="form-select" aria-label="Default select example">
+                        <option value={0} disabled>Selecciona una categoria</option>
+                        {store.categories && store.categories.length > 0 && store.categories.map(item => {
+                            return (
+                                <option key={item.id} value={item.id}>{item.name}</option>
+                            )
+                        })}
+                    </select>
+                        <ul>
+                    {categories.map(item => {
+                        const result = store.categories.find(element => element.id == item)
+                        if (result){
+                            return (
+                                <li key={result.id} >{result.name}</li>
+                            )
+                        }
+                    })}
+                        </ul>
+                    <div className="col-md-4">
+                        <label htmlFor="inputName" className="form-label">En caso de no ver categoria deseada, crea una nueva</label>
+                        <input 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                            type="text" 
+                            className="form-control" 
+                            id="inputName" 
+                        />
+                    </div>
+                    <button type="button" className="btn btn-primary my-5" onClick={()=>actions.addCategory(name)}>Agregar Categoria</button>
+
+                    <button type="button" className="btn btn-primary" onClick={()=> selectedCategory && !categories.includes(selectedCategory) && setCategories([...categories, selectedCategory ])}>Seleccionar categoria</button>
+                </div>
+
                 <button type="button" className="btn btn-primary" onClick={handleAddBook}>
                     Añadir Libro
                 </button>
