@@ -14,7 +14,7 @@ export const Books = () => {
     const filteredBooks = store.books?.filter(book =>
         book.titulo.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+console.log(store.books)
     return (
         <>
             <div className="container">
@@ -45,7 +45,7 @@ export const Books = () => {
                                         <strong>Autor:</strong> {book.autor} <br />
                                         <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
                                         <strong>Género:</strong> {book.genero} <br />
-                                        <strong>Año Publicado:</strong> {book.year}
+                                        <strong>Año Publicado:</strong> {book.year} <br />
                                     </p>
                                     <Link to={`/editbook/${book.id}`} className="btn btn-warning">Editar</Link>
                                     <button

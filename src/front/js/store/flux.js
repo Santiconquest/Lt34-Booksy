@@ -26,6 +26,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			administradores:[],
 			critico: [],
 			imageUrl: "", 
+            loading: false, 
+			lector: [],
+			userEmailLector: null,
+			userType: null,
             loading: false,
 			favorites: JSON.parse(localStorage.getItem('favorites')) || [],
 			wishlist: JSON.parse(localStorage.getItem('wishlist')) || []
@@ -37,6 +41,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log("Critico data fetched:", data[0].nombre); 
 					setStore({ critico: data[0] });
+				} catch (error) {
+					console.log("Error fetching critic:", error);
+				}
+			},
+			getLector: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
+					const data = await response.json();
+					console.log("Lector data fetched:", data[0].name); 
+					setStore({ lector: data[0] });
 				} catch (error) {
 					console.log("Error fetching critic:", error);
 				}
@@ -72,6 +86,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("token")
 				setStore({ auth: false, userEmail: null });
 			},
+
 			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
 				
 				const requestOptions = {
@@ -119,7 +134,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 								{
 								setStore({ 
 									auth: true,
-									userEmail: email, 
+									userEmail: email,
+									userType: "critic", 
 								});
 
 							}
@@ -294,7 +310,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then((result) => {
 						if(result){
-							setStore(store.categories.concat(result))
+							setStore({categories: store.categories.concat(result.category)})
 							return true
 						}
 					})
@@ -359,7 +375,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then((result) => {
 						if(result){
-							setStore(store.autores.concat(result))
+							setStore({autores:store.autores.concat(result.autor)})
 							return true
 						}
 					})
@@ -518,7 +534,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						localStorage.setItem("token", data.access_token);
 						localStorage.setItem("lectorName", data.name);
-						setStore({ auth: true, lectorName: data.name });
+						setStore({ auth: true, lectorName: data.name, userEmailLector: email });
 						console.log("Login successful", data);
 						return true; 
 					} else {
@@ -648,6 +664,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				
             },	
 			
+			toggleWishlist: (bookId) => {
+				const store = getStore();
+				const wishlist = store.wishlist;
+			
+				if (wishlist.includes(bookId)) {
+					const updatedWishlist = wishlist.filter(id => id !== bookId);
+					setStore({ wishlist: updatedWishlist });
+				} else {
+					const updatedWishlist = [...wishlist, bookId];
+					setStore({ wishlist: updatedWishlist });
+				}
+				
+			},
+			
+		
+			removeFavorite: (bookId) => {
+				console.log("Removing from favorites:", bookId);
+				const store = getStore();
+				setStore({
+					...store,
+					favorites: store.favorites.filter(id => id !== bookId)
+				});
+			},
+			
+			removeWishlist: (bookId) => {
+				console.log("Removing from wishlist:", bookId);
+				const store = getStore();
+				setStore({
+					...store,
+					wishlist: store.wishlist.filter(id => id !== bookId)
+				});
+			},
 		}
 	};
 
