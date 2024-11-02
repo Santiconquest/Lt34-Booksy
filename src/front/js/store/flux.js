@@ -19,12 +19,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userId: null,
 			books : [],
 			readers:[],
-			reviews: [],
+			reviews: JSON.parse(localStorage.getItem('reviews')) || [],
 			lectorName: localStorage.getItem("lectorName") || "",
 			categories:[],
 			autores:[],
-			favorites: [],
-			wishlist: [],
 			administradores:[],
 			critico: [],
 			imageUrl: "", 
@@ -599,12 +597,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					const data = await response.json();
 					console.log("Reseña creada:", data);
+					
+					// Actualizar localStorage
+					const currentReviews = getStore().reviews;
+					const updatedReviews = [...currentReviews, data]; // Agregar la nueva reseña
+					setStore({ reviews: updatedReviews });
+					localStorage.setItem('reviews', JSON.stringify(updatedReviews)); // Guardar en localStorage
+			
 					return data; 
 				} catch (error) {
 					console.error("Error en la solicitud:", error);
 				}
-				
 			},
+			
 			getReviews: async () => {
                 try {
                     const response = await fetch(`${process.env.BACKEND_URL}/api/reviews`);

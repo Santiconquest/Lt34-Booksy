@@ -24,7 +24,7 @@ import { BookDetail } from "./pages/bookDetail";
 import { FavoritosLector } from './pages/favoritosLector';
 import { WishlistLector } from "./pages/wishlistLector";
 import BooksyAdmin from "./pages/booksyadministrador";
-import PrivateRoute from "./pages/privateRoute";
+import PrivateRouteLector from "./pages/privateRouteLector";
 import { CriticReviews } from "./pages/verReviewCritico";
 import ProfileCritico from "./pages/perfilCritico";
 import ProfileLector from "./pages/perfilLector";
@@ -62,10 +62,10 @@ const Layout = () => {
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginAdmin />} path="/loginAdmin" /> 
                         <Route element={<LoginLector />} path="/loginLector" /> 
-                        <Route element={<PrivateRoute element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
-                        <Route element={<PrivateRoute element={<FavoritosLector />} />} path="/favoritosLector" />
-                        <Route element={<PrivateRoute element={<WishlistLector />} />} path="/wishlistLector" />
-                        <Route element={<PrivateRoute element={<BookDetail />} />} path="/bookdetails/:id" /> 
+                        <Route element={<PrivateRouteLector element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
+                        <Route element={<PrivateRouteLector element={<FavoritosLector />} />} path="/favoritosLector" />
+                        <Route element={<PrivateRouteLector element={<WishlistLector />} />} path="/wishlistLector" />
+                        <Route element={<PrivateRouteLector element={<BookDetail />} />} path="/bookdetails/:id" /> 
                         <Route element={<Lector />} path="/lector/:idLector" />
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
