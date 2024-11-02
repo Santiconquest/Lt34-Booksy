@@ -15,7 +15,7 @@ const LoginAdmin = () => {
     return (
         <div>
             {store.auth ? (
-                <Navigate to='/' /> 
+                <Navigate to='/addbook' /> 
             ) : (
                 <form className="w-50 mx-auto" onSubmit={sendData}>
                     <div className="mb-3">
