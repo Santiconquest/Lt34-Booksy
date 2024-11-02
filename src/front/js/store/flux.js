@@ -377,7 +377,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then((result) => {
 						if(result){
-							setStore(store.autores.concat(result))
+							setStore({autores:store.autores.concat(result.autor)})
 							return true
 						}
 					})
