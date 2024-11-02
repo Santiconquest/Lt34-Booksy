@@ -14,7 +14,7 @@ export const BookDetailsCritic = () => {
             await actions.getReviews();
         };
         fetchReviews();
-    }, []);
+    }, [actions]);
 
     useEffect(() => {
         setReviews(store.reviews);
@@ -29,20 +29,20 @@ export const BookDetailsCritic = () => {
                 }
                 const data = await response.json();
                 setBookData(data.book); 
-                setReviews(data.reviews || []); 
+                setReviews(data.reviews || store.reviews);
             } catch (error) {
                 console.error("Error fetching book data:", error);
             }
         };
 
         fetchBookData();
-    }, [params.book_id]);
+    }, [params.book_id, store.reviews]); 
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
         const newReview = await actions.addReview(store.userId, params.book_id, review);
         if (newReview) {
-            setReviews([...reviews, newReview]); 
+            actions.getReviews(); 
             setReview("");
         } else {
             console.error("Error al agregar la reseña.");
@@ -84,7 +84,6 @@ export const BookDetailsCritic = () => {
                 ))}
             </ul>
 
-
             <Link to="/listaLibrosCritico">
                 <span className="btn btn-primary btn-lg" role="button">
                     Back to list
@@ -93,8 +92,3 @@ export const BookDetailsCritic = () => {
         </div>
     );
 };
-
-
-
-
-

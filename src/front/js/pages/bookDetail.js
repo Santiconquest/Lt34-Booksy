@@ -8,12 +8,14 @@ export const BookDetail = () => {
     const { store, actions } = useContext(Context);
     const [book, setBook] = useState(null);
     const [description, setDescription] = useState("");
+    const [reviews, setReviews] = useState([]); // Estado para almacenar reseñas
 
     useEffect(() => {
         const foundBook = store.books.find((b) => b.id === parseInt(id));
         if (foundBook) {
             setBook(foundBook);
-            fetchBookDescription(foundBook.titulo); 
+            fetchBookDescription(foundBook.titulo);
+            fetchBookReviews(foundBook.id); // Obtener reseñas del libro
         }
     }, [id, store.books]);
 
@@ -32,6 +34,18 @@ export const BookDetail = () => {
             setDescription("Descripción no disponible");
         }
     };
+
+    const fetchBookReviews = async (bookId) => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/reviews?book_id=${bookId}`);
+            if (!response.ok) throw new Error("Error fetching reviews");
+            const data = await response.json();
+            setReviews(data); 
+        } catch (error) {
+            console.log("Error fetching reviews", error);
+        }
+    };
+    
 
     const handleAddToFavorites = () => {
         if (book) {
@@ -79,6 +93,20 @@ export const BookDetail = () => {
                     </button>
                 </div>
             </div>
+
+            
+            <h2 className="mt-4">Reseñas</h2>
+            <ul className="list-group">
+                {reviews.length > 0 ? (
+                    reviews.map((review) => (
+                        <li key={review.id} className="list-group-item">
+                            <strong>{review.id_critico}:</strong> {review.comentario}
+                        </li>
+                    ))
+                ) : (
+                    <li className="list-group-item">No hay reseñas disponibles.</li>
+                )}
+            </ul>
         </div>
     );
 };
