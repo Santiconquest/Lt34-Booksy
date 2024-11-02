@@ -51,8 +51,10 @@ const ProfileCritico = () => {
             ) : (
                 <p>Loading profile...</p>
             )}
-            <Link to="/">
-                <button className="btn btn-primary my-5">Back to Booksy</button>
+            <Link to="/listaLibrosCritico">
+                <span className="btn btn-primary btn-lg" role="button">
+                    Back to list
+                </span>
             </Link>
         </div>
     );
