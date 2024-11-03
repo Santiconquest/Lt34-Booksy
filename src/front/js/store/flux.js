@@ -35,6 +35,64 @@ const getState = ({ getStore, getActions, setStore }) => {
 			wishlist: JSON.parse(localStorage.getItem('wishlist')) || []
 		},
 		actions: {
+			// Dentro de tus actions en el contexto
+editReview: async (updatedReview, reviewId) => {
+    const store = getStore();
+
+    const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedReview),
+    };
+
+    try {
+        const response = await fetch(`${process.env.BACKEND_URL}/api/reviews/${reviewId}`, requestOptions);
+        if (response.ok) {
+            const result = await response.json();
+        
+            setStore({
+                ...store,
+                reviews: store.reviews.map(review =>
+                    review.id === reviewId ? { ...review, comentario: result.comentario } : review
+                )
+            });
+            return true;
+        } else {
+            console.error("Error al editar la reseña:", response.status);
+            return false;
+        }
+    } catch (error) {
+        console.error("Error al editar la reseña:", error);
+        return false;
+    }
+},
+
+			
+			deleteReview: async (idReview) => {
+				const store = getStore();
+			
+				const requestOptions = {
+					method: "DELETE",
+					redirect: "follow"
+				};
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/reviews/${idReview}`, requestOptions);
+					
+					if (!response.ok) {
+						const errorData = await response.json();
+						console.error("Error al eliminar la reseña:", errorData);
+						return false; 
+					}
+					
+					console.log("Reseña eliminada con éxito:", idReview);
+					return true; 
+				} catch (error) {
+					console.error("Error en la solicitud de eliminación:", error);
+					return false; 
+				}
+			},
+			
 			getCritico: async () => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
@@ -603,18 +661,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const updatedReviews = [...currentReviews, data]; // Agregar la nueva reseña
 					setStore({ reviews: updatedReviews });
 					localStorage.setItem('reviews', JSON.stringify(updatedReviews)); // Guardar en localStorage
-			
+				
 					return data; 
 				} catch (error) {
 					console.error("Error en la solicitud:", error);
 				}
 			},
 			
-			getReviews: async () => {
+			getReviews: async (id_book=null) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/reviews`);
-                    const data = await response.json();
-                    setStore({ reviews: data });
+                     await fetch(`${process.env.BACKEND_URL}/api/reviews`)
+					 .then(response => {
+
+						if(response.ok){
+							return response.json()
+						}
+					 })
+					 .then((data)=>{ 
+
+						 if (id_book) {							 
+							 const filteredReviews = data.filter(book => book.id_book == id_book)
+							 setStore({ reviews: filteredReviews });
+							 return;
+						 }
+						 setStore({ reviews: data });
+					 })
                 } catch (error) {
                     console.log("Error fetching reviews", error);
                 }
@@ -656,7 +727,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
 						const data = await response.json();
 						console.log("Critico data fetched:", data); 
-						setStore({ critico: data });
+						setStore({ critico: data [0] });
 					} catch (error) {
 						console.log("Error fetching critic:", error);
 					}
@@ -696,6 +767,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					wishlist: store.wishlist.filter(id => id !== bookId)
 				});
 			},
+			
 		}
 	};
 

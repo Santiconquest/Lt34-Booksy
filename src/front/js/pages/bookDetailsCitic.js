@@ -6,19 +6,17 @@ export const BookDetailsCritic = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
     const [bookData, setBookData] = useState(null);
-    const [review, setReview] = useState(""); 
+    const [review, setReview] = useState("");
     const [reviews, setReviews] = useState(store.reviews);
+    const [editingReviewId, setEditingReviewId] = useState(null);
+    const [editedComment, setEditedComment] = useState("");
 
     useEffect(() => {
         const fetchReviews = async () => {
-            await actions.getReviews();
+            await actions.getReviews(params.book_id);
         };
         fetchReviews();
-    }, [actions]);
-
-    useEffect(() => {
-        setReviews(store.reviews);
-    }, [store.reviews]);
+    }, []);
 
     useEffect(() => {
         const fetchBookData = async () => {
@@ -28,24 +26,50 @@ export const BookDetailsCritic = () => {
                     throw new Error("Network response was not ok");
                 }
                 const data = await response.json();
-                setBookData(data.book); 
-                setReviews(data.reviews || store.reviews);
+                setBookData(data.book);
+                setReviews(store.reviews);
             } catch (error) {
                 console.error("Error fetching book data:", error);
             }
         };
 
         fetchBookData();
-    }, [params.book_id, store.reviews]); 
+    }, [params.book_id, store.reviews]);
 
     const handleReviewSubmit = async (e) => {
         e.preventDefault();
         const newReview = await actions.addReview(store.userId, params.book_id, review);
         if (newReview) {
-            actions.getReviews(); 
+            actions.getReviews(params.book_id);
             setReview("");
         } else {
             console.error("Error al agregar la reseña.");
+        }
+    };
+
+    const handleEditClick = (review) => {
+        setEditingReviewId(review.id);
+        setEditedComment(review.comentario);
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        const updatedReview = { comentario: editedComment };
+        const edited = await actions.editReview(updatedReview, editingReviewId);
+        if (edited) {
+            actions.getReviews(params.book_id); // Refresca las reseñas después de editar
+            setEditingReviewId(null);
+            setEditedComment("");
+        } else {
+            console.error("Error al editar la reseña.");
+        }
+    };
+
+    const handleDeleteReview = async (reviewId) => {
+        const deleted = await actions.deleteReview(reviewId);
+        if (deleted) {
+            actions.getReviews(params.book_id); 
+            console.error("Error al eliminar la reseña.");
         }
     };
 
@@ -79,7 +103,27 @@ export const BookDetailsCritic = () => {
             <ul className="list-group">
                 {reviews.map((r) => (
                     <li key={r.id} className="list-group-item">
-                        <strong>{r.id_critico}:</strong> {r.comentario}
+                        <strong>{r.id_critico}:</strong> {editingReviewId === r.id ? (
+                            <form onSubmit={handleEditSubmit}>
+                                <textarea
+                                    value={editedComment}
+                                    onChange={(e) => setEditedComment(e.target.value)}
+                                    required
+                                />
+                                <button type="submit" className="btn btn-success btn-sm">Guardar</button>
+                                <button type="button" className="btn btn-secondary btn-sm" onClick={() => setEditingReviewId(null)}>Cancelar</button>
+                            </form>
+                        ) : (
+                            <span>{r.comentario}</span>
+                        )}
+                        <div className="float-end">
+                            {editingReviewId !== r.id && (
+                                <>
+                                    <button className="btn btn-warning btn-sm" onClick={() => handleEditClick(r)}>Editar</button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>Eliminar</button>
+                                </>
+                            )}
+                        </div>
                     </li>
                 ))}
             </ul>

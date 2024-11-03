@@ -119,7 +119,9 @@ class Review(db.Model):
         return f'<Review {self.comentario}>'
     def serialize(self):
         return {
+            "id": self.id,
             "id_critico": self.id_critico,
+            "id_book": self.id_book,
             "email_critico": self.critico.email if self.critico else None,
             "comentario": self.comentario,
         }
