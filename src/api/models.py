@@ -71,12 +71,12 @@ class Book(db.Model):
         }
 
 class Lector(db.Model):
+    __tablename__ = 'lector'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=False, nullable=False)
-    lastname = db.Column(db.String(120), unique=False, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
-  
+    name = db.Column(db.String(100))
+    lastname = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(200))
 
 
     def __repr__(self):
@@ -89,6 +89,41 @@ class Lector(db.Model):
             "name": self.name,
             "lastname": self.lastname
         }
+    
+class FavoriteBook(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lector_id = db.Column(db.Integer, db.ForeignKey('lector.id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+
+    lector = db.relationship('Lector', backref='favorite_books')
+    book = db.relationship('Book', backref='favorited_by')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "book_id": self.book_id,
+            "titulo": self.book.titulo,  
+            "autor": self.book.autor      
+        }
+
+
+class WishlistBook(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    lector_id = db.Column(db.Integer, db.ForeignKey('lector.id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+
+    lector = db.relationship('Lector', backref='wishlist_books')
+    book = db.relationship('Book', backref='wishlisted_by')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "book_id": self.book_id,
+            "titulo": self.book.titulo,  
+            "autor": self.book.autor      
+        }
+
+
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -22,6 +22,8 @@ export const ReadersListOfBooks = () => {
         actions.getBooks();
     }, []);
 
+    
+
     const filteredBooks = store.books.filter(book =>
         book.titulo.toLowerCase().includes(searchTerm.toLowerCase()) &&
         book.autor.toLowerCase().includes(searchAuthor.toLowerCase()) && 
@@ -131,7 +133,7 @@ export const ReadersListOfBooks = () => {
                                                             {truncateText(favoriteBook.titulo, 5)} 
                                                         </Link>
                                                         <span 
-                                                            onClick={() => actions.removeFavorite(favoriteBook.id)} 
+                                                            onClick={() => actions.toggleFavorite(favoriteBook.id)} 
                                                             className="remove-favorite-icon"
                                                             style={{ cursor: 'pointer' }}
                                                         >
@@ -166,7 +168,7 @@ export const ReadersListOfBooks = () => {
                                                             {truncateText(wishlistBook.titulo, 5)} 
                                                         </Link>
                                                         <span 
-                                                            onClick={() => actions.removeWishlist(wishlistBook.id)} 
+                                                            onClick={() => actions.toggleWishlist(wishlistBook.id)} 
                                                             className="remove-wishlist-icon"
                                                             style={{ cursor: 'pointer' }}
                                                         >

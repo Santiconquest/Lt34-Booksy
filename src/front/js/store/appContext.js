@@ -28,6 +28,14 @@ const injectContext = PassedComponent => {
 			 * you should do your ajax requests or fetch api requests here. Do not use setState() to save data in the
 			 * store, instead use actions, like this:
 			 **/
+			const currentLectorId = localStorage.getItem("lectorId");
+			if (currentLectorId) {
+				const fetchData = async () => {
+					await state.actions.getFavorites(currentLectorId);
+					await state.actions.getWishlist(currentLectorId);
+				};
+				fetchData();
+    }
 			state.actions.getCategories(); // <---- calling this function from the flux.js actions
 		}, []);
 

@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Critico, Book, Lector, Review
-from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category
+from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category, FavoriteBook, WishlistBook
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -257,6 +257,16 @@ def delete_lector(lector_id):
 
     return jsonify(response_body), 200
 
+@api.route('/lector/<int:lector_id>', methods=['GET'])
+def get_lector_by_id(lector_id):
+    lector = Lector.query.get(lector_id)
+    
+    if lector is None:
+        return jsonify({"error": "Lector no encontrado"}), 404
+    
+    return jsonify(lector.serialize()), 200
+
+
 @api.route('/loginLector', methods=['POST'])
 def login_lector():
     body = request.get_json()
@@ -279,10 +289,111 @@ def login_lector():
 
     response_body = {
         "msg": "Inicio de sesión exitoso",
-        "access_token": access_token
+        "access_token": access_token,
+        "id": lector.id, 
+        "name": lector.name  
     }
 
     return jsonify(response_body), 200
+
+@api.route('/lector/<int:lector_id>/favorites/<int:book_id>', methods=['POST'])
+def add_favorite(lector_id, book_id):
+    # Verificar si el lector y el libro existen antes de agregar a favoritos
+    lector = Lector.query.get(lector_id)
+    book = Book.query.get(book_id)
+
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+
+    new_favorite = FavoriteBook(lector_id=lector_id, book_id=book_id)
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify({"msg": "Libro agregado a favoritos"}), 201
+
+@api.route('/lector/<int:lector_id>/favorites', methods=['GET'])
+def get_favorites(lector_id):
+    # Verificar si el lector existe
+    lector = Lector.query.get(lector_id)
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+
+    # Obtener los libros favoritos del lector
+    favorites = FavoriteBook.query.filter_by(lector_id=lector_id).all()
+    
+    # Preparar la respuesta con la lista de libros favoritos
+    favorite_books = []
+    for fav in favorites:
+        favorite_books.append({
+            "book_id": fav.book_id,
+            "titulo": fav.book.titulo,  # Agregar título del libro
+            "autor": fav.book.autor      # Agregar autor del libro
+        })
+
+    return jsonify(favorite_books), 200
+
+
+
+@api.route('/lector/<int:lector_id>/favorites/<int:book_id>', methods=['DELETE'])
+def remove_favorite(lector_id, book_id):
+    favorite = FavoriteBook.query.filter_by(lector_id=lector_id, book_id=book_id).first()
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({"msg": "Libro eliminado de favoritos"}), 200
+    return jsonify({"msg": "Favorito no encontrado"}), 404
+
+
+@api.route('/lector/<int:lector_id>/wishlist/<int:book_id>', methods=['POST'])
+def add_wishlist(lector_id, book_id):
+    lector = Lector.query.get(lector_id)
+    book = Book.query.get(book_id)
+
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+
+    new_wishlist_item = WishlistBook(lector_id=lector_id, book_id=book_id)
+    db.session.add(new_wishlist_item)
+    db.session.commit()
+    return jsonify({"msg": "Libro agregado a la wishlist"}), 201
+
+
+
+@api.route('/lector/<int:lector_id>/wishlist', methods=['GET'])
+def get_wishlist(lector_id):
+    # Verificar si el lector existe
+    lector = Lector.query.get(lector_id)
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+
+    # Obtener los libros de la wishlist del lector
+    wishlist_items = WishlistBook.query.filter_by(lector_id=lector_id).all()
+    
+    # Preparar la respuesta con la lista de libros en la wishlist
+    wishlist_books = []
+    for item in wishlist_items:
+        wishlist_books.append({
+            "book_id": item.book_id,
+            "titulo": item.book.titulo,  
+            "autor": item.book.autor      
+        })
+
+    return jsonify(wishlist_books), 200
+
+
+
+@api.route('/lector/<int:lector_id>/wishlist/<int:book_id>', methods=['DELETE'])
+def remove_from_wishlist(lector_id, book_id):
+    wishlist_item = WishlistBook.query.filter_by(lector_id=lector_id, book_id=book_id).first()
+    if wishlist_item:
+        db.session.delete(wishlist_item)
+        db.session.commit()
+        return jsonify({"msg": "Libro eliminado de la wishlist"}), 200
+    return jsonify({"msg": "Libro no encontrado en la wishlist"}), 404
+
 
 
 @api.route('/reviews', methods=['GET'])

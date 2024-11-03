@@ -17,6 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			auth: !!localStorage.getItem("token"),
 			userEmail: null,
 			userId: null,
+			lectorId: localStorage.getItem("lectorId") || null,
 			books : [],
 			readers:[],
 			reviews: JSON.parse(localStorage.getItem('reviews')) || [],
@@ -31,8 +32,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userEmailLector: null,
 			userType: null,
             loading: false,
-			favorites: JSON.parse(localStorage.getItem('favorites')) || [],
-			wishlist: JSON.parse(localStorage.getItem('wishlist')) || []
+			favorites: Array.isArray(JSON.parse(localStorage.getItem('favorites'))) ? JSON.parse(localStorage.getItem('favorites')) : [],
+			wishlist: Array.isArray(JSON.parse(localStorage.getItem('wishlist'))) ? JSON.parse(localStorage.getItem('wishlist')) : []
 		},
 		actions: {
 			getCritico: async () => {
@@ -527,54 +528,153 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({ email, password })
 				};
-			
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/loginLector`, requestOptions);
+			
 					if (response.ok) {
 						const data = await response.json();
 						localStorage.setItem("token", data.access_token);
 						localStorage.setItem("lectorName", data.name);
-						setStore({ auth: true, lectorName: data.name, userEmailLector: email });
-						console.log("Login successful", data);
-						return true; 
+						console.log("Lector ID almacenado:", data.id);
+						localStorage.setItem("lectorId", data.id);
+			
+						// Limpiamos los favoritos y wishlist antes de cargar los nuevos
+						setStore({
+							auth: true,
+							lectorName: data.name,
+							userEmailLector: email,
+							lectorId: data.id,
+							favorites: [], // Limpiamos los favoritos
+							wishlist: []   // Limpiamos la wishlist
+						});
+			
+						// Llamamos a las acciones para obtener los favoritos y wishlist del lector actual
+						await getActions().getFavorites(data.id);
+						await getActions().getWishlist(data.id);
+			
+						return true;
 					} else {
 						console.error("Login failed", response.status);
-						return false; 
+						const errorData = await response.json();
+						console.error("Error details:", errorData);
+						return false;
 					}
 				} catch (error) {
 					console.error("Error logging in", error);
-					return false; 
+					return false;
 				}
 			},
+			
+			
+			
+			
 			logoutLector: () => {
 				localStorage.removeItem("token");
 				localStorage.removeItem("lectorName");
-				setStore({ auth: false, lectorName: "" }); 
+				localStorage.removeItem("lectorId"); 
+				console.log("ID eliminado:");
+				
+				setStore({ auth: false, lectorName: "", lectorId: null }); 
 			},
-			toggleFavorite: (bookId) => {
+
+			getFavorites: async (lectorId) => {
+				const favoritesResponse = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}/favorites`);
+				const favorites = await favoritesResponse.json();
+				setStore({ favorites: favorites.map(fav => fav.book_id) });
+			},
+			getWishlist: async (lectorId) => {
+				const wishlistResponse = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}/wishlist`);
+				const wishlist = await wishlistResponse.json();
+				setStore({ wishlist: wishlist.map(item => item.book_id) });
+			},
+
+			toggleFavorite: async (bookId) => {
 				const store = getStore();
-				let updatedFavorites;
+				const lectorId = store.lectorId;
 			
-				if (store.favorites.includes(bookId)) {
-					// Si ya está en favoritos, lo quitamos
-					updatedFavorites = store.favorites.filter(id => id !== bookId);
-				} else {
-					// Si no está, lo agregamos
-					updatedFavorites = [...store.favorites, bookId];
+				if (!lectorId) {
+					console.error("lectorId is undefined. Please log in.");
+					return;
 				}
 			
-				// Actualiza el store
-				setStore({ favorites: updatedFavorites });
+				console.log("Favorites before usage:", store.favorites);
 			
-				// Guarda los favoritos en localStorage
-				localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+				if (!Array.isArray(store.favorites)) {
+					console.error("Favorites is not an array");
+					return;
+				}
+			
+				// Asegúrate de que los tipos coincidan
+				const isFavorite = store.favorites.includes(bookId);
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}/favorites/${bookId}`, {
+						method: isFavorite ? 'DELETE' : 'POST'
+					});
+			
+					if (!response.ok) {
+						console.error(`Error al ${isFavorite ? 'eliminar' : 'agregar'} de favoritos:`, response.status);
+						return;
+					}
+			
+					const updatedFavorites = isFavorite
+						? store.favorites.filter(id => id !== bookId) // Eliminar de favoritos
+						: [...store.favorites, bookId]; // Agregar a favoritos
+			
+					// Actualizar el estado local
+					setStore({ favorites: updatedFavorites });
+					localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+			
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+				}
 			},
 			
-            logoutLector: () => {
-                localStorage.removeItem("token"); 
-                setStore({ auth: false }); 
-                console.log("Logged out");
-            },	
+			toggleWishlist: async (bookId) => {
+				console.log("toggleWishlist called with bookId:", bookId);
+				const store = getStore();
+				const lectorId = store.lectorId;
+			
+				if (!lectorId) {
+					console.error("lectorId is undefined. Please log in.");
+					return;
+				}
+			
+				console.log("Wishlist before usage:", store.wishlist);
+			
+				if (!Array.isArray(store.wishlist)) {
+					console.error("Wishlist is not an array");
+					return;
+				}
+			
+				// Asegúrate de que los tipos coincidan
+				const isInWishlist = store.wishlist.includes(bookId);
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}/wishlist/${bookId}`, {
+						method: isInWishlist ? 'DELETE' : 'POST'
+					});
+			
+					if (!response.ok) {
+						console.error(`Error al ${isInWishlist ? 'eliminar' : 'agregar'} a la wishlist:`, response.status);
+						return;
+					}
+			
+					const updatedWishlist = isInWishlist
+						? store.wishlist.filter(id => id !== bookId) // Eliminar de la wishlist
+						: [...store.wishlist, bookId]; // Agregar a la wishlist
+			
+					// Actualizar el estado local
+					setStore({ wishlist: updatedWishlist });
+					localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+			
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+				}
+			},
+			
+			
+			
 			addReview: async (id_critico, id_book, comentario) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/reviews`, {
@@ -620,37 +720,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             	},
 
-				toggleWishlist: (bookId) => {
-					const store = getStore();
-					let updatedWishlist;
 				
-					if (store.wishlist.includes(bookId)) {
-						updatedWishlist = store.wishlist.filter(id => id !== bookId);
-					} else {
-						updatedWishlist = [...store.wishlist, bookId];
-					}
 				
-					setStore({ wishlist: updatedWishlist });
-					localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-				},
-				
-				removeFavorite: (bookId) => {
-					console.log("Removing from favorites:", bookId);
-					const store = getStore();
-					setStore({
-						...store,
-						favorites: store.favorites.filter(id => id !== bookId)
-					});
-				},
-				
-				removeWishlist: (bookId) => {
-					console.log("Removing from wishlist:", bookId);
-					const store = getStore();
-					setStore({
-						...store,
-						wishlist: store.wishlist.filter(id => id !== bookId)
-					});
-				},
 				getCritico: async () => {
 					try {
 						const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
@@ -664,38 +735,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				
             },	
 			
-			toggleWishlist: (bookId) => {
-				const store = getStore();
-				const wishlist = store.wishlist;
-			
-				if (wishlist.includes(bookId)) {
-					const updatedWishlist = wishlist.filter(id => id !== bookId);
-					setStore({ wishlist: updatedWishlist });
-				} else {
-					const updatedWishlist = [...wishlist, bookId];
-					setStore({ wishlist: updatedWishlist });
-				}
-				
-			},
-			
-		
-			removeFavorite: (bookId) => {
-				console.log("Removing from favorites:", bookId);
-				const store = getStore();
-				setStore({
-					...store,
-					favorites: store.favorites.filter(id => id !== bookId)
-				});
-			},
-			
-			removeWishlist: (bookId) => {
-				console.log("Removing from wishlist:", bookId);
-				const store = getStore();
-				setStore({
-					...store,
-					wishlist: store.wishlist.filter(id => id !== bookId)
-				});
-			},
 		}
 	};
 
