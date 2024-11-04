@@ -19,6 +19,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userId: null,
 			lectorId: localStorage.getItem("lectorId") || null,
 			books : [],
+			recommendations: [],
 			readers:[],
 			reviews: JSON.parse(localStorage.getItem('reviews')) || [],
 			lectorName: localStorage.getItem("lectorName") || "",
@@ -117,6 +118,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(data)
 					});
 				},
+				
+
+				getRecommendations: async () => {
+					const store = getStore();
+					const lectorId = store.lectorId;
+					setStore({ loading: true });
+				
+					try {
+						const response = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}/recommendations`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': `Bearer ${localStorage.getItem("token")}`
+							}
+						});
+						
+						if (!response.ok) {
+							throw new Error('Error al obtener recomendaciones');
+						}
+						
+						const data = await response.json();
+						console.log("Data received from API:", data);
+						setStore({ recommendations: [data.recommendation] }); // Cambia a un array
+						console.log("Recommendations in store:", getStore().recommendations);
+				
+					} catch (error) {
+						console.error('Error:', error);
+					} finally {
+						setStore({ loading: false });
+					}
+				},
+				
 
 				loginCritico: (email, password) => {
 					
@@ -423,7 +456,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 			},
 			getBooks: async () => {
-				let isMounted = true; // controlar si el componente está montado
+				let isMounted = true; 
 				try {
 					const response = await fetch(process.env.BACKEND_URL + "/api/book");
 					const data = await response.json();
@@ -538,17 +571,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log("Lector ID almacenado:", data.id);
 						localStorage.setItem("lectorId", data.id);
 			
-						// Limpiamos los favoritos y wishlist antes de cargar los nuevos
+						
 						setStore({
 							auth: true,
 							lectorName: data.name,
 							userEmailLector: email,
 							lectorId: data.id,
-							favorites: [], // Limpiamos los favoritos
-							wishlist: []   // Limpiamos la wishlist
+							favorites: [], 
+							wishlist: []   
 						});
 			
-						// Llamamos a las acciones para obtener los favoritos y wishlist del lector actual
+						
 						await getActions().getFavorites(data.id);
 						await getActions().getWishlist(data.id);
 			
@@ -604,7 +637,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 			
-				// Asegúrate de que los tipos coincidan
+				
 				const isFavorite = store.favorites.includes(bookId);
 			
 				try {
@@ -618,10 +651,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 			
 					const updatedFavorites = isFavorite
-						? store.favorites.filter(id => id !== bookId) // Eliminar de favoritos
-						: [...store.favorites, bookId]; // Agregar a favoritos
+						? store.favorites.filter(id => id !== bookId) 
+						: [...store.favorites, bookId]; 
 			
-					// Actualizar el estado local
+					
 					setStore({ favorites: updatedFavorites });
 					localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
 			
@@ -647,7 +680,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 			
-				// Asegúrate de que los tipos coincidan
+				
 				const isInWishlist = store.wishlist.includes(bookId);
 			
 				try {
@@ -661,10 +694,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 			
 					const updatedWishlist = isInWishlist
-						? store.wishlist.filter(id => id !== bookId) // Eliminar de la wishlist
-						: [...store.wishlist, bookId]; // Agregar a la wishlist
+						? store.wishlist.filter(id => id !== bookId)
+						: [...store.wishlist, bookId]; 
 			
-					// Actualizar el estado local
+					
 					setStore({ wishlist: updatedWishlist });
 					localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
 			
@@ -698,7 +731,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
 					console.log("Reseña creada:", data);
 					
-					// Actualizar localStorage
+					
 					const currentReviews = getStore().reviews;
 					const updatedReviews = [...currentReviews, data]; // Agregar la nueva reseña
 					setStore({ reviews: updatedReviews });

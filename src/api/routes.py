@@ -12,6 +12,14 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 
+import os
+import openai
+from dotenv import load_dotenv
+load_dotenv()  # Cargar las variables de entorno del archivo .env
+
+# Establecer tu clave de API de OpenAI desde la variable de entorno
+
+
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
@@ -298,7 +306,7 @@ def login_lector():
 
 @api.route('/lector/<int:lector_id>/favorites/<int:book_id>', methods=['POST'])
 def add_favorite(lector_id, book_id):
-    # Verificar si el lector y el libro existen antes de agregar a favoritos
+    
     lector = Lector.query.get(lector_id)
     book = Book.query.get(book_id)
 
@@ -314,21 +322,22 @@ def add_favorite(lector_id, book_id):
 
 @api.route('/lector/<int:lector_id>/favorites', methods=['GET'])
 def get_favorites(lector_id):
-    # Verificar si el lector existe
+    
     lector = Lector.query.get(lector_id)
     if lector is None:
         return jsonify({"msg": "Lector no encontrado"}), 404
 
-    # Obtener los libros favoritos del lector
+    
     favorites = FavoriteBook.query.filter_by(lector_id=lector_id).all()
     
-    # Preparar la respuesta con la lista de libros favoritos
+    
     favorite_books = []
     for fav in favorites:
         favorite_books.append({
             "book_id": fav.book_id,
-            "titulo": fav.book.titulo,  # Agregar título del libro
-            "autor": fav.book.autor      # Agregar autor del libro
+            "titulo": fav.book.titulo,  
+            "autor": fav.book.autor,   
+            "genero": fav.book.genero   
         })
 
     return jsonify(favorite_books), 200
@@ -344,6 +353,54 @@ def remove_favorite(lector_id, book_id):
         return jsonify({"msg": "Libro eliminado de favoritos"}), 200
     return jsonify({"msg": "Favorito no encontrado"}), 404
 
+
+openai.api_key = "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"
+
+@api.route('/lector/<int:lector_id>/recommendations', methods=['POST'])
+def get_recommendations(lector_id):
+    
+    favorites = FavoriteBook.query.filter_by(lector_id=lector_id).all()
+    favorite_books = [
+        {
+            "book_id": fav.book_id,
+            "titulo": fav.book.titulo,
+            "autor": fav.book.autor,
+            "genero": fav.book.genero
+        }
+        for fav in favorites
+    ]
+
+    if not favorite_books:
+        return jsonify({"msg": "No hay libros favoritos para recomendar."}), 400
+
+  
+    favorite_titles = ', '.join([f"{book['titulo']} de {book['autor']}, genero {book['genero']}" for book in favorite_books])
+    prompt = f"Basado en los siguientes libros favoritos: {favorite_titles}, recomiéndame dos libros similares y uno diferente, y explica por qué es una buena opción. Asegúrate de dar respuestas concisas. No los enumeres"
+
+    try:
+       
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=300  
+        )
+
+        
+        recommendations = response['choices'][0]['message']['content'].strip()
+
+       
+        recommendations = recommendations.replace("Basándome en tus libros favoritos, te recomendaría los siguientes libros:", "").strip()
+        
+        recommendations = recommendations.lstrip("0123456789.").strip()
+
+   
+        return jsonify({"recommendation": recommendations}), 200
+
+    except openai.error.OpenAIError as e:
+        return jsonify({"msg": "Error al obtener recomendaciones.", "error": str(e)}), 500
+    
 
 @api.route('/lector/<int:lector_id>/wishlist/<int:book_id>', methods=['POST'])
 def add_wishlist(lector_id, book_id):

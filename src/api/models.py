@@ -103,7 +103,8 @@ class FavoriteBook(db.Model):
             "id": self.id,
             "book_id": self.book_id,
             "titulo": self.book.titulo,  
-            "autor": self.book.autor      
+            "autor": self.book.autor,
+            "genero": self.book.genero      
         }
 
 
