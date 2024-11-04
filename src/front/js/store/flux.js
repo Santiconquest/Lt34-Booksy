@@ -36,36 +36,77 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Dentro de tus actions en el contexto
-editReview: async (updatedReview, reviewId) => {
-    const store = getStore();
+			editCritico: (idCritico, email, password, nombre, apellido) => {
+				const store = getStore();
+				const actions = getActions();
+	
+				const requestOptions = {
+					method: "PUT",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						nombre: nombre,
+						apellido: apellido,
+						email: email,
+						password: password
+					}),
+				};
+	
+				fetch(`${process.env.BACKEND_URL}/admin/critico/${idCritico}`, requestOptions)
+					.then((response) => {
+						console.log(response);
+						if (response.ok) {
+							actions.loadSomeData(); 
+							return response.json();
+						} else {
+							throw new Error("Error al actualizar el crítico");
+						}
+					})
+					.then((result) => {
+						if (result) {
+							
+							setStore((prevStore) => ({
+								...prevStore,
+								critics: prevStore.critics.map(critic => 
+									critic.id === idCritico ? { ...critic, ...result } : critic
+								)
+							}));
+							return true;
+						}
+					})
+					.catch((error) => {
+						console.error("Error en la actualización del crítico:", error);
+					});
+			},
+			editReview: async (updatedReview, reviewId) => {
+				const store = getStore();
 
-    const requestOptions = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedReview),
-    };
+				const requestOptions = {
+					method: "PUT",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(updatedReview),
+				};
 
-    try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/reviews/${reviewId}`, requestOptions);
-        if (response.ok) {
-            const result = await response.json();
-        
-            setStore({
-                ...store,
-                reviews: store.reviews.map(review =>
-                    review.id === reviewId ? { ...review, comentario: result.comentario } : review
-                )
-            });
-            return true;
-        } else {
-            console.error("Error al editar la reseña:", response.status);
-            return false;
-        }
-    } catch (error) {
-        console.error("Error al editar la reseña:", error);
-        return false;
-    }
-},
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/reviews/${reviewId}`, requestOptions);
+					if (response.ok) {
+						const result = await response.json();
+					
+						setStore({
+							...store,
+							reviews: store.reviews.map(review =>
+								review.id === reviewId ? { ...review, comentario: result.comentario } : review
+							)
+						});
+						return true;
+					} else {
+						console.error("Error al editar la reseña:", response.status);
+						return false;
+					}
+				} catch (error) {
+					console.error("Error al editar la reseña:", error);
+					return false;
+				}
+			},
 
 			
 			deleteReview: async (idReview) => {
@@ -116,7 +157,7 @@ editReview: async (updatedReview, reviewId) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-			uploadImage: (files) => {
+			uploadImage: async (files) => {
                 const store = getStore();
                 const preset_name = "imagenes";                         
    				const cloud_name = "dul7enfrl"  
@@ -126,19 +167,22 @@ editReview: async (updatedReview, reviewId) => {
 
                 setStore({ loading: true });
 
-                fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+                await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
                     method: "POST",
                     body: data
                 })
                 .then(response => response.json())
                 .then(file => {
                     setStore({ imageUrl: file.secure_url, loading: false });
+					return file
                 })
+
                 .catch(error => {
                     console.error("Error uploading image:", error);
                     setStore({ loading: false });
                 });
-		
+				
+				return store.imageUrl
 			},
 			logoutCritico: () => {
 				localStorage.removeItem("token")
@@ -263,7 +307,7 @@ editReview: async (updatedReview, reviewId) => {
 						"password":password}),
 				  };
 				  
-				  fetch(`${process.env.BACKEND_URL}admin/lector/`+idLector, requestOptions)
+				  fetch(`${process.env.BACKEND_URL}/api/lector/`+idLector, requestOptions)
 				  .then((response) => {
 					console.log(response)
 					if(response.ok){

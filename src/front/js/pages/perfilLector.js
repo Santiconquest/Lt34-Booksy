@@ -2,14 +2,51 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
-
 const ProfileLector = () => {
     const { store, actions } = useContext(Context);
-    const [lector, setLector] = useState([]);                  
+    const [lector, setLector] = useState({});  
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const files = e.target.files;
-        actions.uploadImage(files);
+
+        if (files.length > 0) {
+            try {
+                
+                await actions.uploadImage(files);
+             
+                await updateLector(store.imageUrl);
+            } catch (error) {
+                console.error("Error al manejar la carga de la imagen:", error);
+            }
+        }
+    };
+
+    const updateLector = async (imageUrl) => {
+        const body = {
+            nombre: lector.name,         
+            apellido: lector.lastname,
+            email: lector.email,
+            images: imageUrl              
+        };
+
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}api/lector/${lector.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al actualizar el lector");
+            }
+
+            const responseData = await response.json();
+            console.log("Lector actualizado:", responseData);
+        } catch (error) {
+            console.error("Error al actualizar lector:", error);
+        }
     };
 
     useEffect(() => {
@@ -22,29 +59,22 @@ const ProfileLector = () => {
     useEffect(() => {
         setLector(store.lector);
     }, [store.lector]); 
-    console.log(lector)
+
     return (
         <div className="container">
             <h1 className="my-5">Lector Profile</h1>
             <div>
                 <h1>Upload Profile Image</h1>
                 <input type="file" onChange={handleImageUpload} />
-                {store.loading ? (
-                    <p>Loading...</p>
-                ) : store.imageUrl ? (
-                    <img src={store.imageUrl} alt="Uploaded" style={{ width: "150px", height: "auto" }} />
-
-                ) : (
-                    <p>No image uploaded</p>
-                )}
-        </div>
+                <img src={lector.images} alt="Uploaded" style={{ width: "150px", height: "auto" }} />
+                
+            </div>
             
             {lector ? (
                 <div className="card my-5">
                     <div className="card-body">
                         <h5 className="card-title">{lector.name} {lector.lastname}</h5>
                         <p className="card-text"><strong>Email:</strong> {lector.email}</p>
-                        
                     </div>
                 </div>
             ) : (

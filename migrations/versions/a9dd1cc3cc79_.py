@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 70a9baba0109
+Revision ID: a9dd1cc3cc79
 Revises: 
-Create Date: 2024-11-02 02:09:48.302608
+Create Date: 2024-11-04 03:34:52.319401
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '70a9baba0109'
+revision = 'a9dd1cc3cc79'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -55,8 +55,10 @@ def upgrade():
     sa.Column('acerca_de_mi', sa.String(length=80), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password', sa.String(length=80), nullable=False),
+    sa.Column('images', sa.String(length=120), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('images'),
     sa.UniqueConstraint('nombre')
     )
     op.create_table('lector',
@@ -65,8 +67,10 @@ def upgrade():
     sa.Column('lastname', sa.String(length=120), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('password', sa.String(length=80), nullable=False),
+    sa.Column('images', sa.String(length=120), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    sa.UniqueConstraint('images')
     )
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
