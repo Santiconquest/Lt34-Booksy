@@ -58,14 +58,15 @@ def add_critico():
     if missing_fields:
         return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
 
+    #
     nuevo_critico = Critico(
         nombre=body['nombre'],
         apellido=body['apellido'],
         genero=body['genero'],
         acerca_de_mi=body['acerca_de_mi'],
         email=body['email'],
-        password=body['password'], 
-        
+        password=body['password'],
+        images=body.get('images', "default_image.jpg") 
     )
 
     try:
@@ -79,7 +80,48 @@ def add_critico():
         "critico": nuevo_critico.serialize() 
     }
     
-    return jsonify(response_body), 201  
+    return jsonify(response_body), 201
+
+@api.route('/critico/<int:id>', methods=['PUT'])
+def update_critico(id):
+    body = request.get_json()
+
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    
+    critico = Critico.query.get(id)
+    if not critico:
+        return jsonify({"msg": "Crítico no encontrado"}), 404
+
+    if 'nombre' in body:
+        critico.nombre = body['nombre']
+    if 'apellido' in body:
+        critico.apellido = body['apellido']
+    if 'genero' in body:
+        critico.genero = body['genero']
+    if 'acerca_de_mi' in body:
+        critico.acerca_de_mi = body['acerca_de_mi']
+    if 'email' in body:
+        critico.email = body['email']
+    if 'password' in body:
+        critico.password = body['password']
+    if 'images' in body:
+        critico.images = body['images']
+    
+    try:
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar el crítico"}), 500
+
+    response_body = {
+        "msg": "Crítico actualizado exitosamente",
+        "critico": critico.serialize()
+    }
+    
+    return jsonify(response_body), 200
+
+ 
 
 @api.route('/critico/<int:critico_id>', methods=['DELETE'])
 def delete_critico(critico_id):
@@ -210,7 +252,8 @@ def add_lector():
     name=body['name'],
     lastname=body['lastname'],
     email=body['email'],
-    password=body['password']
+    password=body['password'],
+    images=body.get('images', "default_image.jpg")
     )
 
     try:
@@ -229,22 +272,39 @@ def add_lector():
 @api.route('/lector/<int:lector_id>', methods=['PUT'])
 def edit_lector(lector_id):
     body = request.get_json()
+
+    # Verificar si se ha proporcionado información
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    # Buscar el lector por ID
     reader = Lector.query.get(lector_id)
-
     if not reader:
-        return jsonify({"error": "reader is required"}),400
-    
-    reader.name=body['name'],
-    reader.lastname=body['lastname'],
-    reader.email=body['email'],
-    reader.password=body['password']
-    
+        return jsonify({"msg": "Lector no encontrado"}), 404
 
-    db.session.commit()
-    return jsonify({
+    # Actualizar campos si están presentes en el cuerpo de la solicitud
+    if 'name' in body:
+        reader.name = body['name']
+    if 'lastname' in body:
+        reader.lastname = body['lastname']
+    if 'email' in body:
+        reader.email = body['email']
+    if 'password' in body:
+        reader.password = body['password']
+    if 'images' in body:
+        reader.images = body['images']
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar el lector", "error": str(e)}), 500
+
+    response_body = {
         "msg": "Lector actualizado exitosamente",
         "lector": reader.serialize()
-    }), 200
+    }
+    
+    return jsonify(response_body), 200
 
 
 @api.route('/lector/<int:lector_id>', methods=['DELETE'])

@@ -27,6 +27,7 @@ class Critico(db.Model):
     acerca_de_mi = db.Column(db.String(80), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
+    images = db.Column(db.String(120), unique=True, nullable=False)
    
 
     def __repr__(self):
@@ -40,6 +41,7 @@ class Critico(db.Model):
             "genero": self.genero,
             "acerca_de_mi": self.acerca_de_mi,
             "email": self.email,
+            "images": self.images,
            
             # do not serialize the password, its a security breach
         }
@@ -73,10 +75,12 @@ class Book(db.Model):
 class Lector(db.Model):
     __tablename__ = 'lector'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    lastname = db.Column(db.String(100))
-    email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(200))
+    name = db.Column(db.String(120), unique=False, nullable=False)
+    lastname = db.Column(db.String(120), unique=False, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(80), unique=False, nullable=False)
+    images = db.Column(db.String(120), unique=True, nullable=False)
+  
 
 
     def __repr__(self):
@@ -87,7 +91,8 @@ class Lector(db.Model):
             "id": self.id,
             "email": self.email,
             "name": self.name,
-            "lastname": self.lastname
+            "lastname": self.lastname,
+            "images": self.images,
         }
     
 class FavoriteBook(db.Model):
@@ -155,7 +160,9 @@ class Review(db.Model):
         return f'<Review {self.comentario}>'
     def serialize(self):
         return {
+            "id": self.id,
             "id_critico": self.id_critico,
+            "id_book": self.id_book,
             "email_critico": self.critico.email if self.critico else None,
             "comentario": self.comentario,
         }
