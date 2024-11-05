@@ -416,7 +416,7 @@ def remove_favorite(lector_id, book_id):
     return jsonify({"msg": "Favorito no encontrado"}), 404
 
 
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @api.route('/lector/<int:lector_id>/recommendations', methods=['POST'])
 def get_recommendations(lector_id):
@@ -462,6 +462,7 @@ def get_recommendations(lector_id):
 
     except openai.error.OpenAIError as e:
         return jsonify({"msg": "Error al obtener recomendaciones.", "error": str(e)}), 500
+    
     
 
 @api.route('/lector/<int:lector_id>/wishlist/<int:book_id>', methods=['POST'])
