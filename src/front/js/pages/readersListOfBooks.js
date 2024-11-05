@@ -66,7 +66,6 @@ export const ReadersListOfBooks = () => {
             .slice(0, 3); 
     };
 
-    // Función para limitar el texto a un número máximo de palabras
     const truncateText = (text, maxWords) => {
         const words = text.split(' ');
         if (words.length <= maxWords) return text;
@@ -131,7 +130,7 @@ export const ReadersListOfBooks = () => {
                                                             {truncateText(favoriteBook.titulo, 5)} 
                                                         </Link>
                                                         <span 
-                                                            onClick={() => actions.removeFavorite(favoriteBook.id)} 
+                                                            onClick={() => actions.toggleFavorite(favoriteBook.id)} 
                                                             className="remove-favorite-icon"
                                                             style={{ cursor: 'pointer' }}
                                                         >
@@ -149,7 +148,7 @@ export const ReadersListOfBooks = () => {
                     )}
                 </div>
 
-                <div className="wishlist-dropdown">
+                <div className="wishlist-dropdown me-2">
                     <button className="btn btn-success" onClick={handleToggleWishlist}>Wishlist</button>
                     {showWishlist && (
                         <div className="dropdown-content p-3">
@@ -166,7 +165,7 @@ export const ReadersListOfBooks = () => {
                                                             {truncateText(wishlistBook.titulo, 5)} 
                                                         </Link>
                                                         <span 
-                                                            onClick={() => actions.removeWishlist(wishlistBook.id)} 
+                                                            onClick={() => actions.toggleWishlist(wishlistBook.id)} 
                                                             className="remove-wishlist-icon"
                                                             style={{ cursor: 'pointer' }}
                                                         >
@@ -183,6 +182,11 @@ export const ReadersListOfBooks = () => {
                         </div>
                     )}
                 </div>
+
+                {/* Nuevo botón "Booksy AI" más pequeño y pegado a la derecha */}
+                <Link to="/bookRecommendations" className="btn btn-warning">
+                    Booksy AI
+                </Link>
             </div>
 
             <div className="row">
@@ -205,26 +209,21 @@ export const ReadersListOfBooks = () => {
                                             <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
                                             <strong>Año Publicado:</strong> {book.year}
                                         </p>
-                                        <div className="d-flex align-items-center justify-content-between mt-2">
-                                            <div className="d-flex align-items-center">
-                                                <span 
-                                                    onClick={() => handleFavoriteToggle(book.id)} 
-                                                    className="favorite-icon"
-                                                >
-                                                    <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
-                                                </span>
-                                                <span 
-                                                    onClick={() => handleWishlistToggle(book.id)} 
-                                                    className="wishlist-icon ms-2"
-                                                >
-                                                    <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
-                                                </span>
-                                            </div>
-                                            <Link to={`/bookdetails/${book.id}`} className="btn btn-info">Detalles</Link>
-                                        </div>
+                                        <span 
+                                            onClick={() => handleFavoriteToggle(book.id)} 
+                                            className="favorite-icon"
+                                        >
+                                            <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
+                                        </span>
+                                        <span 
+                                            onClick={() => handleWishlistToggle(book.id)} 
+                                            className="wishlist-icon ms-2"
+                                        >
+                                            <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
+                                        </span>
                                     </div>
                                 </div>
-                            ))}
+                            ))} 
                         </div>
                     </div>
                 ))}
@@ -239,7 +238,7 @@ export const ReadersListOfBooks = () => {
                                         src={book.cover}
                                         alt={book.titulo}
                                         className="card-img-top"
-                                        style={{ width: '100%', height: '200px', objectFit: 'cover' }} // Ajustar imagen
+                                        style={{ width: '100%', height: '200px', objectFit: 'cover' }} 
                                     />
                                     <div className="card-body">
                                         <h5 className="card-title">{truncateText(book.titulo, 5)}</h5> 

@@ -100,3 +100,10 @@
     min-height: 200px; /* Ajusta según lo que necesites */
 }
 
+
+.btn-warning {
+    position: relative;
+    margin-top: 20px; 
+    margin-right: 10px; 
+}
+
