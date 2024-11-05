@@ -7,7 +7,7 @@ export const WishlistLector = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        actions.getBooks(); // Carga los libros al montar el componente
+        actions.getBooks(); 
     }, [actions]); 
 
     const truncateTitle = (title, maxLength) => {
@@ -47,7 +47,7 @@ export const WishlistLector = () => {
                                             <Link to={`/bookdetails/${wishlistBook.id}`} className="btn btn-primary">Ver Detalles</Link>
                                             <button 
                                                 className="btn btn-danger ml-2" 
-                                                onClick={() => actions.removeWishlist(wishlistBook.id)} 
+                                                onClick={() => actions.toggleWishlist(wishlistBook.id)} 
                                             >
                                                 Eliminar
                                             </button>

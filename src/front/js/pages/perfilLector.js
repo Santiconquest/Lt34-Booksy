@@ -80,7 +80,7 @@ const ProfileLector = () => {
             ) : (
                 <p>Loading profile...</p>
             )}
-            <Link to="/">
+            <Link to="/readersListOfBooks">
                 <button className="btn btn-primary my-5">Back to Booksy</button>
             </Link>
         </div>
