@@ -151,7 +151,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Lector data fetched:", data[0].name); 
 					setStore({ lector: data[0] });
 				} catch (error) {
-					console.log("Error fetching critic:", error);
+					console.log("Error fetching lector:", error);
 				}
 			},
 			exampleFunction: () => {

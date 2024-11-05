@@ -6,10 +6,28 @@ export const BookDetailsCritic = () => {
     const { store, actions } = useContext(Context);
     const params = useParams();
     const [bookData, setBookData] = useState(null);
+    const [infoLink, setInfoLink] = useState(""); 
     const [review, setReview] = useState("");
     const [reviews, setReviews] = useState(store.reviews);
     const [editingReviewId, setEditingReviewId] = useState(null);
     const [editedComment, setEditedComment] = useState("");
+
+    async function fetchBook(bookDataTitulo) {
+        try {
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(bookDataTitulo)}`);
+            const data = await response.json();
+    
+            if (data.items && data.items.length > 0) {
+                return data.items[0].volumeInfo; 
+            } else {
+                console.log('No se encontraron libros.');
+                return null; 
+            }
+        } catch (error) {
+            console.error('Error al buscar el libro:', error);
+            return null; 
+        }
+    }
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -28,6 +46,14 @@ export const BookDetailsCritic = () => {
                 const data = await response.json();
                 setBookData(data.book);
                 setReviews(store.reviews);
+
+                
+                if (data.book && data.book.titulo) {
+                    const book = await fetchBook(data.book.titulo);
+                    if (book) {
+                        setInfoLink(book.infoLink); 
+                    }
+                }
             } catch (error) {
                 console.error("Error fetching book data:", error);
             }
@@ -57,7 +83,7 @@ export const BookDetailsCritic = () => {
         const updatedReview = { comentario: editedComment };
         const edited = await actions.editReview(updatedReview, editingReviewId);
         if (edited) {
-            actions.getReviews(params.book_id); // Refresca las reseñas después de editar
+            actions.getReviews(params.book_id); 
             setEditingReviewId(null);
             setEditedComment("");
         } else {
@@ -69,6 +95,7 @@ export const BookDetailsCritic = () => {
         const deleted = await actions.deleteReview(reviewId);
         if (deleted) {
             actions.getReviews(params.book_id); 
+        } else {
             console.error("Error al eliminar la reseña.");
         }
     };
@@ -84,6 +111,13 @@ export const BookDetailsCritic = () => {
             <p><strong>Año Publicado:</strong> {bookData.year}</p>
             <img src={bookData.cover} alt={bookData.titulo} style={{ width: '300px', height: '300px' }} />
             <hr className="my-4" />
+
+          
+            {infoLink && (
+                <a href={infoLink} target="_blank" rel="noopener noreferrer" className="btn btn-success mb-3">
+                    Comprar Libro
+                </a>
+            )}
 
             <form onSubmit={handleReviewSubmit}>
                 <div className="mb-3">
@@ -136,3 +170,4 @@ export const BookDetailsCritic = () => {
         </div>
     );
 };
+
