@@ -8,20 +8,22 @@ export const BookDetail = () => {
     const { store, actions } = useContext(Context);
     const [book, setBook] = useState(null);
     const [description, setDescription] = useState("");
-    const [reviews, setReviews] = useState([]); // Estado para almacenar reseñas
+    const [reviews, setReviews] = useState([]);
+    const [infoLink, setInfoLink] = useState(""); 
 
     useEffect(() => {
         const foundBook = store.books.find((b) => b.id === parseInt(id));
         if (foundBook) {
             setBook(foundBook);
             fetchBookDescription(foundBook.titulo);
-            fetchBookReviews(foundBook.id); // Obtener reseñas del libro
+            fetchBookReviews(foundBook.id);
+            fetchBookPurchaseLink(foundBook.titulo); 
         }
     }, [id, store.books]);
 
     const fetchBookDescription = async (title) => {
         try {
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=AIzaSyBwjy42UMUJBiaTBw-cLmkxixGvX0iyMD4`);
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${title}`);
             const data = await response.json();
             if (data.items && data.items.length > 0) {
                 const bookDetails = data.items[0].volumeInfo;
@@ -46,6 +48,18 @@ export const BookDetail = () => {
         }
     };
     
+    const fetchBookPurchaseLink = async (title) => {
+        try {
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(title)}`);
+            const data = await response.json();
+            if (data.items && data.items.length > 0) {
+                const bookDetails = data.items[0].volumeInfo;
+                setInfoLink(bookDetails.infoLink || ""); 
+            }
+        } catch (error) {
+            console.log("Error fetching purchase link", error);
+        }
+    };
 
     const handleAddToFavorites = () => {
         if (book) {
@@ -79,6 +93,13 @@ export const BookDetail = () => {
                     <p><strong>Cantidad de Páginas:</strong> {book.cantidad_paginas}</p>
                     <p><strong>Año Publicado:</strong> {book.year}</p>
                     <p><strong>Descripción:</strong> {description || "No disponible"}</p>
+                    
+                    {infoLink && (
+                        <a href={infoLink} target="_blank" rel="noopener noreferrer" className="btn btn-success mt-3">
+                            Comprar Libro
+                        </a>
+                    )}
+
                     <button 
                         onClick={handleAddToFavorites} 
                         className="btn btn-primary mt-3 me-2"
@@ -94,7 +115,6 @@ export const BookDetail = () => {
                 </div>
             </div>
 
-            
             <h2 className="mt-4">Reseñas</h2>
             <ul className="list-group">
                 {reviews.length > 0 ? (
@@ -110,3 +130,4 @@ export const BookDetail = () => {
         </div>
     );
 };
+

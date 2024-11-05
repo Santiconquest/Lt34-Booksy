@@ -52,6 +52,7 @@ export const BookDetailsCritic = () => {
                     const book = await fetchBook(data.book.titulo);
                     if (book) {
                         setInfoLink(book.infoLink); 
+                        console.log(book)
                     }
                 }
             } catch (error) {
