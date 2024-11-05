@@ -196,14 +196,18 @@ export const ReadersListOfBooks = () => {
                         <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
                             {booksByGenero[genero].map((book, idx) => (
                                 <div key={idx} className="card" style={{ width: '18rem', marginRight: '1rem' }}>
-                                    <img
-                                        src={book.cover}
-                                        alt={book.titulo}
-                                        className="card-img-top"
-                                        style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
-                                    />
+                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
+                                        <img
+                                            src={book.cover}
+                                            alt={book.titulo}
+                                            className="card-img-top"
+                                            style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
+                                        />
+                                    </Link>
                                     <div className="card-body">
+                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
                                         <h5 className="card-title" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
+                                    </Link>
                                         <p className="card-text">
                                             <strong>Autor:</strong> {truncateText(book.autor, 4)}<br />
                                             <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />

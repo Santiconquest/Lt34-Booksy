@@ -8,10 +8,10 @@ const BookRecommendations = () => {
         actions.getRecommendations();
     };
 
-    // Llama a la función para obtener recomendaciones cuando el componente se monta
+    
     useEffect(() => {
         handleGetRecommendations();
-    }, []); // La función se ejecuta solo una vez al montar el componente
+    }, []); 
 
     return (
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 bg-light">
@@ -24,16 +24,16 @@ const BookRecommendations = () => {
                     Obtener Recomendaciones
                 </button>
                 <div className="mt-3" style={{ minHeight: '100px' }}>
-                    {store.recommendations.length > 0 ? (
+                    {store.loading ? ( 
+                        <div className="spinner-grow text-primary" role="status">
+                            <span className="visually-hidden">Cargando...</span>
+                        </div>
+                    ) : store.recommendations.length > 0 ? (
                         <div style={{ whiteSpace: 'pre-wrap' }}>
                             <p className="text-dark">{store.recommendations[0]}</p>
                         </div>
                     ) : (
-                        <div class="spinner-grow text-primary"  role="status">
-                            <div class="spinner-border float-end" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
+                        <p className="text-dark">No hay recomendaciones disponibles.</p> 
                     )}
                 </div>
             </div>
