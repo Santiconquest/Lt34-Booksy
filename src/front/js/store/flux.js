@@ -29,7 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			critico: [],
 			imageUrl: "", 
             loading: false, 
-			lector: [],
+			lector: [{}],
 			userEmailLector: null,
 			userType: null,
             loading: false,
@@ -146,16 +146,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error fetching critic:", error);
 				}
 			},
-			getLector: async () => {
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
-					const data = await response.json();
-					console.log("Lector data fetched:", data[0].name); 
-					setStore({ lector: data[0] });
-				} catch (error) {
-					console.log("Error fetching lector:", error);
-				}
-			},
+			
+			
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
@@ -867,8 +859,16 @@ const getState = ({ getStore, getActions, setStore }) => {
                     console.log("Error fetching reviews", error);
                 }
             	},
-
-				
+				getLector: async () => {
+					try {
+						const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
+						const data = await response.json();
+						console.log("Lector data fetched:", data);  
+						setStore({ lector: data });
+					} catch (error) {
+						console.log("Error fetching lector:", error);
+					}
+            },	
 				
 				getCritico: async () => {
 					try {
