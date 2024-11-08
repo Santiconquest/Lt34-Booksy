@@ -581,7 +581,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  };
 				  
 				  fetch(`https://openlibrary.org/search/authors.json?q=${autorName}`, requestOptions)
-					.then((response) => response.text())
+					.then((response) => response.json())
 					.then((result) => setStore({autorDetail:result}))
 					.catch ((error) => console.log("Error getting autor details", error))
 			},
