@@ -29,6 +29,8 @@ import { CriticReviews } from "./pages/verReviewCritico";
 import ProfileCritico from "./pages/perfilCritico";
 import ProfileLector from "./pages/perfilLector";
 import LoginAdmin from "./pages/loginAdmin";
+import AutorDetail from "./pages/autorDetail";
+
 
 //create your first component
 const Layout = () => {
@@ -67,6 +69,8 @@ const Layout = () => {
                         <Route element={<PrivateRouteLector element={<WishlistLector />} />} path="/wishlistLector" />
                         <Route element={<PrivateRouteLector element={<BookDetail />} />} path="/bookdetails/:id" /> 
                         <Route element={<Lector />} path="/lector/:idLector" />
+                        <Route element={<AutorDetail />} path="/autorDetail/:autorName" />
+
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
                     <Footer />

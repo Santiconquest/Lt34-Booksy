@@ -24,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			categories:[],
 			autores:[],
 			administradores:[],
+			autorDetail:{},
 			critico: [],
 			imageUrl: "", 
             loading: false, 
@@ -494,7 +495,18 @@ editReview: async (updatedReview, reviewId) => {
 					isMounted = false; 
 				};
 			},
-
+			getAutorDetails: (autorName) => {
+				console.log(autorName)
+				const requestOptions = {
+					method: "GET",
+					redirect: "follow"
+				  };
+				  
+				  fetch(`https://openlibrary.org/search/authors.json?q=${autorName}`, requestOptions)
+					.then((response) => response.text())
+					.then((result) => setStore({autorDetail:result}))
+					.catch ((error) => console.log("Error getting autor details", error))
+			},
             addBook: async (newBook) => {
                 try {
                     const response = await fetch(process.env.BACKEND_URL + "/api/book", {
