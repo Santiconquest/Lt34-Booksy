@@ -7,9 +7,9 @@ export const FavoritosLector = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        // Cargar libros cuando el componente se monta
-        actions.getBooks(); // Llama a getBooks para obtener la lista de libros
-    }, [actions]); // Dependencia actions para evitar advertencias
+        
+        actions.getBooks(); 
+    }, [actions]); 
 
     const truncateTitle = (title, maxLength) => {
         return title.length > maxLength ? title.slice(0, maxLength) + '...' : title;
@@ -19,7 +19,7 @@ export const FavoritosLector = () => {
         <div className="container">
             <h1 className="mt-5">Favoritos del Lector</h1>
             {store.books.length === 0 ? (
-                <p>Cargando libros...</p> // Mensaje de carga
+                <p>Cargando libros...</p> 
             ) : store.favorites.length === 0 ? (
                 <p>No hay libros en tus favoritos.</p>
             ) : (
@@ -46,7 +46,7 @@ export const FavoritosLector = () => {
                                             <Link to={`/bookdetails/${favoriteBook.id}`} className="btn btn-primary">Ver Detalles</Link>
                                             <button 
                                                 className="btn btn-danger ml-2" 
-                                                onClick={() => actions.removeWishlist(wishlistBook.id)} 
+                                                onClick={() => actions.toggleFavorite(favoriteBook.id)} 
                                             >
                                                 Eliminar
                                             </button>

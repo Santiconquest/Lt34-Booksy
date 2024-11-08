@@ -3,14 +3,24 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Critico, Book, Lector, Review
-from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category
+from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category, FavoriteBook, WishlistBook
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+import boto3 
+from botocore.exceptions import NoCredentialsError
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
+
+import os
+import openai
+from dotenv import load_dotenv
+load_dotenv()  # Cargar las variables de entorno del archivo .env
+
+# Establecer tu clave de API de OpenAI desde la variable de entorno
+
 
 api = Blueprint('api', __name__)
 
@@ -50,14 +60,15 @@ def add_critico():
     if missing_fields:
         return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
 
+    #
     nuevo_critico = Critico(
         nombre=body['nombre'],
         apellido=body['apellido'],
         genero=body['genero'],
         acerca_de_mi=body['acerca_de_mi'],
         email=body['email'],
-        password=body['password'], 
-        
+        password=body['password'],
+        images=body.get('images', "default_image.jpg") 
     )
 
     try:
@@ -71,7 +82,48 @@ def add_critico():
         "critico": nuevo_critico.serialize() 
     }
     
-    return jsonify(response_body), 201  
+    return jsonify(response_body), 201
+
+@api.route('/critico/<int:id>', methods=['PUT'])
+def update_critico(id):
+    body = request.get_json()
+
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    
+    critico = Critico.query.get(id)
+    if not critico:
+        return jsonify({"msg": "Crítico no encontrado"}), 404
+
+    if 'nombre' in body:
+        critico.nombre = body['nombre']
+    if 'apellido' in body:
+        critico.apellido = body['apellido']
+    if 'genero' in body:
+        critico.genero = body['genero']
+    if 'acerca_de_mi' in body:
+        critico.acerca_de_mi = body['acerca_de_mi']
+    if 'email' in body:
+        critico.email = body['email']
+    if 'password' in body:
+        critico.password = body['password']
+    if 'images' in body:
+        critico.images = body['images']
+    
+    try:
+        db.session.commit() 
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar el crítico"}), 500
+
+    response_body = {
+        "msg": "Crítico actualizado exitosamente",
+        "critico": critico.serialize()
+    }
+    
+    return jsonify(response_body), 200
+
+ 
 
 @api.route('/critico/<int:critico_id>', methods=['DELETE'])
 def delete_critico(critico_id):
@@ -202,7 +254,8 @@ def add_lector():
     name=body['name'],
     lastname=body['lastname'],
     email=body['email'],
-    password=body['password']
+    password=body['password'],
+    images=body.get('images', "default_image.jpg")
     )
 
     try:
@@ -221,22 +274,39 @@ def add_lector():
 @api.route('/lector/<int:lector_id>', methods=['PUT'])
 def edit_lector(lector_id):
     body = request.get_json()
+
+    # Verificar si se ha proporcionado información
+    if not body:
+        return jsonify({"msg": "No se proporcionó información"}), 400
+
+    # Buscar el lector por ID
     reader = Lector.query.get(lector_id)
-
     if not reader:
-        return jsonify({"error": "reader is required"}),400
-    
-    reader.name=body['name'],
-    reader.lastname=body['lastname'],
-    reader.email=body['email'],
-    reader.password=body['password']
-    
+        return jsonify({"msg": "Lector no encontrado"}), 404
 
-    db.session.commit()
-    return jsonify({
+    # Actualizar campos si están presentes en el cuerpo de la solicitud
+    if 'name' in body:
+        reader.name = body['name']
+    if 'lastname' in body:
+        reader.lastname = body['lastname']
+    if 'email' in body:
+        reader.email = body['email']
+    if 'password' in body:
+        reader.password = body['password']
+    if 'images' in body:
+        reader.images = body['images']
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar el lector", "error": str(e)}), 500
+
+    response_body = {
         "msg": "Lector actualizado exitosamente",
         "lector": reader.serialize()
-    }), 200
+    }
+    
+    return jsonify(response_body), 200
 
 
 @api.route('/lector/<int:lector_id>', methods=['DELETE'])
@@ -256,6 +326,16 @@ def delete_lector(lector_id):
     }
 
     return jsonify(response_body), 200
+
+@api.route('/lector/<int:lector_id>', methods=['GET'])
+def get_lector_by_id(lector_id):
+    lector = Lector.query.get(lector_id)
+    
+    if lector is None:
+        return jsonify({"error": "Lector no encontrado"}), 404
+    
+    return jsonify(lector.serialize()), 200
+
 
 @api.route('/loginLector', methods=['POST'])
 def login_lector():
@@ -279,10 +359,161 @@ def login_lector():
 
     response_body = {
         "msg": "Inicio de sesión exitoso",
-        "access_token": access_token
+        "access_token": access_token,
+        "id": lector.id, 
+        "name": lector.name  
     }
 
     return jsonify(response_body), 200
+
+@api.route('/lector/<int:lector_id>/favorites/<int:book_id>', methods=['POST'])
+def add_favorite(lector_id, book_id):
+    
+    lector = Lector.query.get(lector_id)
+    book = Book.query.get(book_id)
+
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+
+    new_favorite = FavoriteBook(lector_id=lector_id, book_id=book_id)
+    db.session.add(new_favorite)
+    db.session.commit()
+    return jsonify({"msg": "Libro agregado a favoritos"}), 201
+
+@api.route('/lector/<int:lector_id>/favorites', methods=['GET'])
+def get_favorites(lector_id):
+    
+    lector = Lector.query.get(lector_id)
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+
+    
+    favorites = FavoriteBook.query.filter_by(lector_id=lector_id).all()
+    
+    
+    favorite_books = []
+    for fav in favorites:
+        favorite_books.append({
+            "book_id": fav.book_id,
+            "titulo": fav.book.titulo,  
+            "autor": fav.book.autor,   
+            "genero": fav.book.genero   
+        })
+
+    return jsonify(favorite_books), 200
+
+
+
+@api.route('/lector/<int:lector_id>/favorites/<int:book_id>', methods=['DELETE'])
+def remove_favorite(lector_id, book_id):
+    favorite = FavoriteBook.query.filter_by(lector_id=lector_id, book_id=book_id).first()
+    if favorite:
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify({"msg": "Libro eliminado de favoritos"}), 200
+    return jsonify({"msg": "Favorito no encontrado"}), 404
+
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+@api.route('/lector/<int:lector_id>/recommendations', methods=['POST'])
+def get_recommendations(lector_id):
+    
+    favorites = FavoriteBook.query.filter_by(lector_id=lector_id).all()
+    favorite_books = [
+        {
+            "book_id": fav.book_id,
+            "titulo": fav.book.titulo,
+            "autor": fav.book.autor,
+            "genero": fav.book.genero
+        }
+        for fav in favorites
+    ]
+
+    if not favorite_books:
+        return jsonify({"msg": "No hay libros favoritos para recomendar."}), 400
+
+  
+    favorite_titles = ', '.join([f"{book['titulo']} de {book['autor']}, genero {book['genero']}" for book in favorite_books])
+    prompt = f"Basado en los siguientes libros favoritos: {favorite_titles}, recomiéndame dos libros similares y uno diferente, y explica por qué es una buena opción. Asegúrate de dar respuestas concisas. No los enumeres"
+
+    try:
+       
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=300  
+        )
+
+        
+        recommendations = response['choices'][0]['message']['content'].strip()
+
+       
+        recommendations = recommendations.replace("Basándome en tus libros favoritos, te recomendaría los siguientes libros:", "").strip()
+        
+        recommendations = recommendations.lstrip("0123456789.").strip()
+
+   
+        return jsonify({"recommendation": recommendations}), 200
+
+    except openai.error.OpenAIError as e:
+        return jsonify({"msg": "Error al obtener recomendaciones.", "error": str(e)}), 500
+    
+    
+
+@api.route('/lector/<int:lector_id>/wishlist/<int:book_id>', methods=['POST'])
+def add_wishlist(lector_id, book_id):
+    lector = Lector.query.get(lector_id)
+    book = Book.query.get(book_id)
+
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+    if book is None:
+        return jsonify({"msg": "Libro no encontrado"}), 404
+
+    new_wishlist_item = WishlistBook(lector_id=lector_id, book_id=book_id)
+    db.session.add(new_wishlist_item)
+    db.session.commit()
+    return jsonify({"msg": "Libro agregado a la wishlist"}), 201
+
+
+
+@api.route('/lector/<int:lector_id>/wishlist', methods=['GET'])
+def get_wishlist(lector_id):
+    # Verificar si el lector existe
+    lector = Lector.query.get(lector_id)
+    if lector is None:
+        return jsonify({"msg": "Lector no encontrado"}), 404
+
+    # Obtener los libros de la wishlist del lector
+    wishlist_items = WishlistBook.query.filter_by(lector_id=lector_id).all()
+    
+    # Preparar la respuesta con la lista de libros en la wishlist
+    wishlist_books = []
+    for item in wishlist_items:
+        wishlist_books.append({
+            "book_id": item.book_id,
+            "titulo": item.book.titulo,  
+            "autor": item.book.autor      
+        })
+
+    return jsonify(wishlist_books), 200
+
+
+
+@api.route('/lector/<int:lector_id>/wishlist/<int:book_id>', methods=['DELETE'])
+def remove_from_wishlist(lector_id, book_id):
+    wishlist_item = WishlistBook.query.filter_by(lector_id=lector_id, book_id=book_id).first()
+    if wishlist_item:
+        db.session.delete(wishlist_item)
+        db.session.commit()
+        return jsonify({"msg": "Libro eliminado de la wishlist"}), 200
+    return jsonify({"msg": "Libro no encontrado en la wishlist"}), 404
+
 
 
 @api.route('/reviews', methods=['GET'])
@@ -570,19 +801,3 @@ def edit_administrador(booksyAdmin_id):
         "msg": "Administrador actualizado exitosamente",
         "administrador": administrador.serialize()
     }), 200
-
-@api.route("/loginAdmin", methods=["POST"])
-def login_Admin():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-
-    user = BooksyAdmin.query.filter_by(email=email).first()
-
-    if user == None:
-        return jsonify({"msg": "Could not find you email"}), 401
-
-    if email != user.email or password != user.password:
-        return jsonify({"msg": "Bad email or password"}), 401
-
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)

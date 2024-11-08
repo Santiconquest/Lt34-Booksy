@@ -2,14 +2,52 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
-
 const ProfileCritico = () => {
     const { store, actions } = useContext(Context);
     const [critic, setCritic] = useState([]);                  
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const files = e.target.files;
-        actions.uploadImage(files);
+      
+        if (files.length > 0) {
+            try {
+                await actions.uploadImage(files);
+                await updateCritico(store.imageUrl); 
+            } catch (error) {
+                console.error("Error al manejar la carga de la imagen:", error);
+            }
+        }
+    };
+
+    const updateCritico = async (imageUrl) => {
+        const body = {
+            nombre: critic.nombre,
+            apellido: critic.apellido,
+            genero: critic.genero,
+            acerca_de_mi: critic.acerca_de_mi,
+            email: critic.email,
+            images: imageUrl 
+        };
+        
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/critico/${critic.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al actualizar el crítico");
+            }
+
+            const responseData = await response.json();
+            console.log("Crítico actualizado:", responseData);
+          
+        } catch (error) {
+            console.error("Error al actualizar crítico:", error);
+        }
     };
 
     useEffect(() => {
@@ -22,22 +60,18 @@ const ProfileCritico = () => {
     useEffect(() => {
         setCritic(store.critico);
     }, [store.critico]); 
-    console.log(critic)
+ 
+
     return (
         <div className="container">
             <h1 className="my-5">Critic Profile</h1>
             <div>
                 <h1>Upload Profile Image</h1>
-                <input type="file" onChange={handleImageUpload} />
-                {store.loading ? (
-                    <p>Loading...</p>
-                ) : store.imageUrl ? (
-                    <img src={store.imageUrl} alt="Uploaded" style={{ width: "150px", height: "auto" }} />
-
-                ) : (
-                    <p>No image uploaded</p>
-                )}
-        </div>
+                <input type="file" onChange={(e)=>handleImageUpload(e)} />
+                
+                <img src={critic.images} alt="Uploaded" style={{ width: "150px", height: "auto" }} />
+                
+            </div>
             
             {critic ? (
                 <div className="card my-5">
