@@ -30,6 +30,7 @@ import ProfileCritico from "./pages/perfilCritico";
 import ProfileLector from "./pages/perfilLector";
 import LoginAdmin from "./pages/loginAdmin";
 import BookRecommendations from "./pages/bookRecommendations";
+import { Chat } from "./pages/chat";
 import AutorDetail from "./pages/autorDetail";
 import VisionAPI from "./pages/visionAPI";
 
@@ -65,6 +66,8 @@ const Layout = () => {
                         <Route element={<SignupLector />} path="/signupLector" /> 
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginAdmin />} path="/loginAdmin" /> 
+                        <Route element={<LoginLector />} path="/loginLector" />  
+                        <Route element={<Chat />} path="/chat" />  
                         <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<PrivateRouteLector element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
                         <Route element={<PrivateRouteLector element={<VisionAPI />} />} path="/visionAPI" />

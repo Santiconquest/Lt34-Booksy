@@ -58,6 +58,7 @@ const ProfileLector = () => {
 
     useEffect(() => {
         setLector(store.lector);
+        console.log(store.lector)
     }, [store.lector]); 
 
     return (
