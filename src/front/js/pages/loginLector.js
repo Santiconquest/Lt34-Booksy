@@ -16,11 +16,11 @@ export const LoginLector = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(''); 
+        setError('');
         const loginData = await actions.loginLector(email, password);
-    
+
         if (loginData) {
-            navigate("/readersListOfBooks");
+            navigate("/");
         } else {
             setError("Email o contraseña incorrectos");
         }
@@ -28,10 +28,10 @@ export const LoginLector = () => {
 
     useEffect(() => {
         // Redirige si el usuario ya está autenticado
-        if (store.isAuthenticated) {
+        if (store.auth) {
             navigate("/readersListOfBooks");
         }
-    }, [store.isAuthenticated, navigate]);
+    }, [store.auth, navigate]);
 
     return (
         <>
@@ -89,7 +89,7 @@ export const LoginLector = () => {
                     <input type="submit" className="my-form__button" value="Login" />
                     <div className="my-form__actions">
                         <div className="my-form__signup">
-                            <Link to="/signup" title="Create Account">Eres nuevo? Crea una cuenta</Link>
+                            <Link to="/signupLector" title="Create Account">Eres nuevo? Crea una cuenta</Link>
                         </div>
                     </div>
                 </form>

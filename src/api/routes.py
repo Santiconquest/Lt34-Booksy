@@ -416,8 +416,6 @@ def remove_favorite(lector_id, book_id):
     return jsonify({"msg": "Favorito no encontrado"}), 404
 
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
 @api.route('/lector/<int:lector_id>/recommendations', methods=['POST'])
 def get_recommendations(lector_id):
     
@@ -435,7 +433,6 @@ def get_recommendations(lector_id):
     if not favorite_books:
         return jsonify({"msg": "No hay libros favoritos para recomendar."}), 400
 
-  
     favorite_titles = ', '.join([f"{book['titulo']} de {book['autor']}, genero {book['genero']}" for book in favorite_books])
     prompt = f"Basado en los siguientes libros favoritos: {favorite_titles}, recomiéndame dos libros similares y uno diferente, y explica por qué es una buena opción. Asegúrate de dar respuestas concisas. No los enumeres"
 
@@ -449,15 +446,12 @@ def get_recommendations(lector_id):
             max_tokens=300  
         )
 
-        
         recommendations = response['choices'][0]['message']['content'].strip()
 
-       
         recommendations = recommendations.replace("Basándome en tus libros favoritos, te recomendaría los siguientes libros:", "").strip()
         
         recommendations = recommendations.lstrip("0123456789.").strip()
 
-   
         return jsonify({"recommendation": recommendations}), 200
 
     except openai.error.OpenAIError as e:

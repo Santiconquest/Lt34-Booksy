@@ -1,11 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginCritico = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { store, actions } = useContext(Context);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (store.auth) {
+            navigate("/");
+        }
+    }, [store.auth, navigate]);
 
     function sendData(e) {
         e.preventDefault();
