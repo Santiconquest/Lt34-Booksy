@@ -31,6 +31,7 @@ import ProfileLector from "./pages/perfilLector";
 import LoginAdmin from "./pages/loginAdmin";
 import BookRecommendations from "./pages/bookRecommendations";
 import AutorDetail from "./pages/autorDetail";
+import VisionAPI from "./pages/visionAPI";
 
 
 //create your first component
@@ -64,8 +65,9 @@ const Layout = () => {
                         <Route element={<SignupLector />} path="/signupLector" /> 
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginAdmin />} path="/loginAdmin" /> 
-                        <Route element={<LoginLector />} path="/loginLector" />  
+                        <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<PrivateRouteLector element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
+                        <Route element={<PrivateRouteLector element={<VisionAPI />} />} path="/visionAPI" />
                         <Route element={<PrivateRouteLector element={<BookRecommendations />} />} path="/bookRecommendations" />
                         <Route element={<PrivateRouteLector element={<FavoritosLector />} />} path="/favoritosLector" />
                         <Route element={<PrivateRouteLector element={<WishlistLector />} />} path="/wishlistLector" />

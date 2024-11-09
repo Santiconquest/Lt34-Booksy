@@ -183,9 +183,12 @@ export const ReadersListOfBooks = () => {
                     )}
                 </div>
 
-                {/* Nuevo botón "Booksy AI" más pequeño y pegado a la derecha */}
+                
                 <Link to="/bookRecommendations" className="btn btn-warning">
                     Booksy AI
+                </Link>
+                <Link to="/visionAPI" className="btn btn-dark">
+                    BooksyQuest
                 </Link>
             </div>
 
