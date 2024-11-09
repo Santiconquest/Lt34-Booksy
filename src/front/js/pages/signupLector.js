@@ -1,9 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react"; 
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupLector = () => {
-
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
+    useEffect(() => {
+       
+        if (store.auth) {
+            navigate("/");
+        }
+    }, [store.auth, navigate]);
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -11,7 +18,7 @@ const SignupLector = () => {
     const [lastname, setLastname] = useState('');
    
 
-    const { store, actions } = useContext(Context);
+    
 
     function sendData(e){
         e.preventDefault(); 

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AddBook = () => {
     const { store, actions } = useContext(Context);
@@ -31,7 +32,7 @@ const AddBook = () => {
         });
         navigate("/books");
     };
-
+    
     const fetchBookDetails = async (title) => {
         try {
             const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${title}&key=AIzaSyBwjy42UMUJBiaTBw-cLmkxixGvX0iyMD4`);
@@ -59,8 +60,12 @@ const AddBook = () => {
         });
         setSuggestions([]); 
     };
-    // console.log(categories)
-    console.log(autores)
+    console.log(newBook.autor)
+    const autorDetail = () =>{
+        if (newBook.autor){
+            navigate(`/autorDetail/${newBook.autor}`)
+        }
+    }
     return (
         <div className="container">
             <h1>Añadir Libro</h1>
@@ -96,6 +101,11 @@ const AddBook = () => {
                         value={newBook.autor}
                         onChange={e => setNewBook({ ...newBook, autor: e.target.value })}
                     />
+                    <br />
+                        <button type="button" className="btn btn-primary" onClick={autorDetail} >
+                            Ver detalle del autor
+                            {/* <Link to="/autorDetail" className="btn btn-primary mb-3">Ver detalle del autor</Link> */}
+                        </button>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="cantidad_paginas" className="form-label">Cantidad de Páginas</label>
