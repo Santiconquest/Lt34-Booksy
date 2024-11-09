@@ -194,20 +194,32 @@ export const Chat = () => {
                             <div className="chat-history">
                                 <ul className="m-b-0">
                                     {Array.isArray(messages) && messages.map((message, index) => (
-                                        <li className="clearfix" key={index}>
-                                            <div className={`message-data ${message.origin === userId ? 'text-right' : ''}`}>
-                                                {message.origin !== userId && (
-                                                    <img  />
-                                                )}
-                                                <span className="message-data-time">{message.hour}, {message.date}</span>
-                                            </div>
-                                            <div className={`message ${message.origin === userId ? 'my-message float-right' : 'other-message float-left'}`}>
-                                                {message.message}
-                                            </div>
-                                        </li>
+                                        <React.Fragment key={index}>
+                                            <li className="clearfix">
+                                                <div className={`message-data ${message.origin === userId ? 'text-right' : ''}`}>
+                                                    {message.origin !== userId && (
+                                                        <img />
+                                                    )}
+                                                    {message.origin !== userId && (
+                                                        <span className="message-data-time">{message.hour}, {message.date}</span>
+                                                    )}
+                                                </div>
+                                            </li>
+
+                                            <li className="clearfix">
+                                                <div className={`message ${message.origin === userId ? 'my-message float-right' : 'other-message float-left'}`}>
+                                                    {message.origin === userId && (
+                                                        <span className="message-data-time-right mx-5">{message.hour}, {message.date}</span>
+                                                    )}
+                                                    {message.message}
+                                                </div>
+                                            </li>
+                                        </React.Fragment>
                                     ))}
                                 </ul>
                             </div>
+
+
 
                             <div className="chat-message clearfix">
                                 <div className="input-group mb-0">

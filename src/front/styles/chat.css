@@ -2,6 +2,16 @@ body {
     background-color: #f4f7f6;
     margin-top: 20px;
 }
+.message {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-data-time-right {
+    align-self: flex-end;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
 
 .card {
     background: #fff;

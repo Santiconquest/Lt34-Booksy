@@ -863,8 +863,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					try {
 						const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
 						const data = await response.json();
-						console.log("Lector data fetched:", data);  
-						setStore({ lector: data });
+						console.log("Lector data fetched:", data[0]);  
+						setStore({ lector: data[0] });
 					} catch (error) {
 						console.log("Error fetching lector:", error);
 					}
