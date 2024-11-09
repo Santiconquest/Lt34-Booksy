@@ -15,6 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			auth: !!localStorage.getItem("token"),
+			userType: localStorage.getItem("userType") || "",
 			userEmail: null,
 			userId: null,
 			lectorId: localStorage.getItem("lectorId") || null,
@@ -32,7 +33,6 @@ const getState = ({ getStore, getActions, setStore }) => {
             loading: false, 
 			lector: [],
 			userEmailLector: null,
-			userType: null,
             loading: false,
 			favorites: Array.isArray(JSON.parse(localStorage.getItem('favorites'))) ? JSON.parse(localStorage.getItem('favorites')) : [],
 			wishlist: Array.isArray(JSON.parse(localStorage.getItem('wishlist'))) ? JSON.parse(localStorage.getItem('wishlist')) : []
@@ -189,6 +189,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			logoutCritico: () => {
 				localStorage.removeItem("token")
+				localStorage.removeItem("userType")
 				setStore({ auth: false, userEmail: null });
 			},
 
@@ -255,35 +256,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 				
 
 				loginCritico: (email, password) => {
-					
-					const resquestOptions = {
+					const requestOptions = {
 						method: 'POST',
-						headers: {'content-Type' : 'application/json'},
-						body: JSON.stringify({
-							"email": email,
-							"password" : password
-						})
+						headers: { 'content-Type': 'application/json' },
+						body: JSON.stringify({ "email": email, "password": password })
 					};
-					fetch(`${process.env.BACKEND_URL}/api/loginCritico`, resquestOptions)
+					fetch(`${process.env.BACKEND_URL}/api/loginCritico`, requestOptions)
 						.then(response => {
-							console.log (response)
-							if (response.status == 200)
-								{
-								setStore({ 
+							if (response.status === 200) {
+								localStorage.setItem("userType", "critic");
+								setStore({
 									auth: true,
 									userEmail: email,
-									userType: "critic", 
+									userType: "critic",  // Asegúrate de que se actualiza el userType
 								});
-
 							}
-							return response.json()
+							return response.json();
 						})
 						.then(data => {
-							localStorage.setItem("token",data.access_token)
-							setStore({userId: data.id})
-							console.log(data)
+							localStorage.setItem("token", data.access_token);
+							setStore({ userId: data.id });
 						});
 				},
+				
+				
 			addLector:(email,password,name,lastname)=>{
 				console.log(email,password,name,lastname)
 				const store = getStore()
@@ -359,44 +355,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 			loginAdmin: (email, password) => {
-					
-				const resquestOptions = {
+				const requestOptions = {
 					method: 'POST',
-					headers: {'content-Type' : 'application/json'},
+					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
 						"email": email,
-						"password" : password
+						"password": password
 					})
 				};
-				fetch(`${process.env.BACKEND_URL}/api/loginAdmin`, resquestOptions)
+			
+				// Hacer la petición al backend para el login
+				return fetch(`${process.env.BACKEND_URL}/api/loginAdmin`, requestOptions)
 					.then(response => {
-						console.log (response.status)
-						if (response.status == 200){
-							setStore({ 
-								auth: true,
-								userEmail: email 
-							});
-
+						// Verificar si la respuesta fue exitosa
+						if (response.status === 200) {
+							return response.json();  // Si la respuesta es 200, obtener el JSON
+						} else {
+							throw new Error('Credenciales incorrectas');  // Si no es 200, lanzar un error
 						}
-						return response.json()
 					})
 					.then(data => {
-						localStorage.setItem("token",data.access_token)
-						console.log(data)
+						// Si el token existe, guardarlo en el localStorage
+						if (data.access_token) {
+							localStorage.setItem("token", data.access_token);
+							localStorage.setItem("userType", "admin");  // Guardar tipo de usuario como "admin"
+							setStore({
+								auth: true,
+								userEmail: email,
+								userType: "admin"
+							});
+						}
+					})
+					.catch(error => {
+						// Lanzar el error para manejarlo en el componente
+						throw error.message;  // Devolver el mensaje de error
 					});
 			},
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
-				}
-			},
+			
+			
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
@@ -682,12 +678,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						const data = await response.json();
 						localStorage.setItem("token", data.access_token);
 						localStorage.setItem("lectorName", data.name);
-						console.log("Lector ID almacenado:", data.id);
+						localStorage.setItem("userType", "lector");  // Agregar userType a localStorage
 						localStorage.setItem("lectorId", data.id);
 			
-						
 						setStore({
 							auth: true,
+							userType: "lector",  // Setear el userType en el store
 							lectorName: data.name,
 							userEmailLector: email,
 							lectorId: data.id,
@@ -695,7 +691,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							wishlist: []   
 						});
 			
-						
 						await getActions().getFavorites(data.id);
 						await getActions().getWishlist(data.id);
 			
@@ -712,17 +707,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
-			
-			
-			
+		
 			logoutLector: () => {
 				localStorage.removeItem("token");
 				localStorage.removeItem("lectorName");
-				localStorage.removeItem("lectorId"); 
-				console.log("ID eliminado:");
-				
-				setStore({ auth: false, lectorName: "", lectorId: null }); 
+				localStorage.removeItem("lectorId");
+				localStorage.removeItem("userType"); 
+				setStore({ auth: false, lectorName: "", lectorId: null, userType: "" });  
 			},
+			
 
 			getFavorites: async (lectorId) => {
 				const favoritesResponse = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}/favorites`);

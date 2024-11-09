@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -6,13 +6,38 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
 
+    useEffect(() => {
+        // Asegurarse de que el tipo de usuario y el token estén bien al inicio
+        console.log(store.auth, store.userType);  // Verifica estos valores en consola
+    }, [store.auth, store.userType]);
+
+    useEffect(() => {
+        console.log('User type in navbar:', store.userType);  // Verifica si el userType es 'lector'
+    }, [store.userType]);
+
+    useEffect(() => {
+        console.log(store.auth, store.userType); 
+    }, [store.auth, store.userType]);
+    
+    useEffect(() => {
+        console.log('User type in navbar:', store.userType); 
+    }, [store.userType]);
+    
+    
+    
+
     function handleLogoutCritico() {
         actions.logoutCritico();
         navigate("/");
     }
 
     function handleLogoutLector() {
-        actions.logoutLector(); // Asegúrate de definir esta acción en el flux
+        actions.logoutLector(); 
+        navigate("/");
+    }
+
+    function handleLogoutAdmin() {
+        actions.logoutCritico(); 
         navigate("/");
     }
 
@@ -29,18 +54,32 @@ export const Navbar = () => {
                             className="d-inline-block align-top"
                         />
                     </Link>
-                    <Link to="/readersListOfBooks" className="nav-link ml-2">
-                        Lista de Libros
-                    </Link>
-                    <Link to="/books" className="nav-link ml-2">
-                        Añadir/Quitar/Editar Libro
-                    </Link>
+
+                    {/* Condicional para mostrar enlaces según el tipo de usuario */}
+                    {store.auth && store.userType === "lector" && (
+                        <Link to="/readersListOfBooks" className="nav-link ml-2">
+                            Lista de Libros
+                        </Link>
+                    )}
+
+                    {store.auth && store.userType === "critic" && (
+                        <Link to="/listaLibrosCritico" className="nav-link ml-2">
+                            Lista de Libros
+                        </Link>
+                    )}
+
+                    {store.auth && store.userType === "admin" && (
+                        <Link to="/books" className="nav-link ml-2">
+                            Añadir/Quitar/Editar Libro
+                        </Link>
+                    )}
                 </div>
 
                 <div className="d-flex align-items-center">
                     {store.auth ? (
                         <>
-                            {store.userType === "critic" ? (
+                            {/* Mostrar botones específicos para cada tipo de usuario */}
+                            {store.userType === "critic" && (
                                 <>
                                     <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
                                     <Link to="/verReviewCritico">
@@ -48,10 +87,18 @@ export const Navbar = () => {
                                     </Link>
                                     <Link to="/perfilCritico" className="btn btn-secondary ml-2">Perfil</Link>
                                 </>
-                            ) : (
+                            )}
+
+                            {store.userType === "lector" && (
                                 <>
                                     <button onClick={handleLogoutLector} className="btn btn-primary">Logout</button>
                                     <Link to="/perfilLector" className="btn btn-secondary ml-2">Perfil</Link>
+                                </>
+                            )}
+
+                            {store.userType === "admin" && (
+                                <>
+                                    <button onClick={handleLogoutAdmin} className="btn btn-primary">Logout</button>
                                 </>
                             )}
                         </>

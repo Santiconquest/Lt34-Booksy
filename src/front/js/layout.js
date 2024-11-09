@@ -32,7 +32,7 @@ import LoginAdmin from "./pages/loginAdmin";
 import BookRecommendations from "./pages/bookRecommendations";
 import AutorDetail from "./pages/autorDetail";
 import VisionAPI from "./pages/visionAPI";
-
+import PrivateRouteCritico from "./pages/privateRouteCritico";
 
 //create your first component
 const Layout = () => {
@@ -54,10 +54,10 @@ const Layout = () => {
                         <Route element={<SignupCritico />} path="/signupCritico" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<LoginCritico />} path="/loginCritico" />
-                        <Route element={<BookDetailsCritic />} path="/books/:book_id" />
-                        <Route element={<ListaLibrosCritico />} path="/listaLibrosCritico" />
-                        <Route element={<CriticReviews />} path="/verReviewCritico" />
-                        <Route element={<ProfileCritico />} path="/perfilCritico" />
+                        <Route element={<PrivateRouteCritico element={<BookDetailsCritic />} />} path="/books/:book_id" />
+                        <Route element={<PrivateRouteCritico element={<ListaLibrosCritico />} />} path="/listaLibrosCritico" />
+                        <Route element={<PrivateRouteCritico element={<CriticReviews />} />} path="/verReviewCritico" />
+                        <Route element={<PrivateRouteCritico element={<ProfileCritico />} />} path="/perfilCritico" />
                         <Route element={<ProfileLector />} path="/perfilLector" />
                         <Route element={<Books />} path="/books" /> 
                         <Route element={<AddBook />} path="/addbook" /> 
