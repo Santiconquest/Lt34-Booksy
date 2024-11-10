@@ -149,7 +149,7 @@ const AddBook = () => {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="genero" className="form-label">Categoria</label>
-                    <select defaultValue={0} onChange={(e)=>setSelectedCategory(e.target.value)} class="form-select" aria-label="Default select example">
+                    <select defaultValue={0} onChange={(e)=>setSelectedCategory(e.target.value)} className="form-select" aria-label="Default select example">
                         <option value={0} disabled>Selecciona una categoria</option>
                         {store.categories && store.categories.length > 0 && store.categories.map(item => {
                             return (
@@ -184,7 +184,7 @@ const AddBook = () => {
 
                 <div className="mb-3">
                     <label htmlFor="autor" className="form-label">Autor</label>
-                    <select defaultValue={0} onChange={(e)=>setSelectedAutor(e.target.value)} class="form-select" aria-label="Default select example">
+                    <select defaultValue={0} onChange={(e)=>setSelectedAutor(e.target.value)} className="form-select" aria-label="Default select example">
                         <option value={0} disabled>Seleccione un autor</option>
                         {store.autores && store.autores.length > 0 && store.autores.map(item => {
                             return (

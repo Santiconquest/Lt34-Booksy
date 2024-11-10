@@ -20,14 +20,14 @@ export const LoginLector = () => {
         const loginData = await actions.loginLector(email, password);
 
         if (loginData) {
-            navigate("/");
+            navigate("/readersListOfBooks");
         } else {
             setError("Email o contraseña incorrectos");
         }
     };
 
     useEffect(() => {
-        // Redirige si el usuario ya está autenticado
+        
         if (store.auth) {
             navigate("/readersListOfBooks");
         }
