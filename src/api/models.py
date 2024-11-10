@@ -233,3 +233,51 @@ class BooksyAdmin(db.Model):
             "name": self.name,
             "lastname": self.lastname
         }
+    
+
+class Chat(db.Model):
+    __tablename__ = 'chat'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    id_lector_1 = db.Column(db.Integer, db.ForeignKey('lector.id'), nullable=False)
+    id_lector_2 = db.Column(db.Integer, db.ForeignKey('lector.id'), nullable=False)
+
+    messages = db.relationship('Message', backref='chat', lazy=True)
+
+    def __repr__(self):
+        return f'<Chat {self.id}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "id_lector_1": self.id_lector_1,
+            "id_lector_2": self.id_lector_2
+            
+        }
+
+class Message(db.Model):
+    __tablename__ = 'message'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    id_lector_1 = db.Column(db.Integer, db.ForeignKey('lector.id'), nullable=False)
+    id_lector_2 = db.Column(db.Integer, db.ForeignKey('lector.id'), nullable=False)
+    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=False)
+    origin = db.Column(db.String(10), nullable=False)  
+    message = db.Column(db.String(255), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    hour = db.Column(db.Time, nullable=False)
+
+    def __repr__(self):
+        return f'<Message {self.id} from {self.origin} in Chat {self.chat_id}>'
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "id_lector_1": self.id_lector_1,
+            "id_lector_2": self.id_lector_2,
+            "chat_id": self.chat_id,
+            "origin": self.origin,
+            "message": self.message,
+            "date": self.date.isoformat(),
+            "hour": self.hour.isoformat()
+        }

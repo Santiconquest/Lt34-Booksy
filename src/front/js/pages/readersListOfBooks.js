@@ -9,6 +9,7 @@ import "../../styles/readersListOfBooks.css";
 import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons'; 
 import { faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons'; 
 
+
 export const ReadersListOfBooks = () => {
     const { store, actions } = useContext(Context);
     const [activeTab, setActiveTab] = useState("genero");
@@ -186,6 +187,9 @@ export const ReadersListOfBooks = () => {
                 
                 <Link to="/bookRecommendations" className="btn btn-warning">
                     Booksy AI
+                </Link>
+                <Link to="/chat" className="btn btn-warning">
+                    Chat
                 </Link>
                 <Link to="/visionAPI" className="btn btn-dark">
                     BooksyQuest

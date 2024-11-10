@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Critico, Book, Lector, Review
-from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category, FavoriteBook, WishlistBook
+from api.models import db, User, Critico, Book, Lector, Category, Autor, BooksyAdmin, Book_Category, FavoriteBook, WishlistBook,Chat,  Message
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import boto3 
@@ -796,6 +796,7 @@ def edit_administrador(booksyAdmin_id):
         "administrador": administrador.serialize()
     }), 200
 
+
 @api.route("/loginAdmin", methods=["POST"])
 def login_admin():
     email = request.json.get("email", None)
@@ -812,3 +813,157 @@ def login_admin():
     access_token = create_access_token(identity=email)
 
     return jsonify(access_token=access_token, id=admin.id), 200
+
+
+@api.route('/chat', methods=['GET'])
+def get_chats():
+    all_chats = Chat.query.all()
+    results = list(map(lambda chat: chat.serialize(), all_chats))
+    return jsonify(results), 200
+
+@api.route('/chat/<int:chat_id>', methods=['GET'])
+def get_chat_by_id(chat_id):
+    chat = Chat.query.get(chat_id)
+    
+    if chat is None:
+        return jsonify({"error": "chat no encontrado"}), 404
+    
+    return jsonify(chat.serialize()), 200
+
+@api.route('/chat', methods=['POST'])
+def add_chat():
+    body = request.get_json()
+
+    if not body or 'id_lector_1' not in body or 'id_lector_2' not in body:
+        return jsonify({"msg": "Faltan campos requeridos"}), 400
+
+    new_chat = Chat(
+        id_lector_1=body['id_lector_1'],
+        id_lector_2=body['id_lector_2']
+    )
+
+    try:
+        db.session.add(new_chat)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al crear el chat"}), 500
+
+    return jsonify({"msg": "Chat creado exitosamente", "chat": new_chat.serialize()}), 201
+
+@api.route('/chat/<int:id>', methods=['PUT'])
+def update_chat(id):
+    body = request.get_json()
+    chat = Chat.query.get(id)
+
+    if not chat:
+        return jsonify({"msg": "Chat no encontrado"}), 404
+
+    if 'id_lector_1' in body:
+        chat.id_lector_1 = body['id_lector_1']
+    if 'id_lector_2' in body:
+        chat.id_lector_2 = body['id_lector_2']
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar el chat"}), 500
+
+    return jsonify({"msg": "Chat actualizado exitosamente", "chat": chat.serialize()}), 200
+
+@api.route('/chat/<int:id>', methods=['DELETE'])
+def delete_chat(id):
+    chat = Chat.query.get(id)
+
+    if not chat:
+        return jsonify({"msg": "Chat no encontrado"}), 404
+
+    db.session.delete(chat)
+    db.session.commit()
+    return jsonify({"msg": "Chat eliminado exitosamente"}), 200
+
+
+@api.route('/message', methods=['GET'])
+def get_messages():
+    chat_id = request.args.get('chat_id', type=int)
+    
+    if chat_id:
+        messages = Message.query.filter_by(chat_id=chat_id).all()
+    else:
+        messages = Message.query.all()
+    
+    results = [message.serialize() for message in messages]
+    return jsonify(results), 200
+
+@api.route('/message/chat/<int:chat_id>', methods=['GET'])
+def get_messages_by_chat_id(chat_id):
+    messages = Message.query.filter_by(chat_id=chat_id).all()
+
+    if not messages:
+        return jsonify({"error": "No messages found for this chat"}), 404
+
+    results = [message.serialize() for message in messages]
+    
+    return jsonify(results), 200
+
+
+
+@api.route('/message', methods=['POST'])
+def add_message():
+    body = request.get_json()
+
+    required_fields = ['id_lector_1', 'id_lector_2', 'chat_id', 'origin', 'message', 'date', 'hour']
+    missing_fields = [field for field in required_fields if field not in body]
+    if missing_fields:
+        return jsonify({"msg": f"Faltan los siguientes campos: {', '.join(missing_fields)}"}), 400
+
+    new_message = Message(
+        id_lector_1=body['id_lector_1'],
+        id_lector_2=body['id_lector_2'],
+        chat_id=body['chat_id'],
+        origin=body['origin'],
+        message=body['message'],
+        date=body['date'],
+        hour=body['hour']
+    )
+
+    try:
+        db.session.add(new_message)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al crear el mensaje"}), 500
+
+    return jsonify({"msg": "Mensaje creado exitosamente", "message": new_message.serialize()}), 201
+
+@api.route('/message/<int:id>', methods=['PUT'])
+def update_message(id):
+    body = request.get_json()
+    message = Message.query.get(id)
+
+    if not message:
+        return jsonify({"msg": "Mensaje no encontrado"}), 404
+
+    if 'message' in body:
+        message.message = body['message']
+    if 'date' in body:
+        message.date = body['date']
+    if 'hour' in body:
+        message.hour = body['hour']
+
+    try:
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"msg": "Error al actualizar el mensaje"}), 500
+
+    return jsonify({"msg": "Mensaje actualizado exitosamente", "message": message.serialize()}), 200
+
+@api.route('/message/<int:id>', methods=['DELETE'])
+def delete_message(id):
+    message = Message.query.get(id)
+
+    if not message:
+        return jsonify({"msg": "Mensaje no encontrado"}), 404
+
+    db.session.delete(message)
+    db.session.commit()
+    return jsonify({"msg": "Mensaje eliminado exitosamente"}), 200
+
