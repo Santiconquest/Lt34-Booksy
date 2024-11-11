@@ -87,11 +87,11 @@ export const ReadersListOfBooks = () => {
         <>
 
         
-       
-        <div className="row readers-list" style={{ width: '100%' }}>
+       <div className="container">
+        <div className="row" style={{ width: '100%' }}>
             <div className="buttons-container" >
-                <div className="favorites-dropdown ms-4 paste-button" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                    <button className="button" onClick={handleToggleFavorites}>
+                <div className="favorites-dropdown  paste-button" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                    <button className="button ms-2" onClick={handleToggleFavorites}>
                         Favoritos &nbsp; ▼
                     </button>
 
@@ -141,8 +141,8 @@ export const ReadersListOfBooks = () => {
                 </div>
 
 
-                <div className="wishlist-dropdown ms-2 paste-button" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                    <button className="button" onClick={handleToggleWishlist}>
+                <div className="wishlist-dropdown  paste-button" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                    <button className="button ms-1" onClick={handleToggleWishlist}>
                         Wishlist &nbsp; ▼
                     </button>
 
@@ -462,7 +462,7 @@ export const ReadersListOfBooks = () => {
 
           </div>
         </div>
-
+        </div>
 
                 </>
     );
