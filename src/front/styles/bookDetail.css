@@ -20,3 +20,52 @@
     flex: 1;
     padding: 0 20px;
 }
+
+.book-detail-container .btn-buy {
+    width: 100%; /* Asegura que el botón tenga el mismo ancho que la imagen */
+    margin-top: 20px; /* Espacio superior para que esté debajo de la imagen */
+}
+
+
+/* From Uiverse.io by JaydipPrajapati1910 */ 
+.buttonBuy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 15px;
+    background-color: #181717;
+    outline: 3px #181717 solid;
+    outline-offset: -3px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 400ms;
+  }
+  
+  .buttonBuy .text {
+    color: white;
+    font-weight: 700;
+    font-size: 1em;
+    transition: 400ms;
+  }
+  
+  .buttonBuy svg path {
+    transition: 400ms;
+  }
+  
+  .buttonBuy:hover {
+    background-color: transparent;
+  }
+  
+  .buttonBuy:hover .text {
+    color: #181717;
+  }
+  
+  .buttonBuy:hover svg path {
+    fill: #181717;
+  }
+
+
+  
+

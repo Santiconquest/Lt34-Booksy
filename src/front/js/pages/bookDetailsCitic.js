@@ -154,7 +154,7 @@ export const BookDetailsCritic = () => {
                         <div className="float-end">
                             {editingReviewId !== r.id && (
                                 <>
-                                    <button className="btn btn-warning btn-sm" onClick={() => handleEditClick(r)}>Editar</button>
+                                    <button className="btn btn-secondary btn-sm" onClick={() => handleEditClick(r)}>Editar</button>
                                     <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>Eliminar</button>
                                 </>
                             )}
