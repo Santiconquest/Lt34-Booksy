@@ -3,14 +3,14 @@ import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "../store/appContext";
 
-const PrivateRouteLector = ({ element }) => {
+const PrivateRouteAdmin = ({ element }) => {
     const { store } = useContext(Context);
 
-    if (store.auth && store.userType === "lector") {
+    if (store.auth && store.userType === "admin") {
         return element; 
     } else {
         return <Navigate to="/" />; 
     }
 };
 
-export default PrivateRouteLector;
+export default PrivateRouteAdmin;

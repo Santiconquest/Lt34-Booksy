@@ -1,143 +1,158 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
+import "../../styles/navbar.css";
 
 export const Navbar = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        // Asegurarse de que el tipo de usuario y el token estén bien al inicio
-        console.log(store.auth, store.userType);  // Verifica estos valores en consola
+        console.log(store.auth, store.userType);
     }, [store.auth, store.userType]);
 
-    useEffect(() => {
-        console.log('User type in navbar:', store.userType);  // Verifica si el userType es 'lector'
-    }, [store.userType]);
-
-    useEffect(() => {
-        console.log(store.auth, store.userType); 
-    }, [store.auth, store.userType]);
-    
-    useEffect(() => {
-        console.log('User type in navbar:', store.userType); 
-    }, [store.userType]);
-    
     
     
 
-    function handleLogoutCritico() {
-        actions.logoutCritico();
-        navigate("/");
-    }
-
-    function handleLogoutLector() {
-        actions.logoutLector(); 
-        navigate("/");
-    }
-
-    function handleLogoutAdmin() {
-        actions.logoutCritico(); 
-        navigate("/");
-    }
+    const handleLogout = () => {
+        
+        if (store.userType === "critic") {
+            actions.logoutCritico();
+        } else if (store.userType === "lector") {
+            actions.logoutLector();
+        } else if (store.userType === "admin") {
+            actions.logoutAdmin(); 
+        }
+    };
 
     return (
-        <nav className="navbar navbar-light bg-light">
-            <div className="container d-flex justify-content-between">
-                <div className="d-flex align-items-center">
-                    <Link to="/" className="navbar-brand">
-                        <img
-                            src="logo-url.png" 
-                            alt="Booksy Logo"
-                            width="40"
-                            height="40"
-                            className="d-inline-block align-top"
-                        />
-                    </Link>
+        <header className="bg-dark py-2 d-none d-md-block pb-1" style={{ marginTop: 0 }}>
+            <div className="container-md">
+                <div className="row align-items-center navbar">
+                    <div className="col" style={{ maxWidth: "500px", }}>
+                        <h1 className="fw-bold text-white mb-3">Booksy</h1>
+                    </div>
 
-                    {/* Condicional para mostrar enlaces según el tipo de usuario */}
-                    {store.auth && store.userType === "lector" && (
-                        <Link to="/readersListOfBooks" className="nav-link ml-2">
-                            Lista de Libros
-                        </Link>
-                    )}
+                    
+                    <div className="col d-flex">
+                        {store.auth && (
+                            <button className="btn2">
+                            <Link 
+                                to={
+                                store.userType === "lector"
+                                    ? "/readersListOfBooks"
+                                    : store.userType === "critic"
+                                    ? "/listaLibrosCritico"
+                                    : store.userType === "admin"
+                                    ? "/books"
+                                    : "/"
+                                }
+                                className="nav-link"
+                            >
+                                
+                                {store.userType === "admin"
+                                    ? "Añadir/Quitar/Editar Libro"
+                                    : "Lista de Libros"}
+                                
+                            </Link>
+                            </button>
+                        )}
+                        </div>
 
-                    {store.auth && store.userType === "critic" && (
-                        <Link to="/listaLibrosCritico" className="nav-link ml-2">
-                            Lista de Libros
-                        </Link>
-                    )}
 
-                    {store.auth && store.userType === "admin" && (
-                        <Link to="/books" className="nav-link ml-2">
-                            Añadir/Quitar/Editar Libro
-                        </Link>
-                    )}
-                </div>
+                    <div className="col-auto d-flex">
+                        {store.auth ? (
+                            <>
+                                <button
+                                    onClick={handleLogout}
+                                    className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 mr-2"
+                                >
+                                    Logout
+                                </button>
 
-                <div className="d-flex align-items-center">
-                    {store.auth ? (
-                        <>
-                            {/* Mostrar botones específicos para cada tipo de usuario */}
-                            {store.userType === "critic" && (
-                                <>
-                                    <button onClick={handleLogoutCritico} className="btn btn-primary">Logout</button>
-                                    <Link to="/verReviewCritico">
-                                        <button className="btn btn-primary">My Reviews</button> 
+                                {store.userType === "critic" && (
+                                    <>
+                                        <Link to="/verReviewCritico">
+                                            <button className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 mr-2">
+                                                My Reviews
+                                            </button>
+                                        </Link>
+                                        <Link
+                                            to="/perfilCritico"
+                                            className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 mr-2"
+                                        >
+                                            Perfil
+                                        </Link>
+                                    </>
+                                )}
+                                {store.userType === "lector" && (
+                                    <Link
+                                        to="/perfilLector"
+                                        className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 mr-2"
+                                    >
+                                        Perfil
                                     </Link>
-                                    <Link to="/perfilCritico" className="btn btn-secondary ml-2">Perfil</Link>
-                                </>
-                            )}
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                <div className="d-flex">
+                                    <div className="dropdown mr-2">
+                                        <button
+                                            className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 dropdown-toggle"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            Login
+                                        </button>
+                                        <ul className="dropdown-menu">
+                                            <li>
+                                                <Link className="dropdown-item" to="/loginLector">
+                                                    Como Lector
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link className="dropdown-item" to="/loginCritico">
+                                                    Como Crítico
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link className="dropdown-item" to="/loginAdmin">
+                                                    Como Administrador
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                            {store.userType === "lector" && (
-                                <>
-                                    <button onClick={handleLogoutLector} className="btn btn-primary">Logout</button>
-                                    <Link to="/perfilLector" className="btn btn-secondary ml-2">Perfil</Link>
-                                </>
-                            )}
-
-                            {store.userType === "admin" && (
-                                <>
-                                    <button onClick={handleLogoutAdmin} className="btn btn-primary">Logout</button>
-                                </>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            <div className="dropdown">
-                                <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Login
-                                </button>
-                                <ul className="dropdown-menu">
-                                    <li>
-                                        <Link className="dropdown-item" to="/loginLector">Como Lector</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/loginCritico">Como Crítico</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/loginAdmin">Como Administrador</Link>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div className="dropdown ml-2">
-                                <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Signup
-                                </button>
-                                <ul className="dropdown-menu">
-                                    <li>
-                                        <Link className="dropdown-item" to="/signupLector">Como Lector</Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/signupCritico">Como Crítico</Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </>
-                    )}
+                                    <div className="dropdown">
+                                        <button
+                                            className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 dropdown-toggle"
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
+                                        >
+                                            Signup
+                                        </button>
+                                        <ul className="dropdown-menu">
+                                            <li>
+                                                <Link className="dropdown-item" to="/signupLector">
+                                                    Como Lector
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link className="dropdown-item" to="/signupCritico">
+                                                    Como Crítico
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
-        </nav>
+        </header>
     );
 };
