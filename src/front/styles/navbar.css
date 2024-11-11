@@ -1,0 +1,99 @@
+
+.navbar .btn, 
+.navbar .dropdown-toggle {
+    background-color: rgb(83, 83, 83); 
+    color: white; 
+    border: 1px solid rgb(83, 83, 83); 
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase; 
+    border-radius: 4px; 
+    transition: all 0.3s ease; 
+    margin-left: 10px;
+}
+
+
+.navbar .btn:hover, 
+.navbar .dropdown-toggle:hover {
+    background-color: rgba(22, 28, 45, 0.2) !important; 
+    color: white; 
+    cursor: pointer; 
+}
+
+
+.navbar .btn:active, 
+.navbar .dropdown-toggle:active {
+    background-color: rgba(22, 28, 45, 0.4) !important;  
+    color: white; 
+}
+
+.navbar .nav-link {
+    text-decoration: none; 
+    color: white; 
+    font-weight: 500; 
+    padding: 0px 20px; 
+    transition: all 0.3s ease; 
+    margin-bottom: 0px;
+}
+
+.navbar .nav-link:hover {
+   
+    color: white; 
+    cursor: pointer; 
+    border-radius: 4px; 
+}
+
+
+/* Estilo del botón */
+.btn2 {
+  font-size: 18px;
+  color: #e1e1e1;
+  font-family: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  position: relative;
+  border: none;
+  background: none;
+  text-transform: uppercase;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 400ms;
+  transition-property: color;
+  
+}
+
+.btn2:focus,
+.btn2:hover {
+  color: #fff;
+}
+
+.btn2:focus:after,
+.btn2:hover:after {
+  width: 100%;
+  left: 0;
+}
+
+.btn2:after {
+  content: "";
+  pointer-events: none;
+  bottom: 0; /* Cambia -2px a 0 o ajusta según lo que necesites */
+  left: 50%;
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition-duration: 400ms;
+  transition-property: width, left;
+}
+
+/* Estilos específicos para el enlace */
+a.nav-link {
+  text-decoration: none; /* Elimina el subrayado del enlace */
+  color: inherit; /* Hereda el color del elemento padre */
+}
+
+a.nav-link:hover {
+  color: inherit; /* Evita que cambie de color al hacer hover */
+}

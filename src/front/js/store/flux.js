@@ -707,6 +707,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("userType"); 
 				setStore({ auth: false, lectorName: "", lectorId: null, userType: "" });  
 			},
+
+			logoutAdmin: () => {
+				localStorage.removeItem("token");
+				localStorage.removeItem("lectorName");
+				localStorage.removeItem("lectorId");
+				localStorage.removeItem("userType"); 
+				setStore({ auth: false, lectorName: "", lectorId: null, userType: "" });  
+			},
 			
 
 			getFavorites: async (lectorId) => {
