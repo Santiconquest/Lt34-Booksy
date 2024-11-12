@@ -87,113 +87,12 @@ export const ReadersListOfBooks = () => {
         <>
 
         
-       <div className="container">
+       <div className="container page-container">
         <div className="row" style={{ width: '100%' }}>
-            <div className="buttons-container" >
-                <div className="favorites-dropdown  paste-button" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                    <button className="button ms-2" onClick={handleToggleFavorites}>
-                        Favoritos &nbsp; ▼
-                    </button>
-
-                    {(showFavorites || hover) && (
-                        <div className="dropdown-content p-3">
-                            {store.favorites.length === 0 ? (
-                                <p className="text-white">No hay elementos que mostrar</p>
-                            ) : (
-                                <div>
-                                    <div className="row">
-                                        {getRecentItems(store.favorites).map((favoriteBook) => (
-                                            <div key={favoriteBook.id} className="col-12 mb-2">
-                                                <div className="card small-card">  {/* Aquí agregas la clase small-card */}
-                                                    <div className="card-body d-flex justify-content-between align-items-center" style={{ Height: "20px"}}>
-                                                        <img
-                                                            src={favoriteBook.cover}
-                                                            alt={favoriteBook.titulo}
-                                                            className="card-img-top"
-                                                            style={{ width: '40px', height: '60px', objectFit: 'cover' }} 
-                                                        />
-                                                        <Link
-                                                            to={`/bookdetails/${favoriteBook.id}`}
-                                                            className="card-title mb-0 text-decoration-none text-dark"
-                                                            style={{ fontSize: '0.9rem' }}  // Reducir el tamaño del texto
-                                                        >
-                                                            {truncateText(favoriteBook.titulo, 5)}
-                                                        </Link>
-                                                        <span
-                                                            onClick={() => actions.toggleFavorite(favoriteBook.id)}
-                                                            className="remove-favorite-icon"
-                                                            style={{ cursor: 'pointer' }}
-                                                        >
-                                                            <FontAwesomeIcon icon={trashIcon} />
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link to="/favoritosLector" className="btn btn-secondary mt-2">
-                                        Ver todos
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-
-
-                <div className="wishlist-dropdown  paste-button" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                    <button className="button ms-1" onClick={handleToggleWishlist}>
-                        Wishlist &nbsp; ▼
-                    </button>
-
-                    {(showWishlist || hover) && (
-                        <div className="dropdown-content p-3">
-                            {store.wishlist.length === 0 ? (
-                                <p className="text-white">No hay elementos en la wishlist</p>
-                            ) : (
-                                <div>
-                                    <div className="row">
-                                        {getRecentItems(store.wishlist).map((wishlistBook) => (
-                                            <div key={wishlistBook.id} className="col-12 mb-2">
-                                                <div className="card small-card">  {/* Aquí agregamos la clase small-card */}
-                                                    <div className="card-body d-flex justify-content-between align-items-center" style={{ height: "20px" }}>
-                                                        <img
-                                                            src={wishlistBook.cover}
-                                                            alt={wishlistBook.titulo}
-                                                            className="card-img-top"
-                                                            style={{ width: '40px', height: '60px', objectFit: 'cover' }}  // Ajusta el tamaño de la imagen
-                                                        />
-                                                        <Link
-                                                            to={`/bookdetails/${wishlistBook.id}`}
-                                                            className="card-title mb-0 text-decoration-none text-dark"
-                                                            style={{ fontSize: '0.9rem' }}  // Reducir el tamaño del texto
-                                                        >
-                                                            {truncateText(wishlistBook.titulo, 5)}
-                                                        </Link>
-                                                        <span
-                                                            onClick={() => actions.toggleWishlist(wishlistBook.id)}
-                                                            className="remove-wishlist-icon"
-                                                            style={{ cursor: 'pointer' }}
-                                                        >
-                                                            <FontAwesomeIcon icon={trashIcon} />
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link to="/wishlistLector" className="btn btn-secondary mt-2">
-                                        Ver todos
-                                    </Link>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>    
-            </div >
+            
 
             <div className="col-12 col-md-3" >
-                <div className="card card-bleed border-bottom border-bottom-md-0 shadow-light-lg ms-3">
+                <div className="card card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
 
               
               <div className="collapse d-md-block" id="sidenavCollapse">
@@ -205,65 +104,36 @@ export const ReadersListOfBooks = () => {
                   </h6>
 
                  
-                  <ul className="card-list list text-gray-700 mb-6">
-                    <li className="list-item">
-                        <div className="checkbox-wrapper">
-                        <input
-                            type="checkbox"
-                            id="genero"
-                            checked={activeTab === "genero"}
-                            onChange={() => setActiveTab(activeTab === "genero" ? "" : "genero")}
-                            className="check"
-                        />
-                        <label htmlFor="genero" className={`label ${activeTab === "genero" ? "active" : ""}`}>
-                            <svg width="45" height="45" viewBox="0 0 95 95">
-                            <rect x="30" y="20" width="50" height="50" stroke="black" fill="none"></rect>
-                            <g transform="translate(0,-952.36222)">
-                                <path
-                                d="m 56,963 c -102,122 6,9 7,9 17,-5 -66,69 -38,52 122,-77 -7,14 18,4 29,-11 45,-43 23,-4"
-                                stroke="black"
-                                strokeWidth="3"
-                                fill="none"
-                                className="path1"
-                                ></path>
-                            </g>
-                            </svg>
-                            <span>Por Género</span>
-                        </label>
-                        </div>
-                    </li>
-                    <li className="list-item">
-                        <div className="checkbox-wrapper">
-                        <input
-                            type="checkbox"
-                            id="autor"
-                            checked={activeTab === "autor"}
-                            onChange={() => setActiveTab(activeTab === "autor" ? "" : "autor")}
-                            className="check"
-                        />
-                        <label htmlFor="autor" className={`label ${activeTab === "autor" ? "active" : ""}`}>
-                            <svg width="45" height="45" viewBox="0 0 95 95">
-                            <rect x="30" y="20" width="50" height="50" stroke="black" fill="none"></rect>
-                            <g transform="translate(0,-952.36222)">
-                                <path
-                                d="m 56,963 c -102,122 6,9 7,9 17,-5 -66,69 -38,52 122,-77 -7,14 18,4 29,-11 45,-43 23,-4"
-                                stroke="black"
-                                strokeWidth="3"
-                                fill="none"
-                                className="path1"
-                                ></path>
-                            </g>
-                            </svg>
-                            <span>Por Autor</span>
-                        </label>
-                        </div>
-                    </li>
-                    </ul>
-
+                  <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">
+                    <Link
+                        to="#"
+                        className={`nav-link ${activeTab === "genero" ? "active" : ""}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setActiveTab(activeTab === "genero" ? "" : "genero");
+                        }}
+                        >
+                        Por Género
+                        </Link>
+                        <Link
+                        to="#"
+                        className={`nav-link ${activeTab === "autor" ? "active" : ""}`}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setActiveTab(activeTab === "autor" ? "" : "autor");
+                        }}
+                        >
+                        Por Autor
+                        </Link>
+                    </nav>
+                </div>               
+                    
+                    
 
 
                   
-                  <h6 className="fw-bold text-uppercase mb-3">
+                  <h6 className="fw-bold text-uppercase mb-4 mt-2">
                     Buscar Por
                   </h6>
 
@@ -301,22 +171,40 @@ export const ReadersListOfBooks = () => {
                     </li>
                   </ul>
 
-                  <h6 className="fw-bold text-uppercase mb-0 mt-3">
-                  Herramientas Inteligentes
-                  </h6>
-                
-                <div className="row card-list list text-gray-700 mb-0"> 
-                        <Link to="/chat" className="col btn btn-warning ">
-                        Chat Booksy
+                <h6 className="fw-bold text-uppercase mb-3 mt-4">
+                    Herramientas Booksy
+                </h6>
+
+                <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">
+                        <Link to="/chat" className="nav-item nav-link">
+                            ChatScribe
                         </Link>
-                   
-                        <Link to="/visionAPI" className="col btn btn-warning">
-                        Escanear Libro
+                        <Link to="/visionAPI" className="nav-item nav-link">
+                            ScanBook
                         </Link>
+                    </nav>    
+                </div>
+
+                <h6 className="fw-bold text-uppercase mb-3 mt-4">
+                     Mi Biblioteca
+                </h6>
+
+                <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">            
+                       
+                        <Link to="/favoritosLector" className="nav-item nav-link">
+                            Favoritos
+                        </Link>
+                        <Link to="/wishlistLector" className="nav-item nav-link">
+                            Wishlist
+                        </Link>
+                    </nav>
                 </div>
 
                 <div className="row">
                     <div className="col d-flex justify-content-center">
+                    <Link to="/bookRecommendations" className="no-underline">
                         <button className="buttonAI">
                             <div className="dots_border"></div>
                             <svg
@@ -351,11 +239,12 @@ export const ReadersListOfBooks = () => {
                                 ></path>
                             </svg>
                             <span className="text_button">
-                                <Link to="/bookRecommendations" className="no-underline">
-                                    Sugerencias AI
-                                </Link>
+                               
+                                    
+                                
                             </span>
                         </button>
+                        </Link>
                 </div>
                 </div>
 
@@ -370,7 +259,7 @@ export const ReadersListOfBooks = () => {
           <div className="col-12 col-md-9">
 
             
-            <div className="card card-bleed shadow-light-lg mb-6">
+            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
               <div className="card-body">
 
                 

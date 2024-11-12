@@ -1,5 +1,5 @@
 .container {
-    margin-top: 20px;
+    margin-top: -34px !important;
 }
 
 /* .tabs {
@@ -98,7 +98,7 @@
 }
 
 .card-body {
-    min-height: 200px;
+    min-height: 168px;
 }
 
 
@@ -138,8 +138,8 @@
   }
   
   .checkbox-wrapper .check {
-    width: 50px;
-    height: 50px;
+    width: 15px;
+    height: 15px;
     position: absolute;
     opacity: 0;
   }
@@ -167,181 +167,45 @@
 
   
 
-  /* From Uiverse.io by aadium */ 
-.paste-button {
-    position: relative;
-    display: block;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    left: 0;
-  }
-
-  
-  
-  .button {
-    background-color: #4CAF50;
-    color: #212121;
-    padding: 10px 15px;
-    font-size: 15px;
+  .nav-link.active {
     font-weight: bold;
-    border: 2px solid transparent;
-    border-radius: 15px;
-    cursor: pointer;
-    margin: 0px 0px 0px 0px;
-    width: 130px;
-  }
-  
-  .dropdown-content {
-    display: none;
-    font-size: 13px;
-    position: absolute;
-    z-index: 1;
-    min-width: 200px;
-    background-color: #212121;
-    border: 2px solid #4CAF50;
-    border-radius: 0px 15px 15px 15px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  }
-  
-  .dropdown-content a {
-    color: #ffffff;
-    padding: 8px 10px;
-    text-decoration: none;
-    display: block;
-    transition: 0.1s;
-  }
-  
-  .dropdown-content a:hover {
-    background-color: #ffffff;
-    color: #212121;
-  }
-  
-  .dropdown-content a:focus {
-    background-color: #212121;
-    color: #4CAF50;
-  }
-  
-  .dropdown-content #top:hover {
-    border-radius: 0px 13px 0px 0px;
-  }
-  
-  .dropdown-content #bottom:hover {
-    border-radius: 0px 0px 13px 13px;
-  }
-  
-  .paste-button:hover button {
-    border-radius: 15px 15px 0px 0px;
-  }
-  
-  .paste-button:hover .dropdown-content {
-    display: block;
-  }
-  
-  .paste-button, .favorites-dropdown, .wishlist-dropdown {
-    display: inline-block; /* Esto permite que los botones se alineen horizontalmente */
-    margin: 0 10px; /* Espaciado entre los botones */
+   
 }
 
-.buttons-container {
-    display: flex;
-    justify-content: flex-start; /* Alinea los botones a la izquierda */
-    gap: 10px; /* Espaciado entre botones */
+.nav-link {
+  cursor: pointer;
+  padding: 5px 25px;
+  padding-left: 1.25rem; /* Ajuste de espaciado a la izquierda */
+  text-align: left;
+  margin-bottom: 5px;
+  border-radius: 0px;
+  
 }
 
-/* From Uiverse.io by zjssun */ 
-.btn-warning {
-    position: relative;
-    padding: 10px 22px;
-    border-radius: 6px;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    background-color: #7d2ae8;
-    transition: all 0.2s ease;
-    max-width: 200px;
-  }
-  
-  .btn-warning:active {
-    transform: scale(0.96);
-  }
-  
-  .btn-warning:before,
-  .btn-warning:after {
-    position: absolute;
-    content: "";
-    width: 150%;
-    left: 50%;
-    height: 100%;
-    transform: translateX(-50%);
-    z-index: -1000;
-    background-repeat: no-repeat;
-  }
-  
-  .btn-warning:hover:before {
-    top: -70%;
-    background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-    background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
-      10% 10%, 18% 18%;
-    background-position: 50% 120%;
-    animation: greentopBubbles 0.6s ease;
-  }
-  
-  @keyframes greentopBubbles {
-    0% {
-      background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-        40% 90%, 55% 90%, 70% 90%;
-    }
-  
-    50% {
-      background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-        50% 50%, 65% 20%, 90% 30%;
-    }
-  
-    100% {
-      background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-        50% 40%, 65% 10%, 90% 20%;
-      background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-    }
-  }
-  
-  .btn-warning:hover::after {
-    bottom: -70%;
-    background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-      radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-    background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
-    background-position: 50% 0%;
-    animation: greenbottomBubbles 0.6s ease;
-  }
-  
-  @keyframes greenbottomBubbles {
-    0% {
-      background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-        70% -10%, 70% 0%;
-    }
-  
-    50% {
-      background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
-        105% 0%;
-    }
-  
-    100% {
-      background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
-        110% 10%;
-      background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-    }
-  }
+.page-container {
+  max-width: 1200px; /* Ancho máximo que desees */
+  margin: 0 auto;    /* Centra el contenido */
+  padding: 0 80px;   /* Espaciado a los lados */
+}
+
+.nav-item {
+  color: gray;
+}
+
+.nav-link.active {
+  border-left: 4px solid #007bff; 
+  color: #007bff; 
+  border-bottom:none ;
+}
+
+.nav-link:hover {
+  border-left: 4px solid #007bff; 
+}
+
+
+.nav-item .nav-link.active {
+  border-left: 4px solid blue; /* Línea de borde izquierdo cuando la pestaña está activa */
+}
 
 
 
@@ -549,14 +413,15 @@
 /* From Uiverse.io by ErzenXz */ 
 .input {
     width: 100%;
-    max-width: 330px;
-    height: 45px;
+    max-width: 150px;
+    height: 25px;
     padding: 12px;
     border-radius: 12px;
     border: 1.5px solid lightgrey;
     outline: none;
     transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: 0px 0px 20px -18px;
+    font-size: 0.8rem;
   }
   
   .input:hover {
@@ -572,7 +437,13 @@
     border: 2px solid grey;
   }
 
+body {
+  font-size: 14px;
+}
 
+h6 {
+  font-size: 13px;
+}
 
 
   

@@ -1,110 +1,460 @@
+.container {
+  margin-top: -34px !important;
+}
+
+/* .tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.tab.active {
+  background-color: #007bff;
+  color: white;
+} */
+
+.card-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.favorite-icon {
+  cursor: pointer;
+  font-size: 1rem; 
+  color: gray; 
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.favorite-icon.favorite {
+  color: gray; 
+  transform: scale(1.2); 
+}
+
+.favorite-icon:hover {
+  color: gray; 
+  transform: scale(1.2); 
+}
+
+
+.favorites-dropdown, .wishlist-dropdown {
+  position: relative;
+  margin-top: 0; 
+  margin-right: 10px; 
+}
+
+.dropdown-content {
+  
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  min-width: 200px;
+  z-index: 1;
+  padding: 0 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+  display: none; 
+}
+
+.favorites-dropdown:hover .dropdown-content,
+.wishlist-dropdown:hover .dropdown-content {
+  display: block; 
+}
+
+.dropdown-content ul {
+  list-style-type: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.remove-favorite-icon, .remove-wishlist-icon {
+  cursor: pointer; 
+  color: red; 
+  margin-left: 8px;
+}
+
+.wishlist-icon {
+  cursor: pointer;
+  font-size: 1rem; 
+  color: gray; 
+}
+
+.wishlist-icon.text-primary {
+  color: blue; 
+}
+
+.wishlist-icon.text-muted {
+  color: grey; 
+}
+
+.custom-details-button {
+  margin-left: 20px; 
+}
+
+.card-body {
+  min-height: 200px;
+}
+
+
+.btn-warning {
+  position: relative;
+  margin-top: 20px; 
+  margin-right: 10px; 
+}
+
+.btn-dark {
+  position: relative;
+  margin-top: 20px; 
+  margin-right: 10px; 
+}
+
 /* From Uiverse.io by PriyanshuGupta28 */ 
 .checkbox-wrapper input[type="checkbox"] {
-    visibility: hidden;
-    display: none;
-  }
-  
-  .checkbox-wrapper *,
-    .checkbox-wrapper ::after,
-    .checkbox-wrapper ::before {
-    box-sizing: border-box;
-    user-select: none;
-  }
-  
-  .checkbox-wrapper {
-    position: relative;
-    display: block;
-    overflow: hidden;
-  }
-  
-  .checkbox-wrapper .label {
-    cursor: pointer;
-  }
-  
-  .checkbox-wrapper .check {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-    opacity: 0;
-  }
-  
-  .checkbox-wrapper .label svg {
-    vertical-align: middle;
-  }
-  
-  .checkbox-wrapper .path1 {
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    transition: .5s stroke-dashoffset;
-    opacity: 0;
-  }
-  
-  .checkbox-wrapper .check:checked + label svg g path {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
+  visibility: hidden;
+  display: none;
+}
 
-  .card-list {
-    list-style: none; 
-    padding: 0;     
-  }
+.checkbox-wrapper *,
+  .checkbox-wrapper ::after,
+  .checkbox-wrapper ::before {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.checkbox-wrapper .label {
+  cursor: pointer;
+}
+
+.checkbox-wrapper .check {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  opacity: 0;
+}
+
+.checkbox-wrapper .label svg {
+  vertical-align: middle;
+}
+
+.checkbox-wrapper .path1 {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: .5s stroke-dashoffset;
+  opacity: 0;
+}
+
+.checkbox-wrapper .check:checked + label svg g path {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+.card-list {
+  list-style: none; 
+  padding: 0;     
+}
 
 
-  /* From Uiverse.io by vinodjangid07 */ 
-.readmore-btn {
-    width: fit-contentd;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: rgb(186, 125, 255);
-    border: none;
-    border-radius: 10px;
-    padding: 0px 15px;
-    gap: 0px;
-    transition: all 0.4s;
-    margin-left: 6px;
+
+.nav-link.active {
+  font-weight: bold;
+ 
+}
+
+.nav-link {
+cursor: pointer;
+padding: 5px 25px;
+padding-left: 1.25rem; /* Ajuste de espaciado a la izquierda */
+text-align: left;
+margin-bottom: 5px;
+border-radius: 0px;
+
+}
+
+.page-container {
+max-width: 1200px; /* Ancho máximo que desees */
+margin: 0 auto;    /* Centra el contenido */
+padding: 0 80px;   /* Espaciado a los lados */
+}
+
+.nav-item {
+color: gray;
+}
+
+.nav-link.active {
+border-left: 4px solid #007bff; 
+color: #007bff; 
+border-bottom:none ;
+}
+
+.nav-link:hover {
+border-left: 4px solid #007bff; 
+}
+
+
+.nav-item .nav-link.active {
+border-left: 4px solid blue; /* Línea de borde izquierdo cuando la pestaña está activa */
+}
+
+
+
+/* From Uiverse.io by MuhammadHasann */ 
+.buttonAI {
+  --black-700: hsla(0 0% 12% / 1);
+  --border_radius: 9999px;
+  --transtion: 0.3s ease-in-out;
+  --offset: 2px;
+
+  cursor: pointer;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  transform-origin: center;
+
+  padding: 1rem 2rem;
+  background-color: transparent;
+
+  border: none;
+  border-radius: var(--border_radius);
+  transform: scale(calc(1 + (var(--active, 0) * 0.1)));
+
+  transition: transform var(--transtion);
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.buttonAI::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  height: 100%;
+  background-color: var(--black-700);
+
+  border-radius: var(--border_radius);
+  box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
+    0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
+    0 0 0 calc(var(--active, 0) * 0.375rem) hsl(260 97% 50% / 0.75);
+
+  transition: all var(--transtion);
+  z-index: 0;
+}
+
+.buttonAI::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  height: 100%;
+  background-color: hsla(260 97% 61% / 0.75);
+  background-image: radial-gradient(
+      at 51% 89%,
+      hsla(266, 45%, 74%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 100% 100%, hsla(266, 36%, 60%, 1) 0px, transparent 50%),
+    radial-gradient(at 22% 91%, hsla(266, 36%, 60%, 1) 0px, transparent 50%);
+  background-position: top;
+
+  opacity: var(--active, 0);
+  border-radius: var(--border_radius);
+  transition: opacity var(--transtion);
+  z-index: 2;
+}
+
+.buttonAI:is(:hover, :focus-visible) {
+  --active: 1;
+}
+.buttonAI:active {
+  transform: scale(1);
+}
+
+.buttonAI .dots_border {
+  --size_border: calc(100% + 2px);
+
+  overflow: hidden;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: var(--size_border);
+  height: var(--size_border);
+  background-color: transparent;
+
+  border-radius: var(--border_radius);
+  z-index: -10;
+}
+
+.buttonAI .dots_border::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: left;
+  transform: rotate(0deg);
+
+  width: 100%;
+  height: 2rem;
+  background-color: white;
+
+  mask: linear-gradient(transparent 0%, white 120%);
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
   }
-  .book-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
-    width: 45px;
-    height: 100%;
+}
+
+.buttonAI .sparkle {
+  position: relative;
+  z-index: 10;
+
+  width: 1.75rem;
+}
+
+.buttonAI .sparkle .path {
+  fill: currentColor;
+  stroke: currentColor;
+
+  transform-origin: center;
+
+  color: hsl(0, 0%, 100%);
+}
+
+.buttonAI:is(:hover, :focus) .sparkle .path {
+  animation: path 1.5s linear 0.5s infinite;
+}
+
+.buttonAI .sparkle .path:nth-child(1) {
+  --scale_path_1: 1.2;
+}
+.buttonAI .sparkle .path:nth-child(2) {
+  --scale_path_2: 1.2;
+}
+.buttonAI .sparkle .path:nth-child(3) {
+  --scale_path_3: 1.2;
+}
+
+@keyframes path {
+  0%,
+  34%,
+  71%,
+  100% {
+    transform: scale(1);
   }
-  .book-wrapper .book-page {
-    width: 50%;
-    height: auto;
-    position: absolute;
+  17% {
+    transform: scale(var(--scale_path_1, 1));
   }
-  .readmore-btn:hover .book-page {
-    animation: paging 0.4s linear infinite;
-    transform-origin: left;
+  49% {
+    transform: scale(var(--scale_path_2, 1));
   }
-  .readmore-btn:hover {
-    background-color: rgb(159, 74, 255);
+  83% {
+    transform: scale(var(--scale_path_3, 1));
   }
-  @keyframes paging {
-    0% {
-      transform: rotateY(0deg) skewY(0deg);
-    }
-    50% {
-      transform: rotateY(90deg) skewY(-20deg);
-    }
-    100% {
-      transform: rotateY(180deg) skewY(0deg);
-    }
-  }
-  .text {
-    width: 105px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 15px;
-    color: rgb(255, 255, 255);
-  }
+}
+
+.buttonAI .text_button {
+  position: relative;
+  z-index: 10;
+
+  background-image: linear-gradient(
+    90deg,
+    hsla(0 0% 100% / 1) 0%,
+    hsla(0 0% 100% / var(--active, 0)) 120%
+  );
+  background-clip: text;
+
+  font-size: 1rem;
+  color: transparent;
+}
+
+.no-underline {
+  color: inherit; 
+  text-decoration: none; 
+}
+
+.no-underline:hover {
+  color: inherit; 
+  text-decoration: none;
+}
+
+
+.readers-list .card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* From Uiverse.io by ErzenXz */ 
+.input {
+  width: 100%;
+  max-width: 150px;
+  height: 25px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1.5px solid lightgrey;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0px 0px 20px -18px;
+  font-size: 0.8rem;
+}
+
+.input:hover {
+  border: 2px solid lightgrey;
+  box-shadow: 0px 0px 20px -17px;
+}
+
+.input:active {
+  transform: scale(0.95);
+}
+
+.input:focus {
+  border: 2px solid grey;
+}
+
+body {
+font-size: 14px;
+}
+
+h6 {
+font-size: 13px;
+}
+
+.no-underline2{
+  text-decoration: none;
   
+}
+.no-underline2:hover{
+  text-decoration: underline;
+  color: inherit; 
+}
+
+.text {
+  color: rgb(82, 82, 82)
+}
+
