@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/bookDetailsCritic.css";
 
 export const BookDetailsCritic = () => {
     const { store, actions } = useContext(Context);
@@ -101,24 +102,39 @@ export const BookDetailsCritic = () => {
         }
     };
 
-    if (!bookData) return <p>Loading book details...</p>;
+    if (!bookData) return <p>Cargando detalles del libro...</p>;
 
     return (
-        <div className="jumbotron">
-            <h1 className="display-4">{bookData.titulo}</h1>
-            <p><strong>Autor:</strong> {bookData.autor}</p>
-            <p><strong>Cantidad de Páginas:</strong> {bookData.cantidad_paginas}</p>
-            <p><strong>Género:</strong> {bookData.genero}</p>
-            <p><strong>Año Publicado:</strong> {bookData.year}</p>
-            <img src={bookData.cover} alt={bookData.titulo} style={{ width: '300px', height: '300px' }} />
-            <hr className="my-4" />
+        <div className="book-detail-container">
+            <h1 className="mt-5">{bookData.titulo}</h1>
+            <div className="book-detail-content">
+                <img 
+                    src={bookData.cover} 
+                    alt={bookData.titulo} 
+                    className="img-fluid" 
+                />
+                <div>
+                    <h2>Detalles del Libro</h2>
+                    <p><strong>Autor:</strong> {bookData.autor}</p>
+                    <p><strong>Cantidad de Páginas:</strong> {bookData.cantidad_paginas}</p>
+                    <p><strong>Género:</strong> {bookData.genero}</p>
+                    <p><strong>Año Publicado:</strong> {bookData.year}</p>
 
-          
-            {infoLink && (
-                <a href={infoLink} target="_blank" rel="noopener noreferrer" className="btn btn-success mb-3">
-                    Comprar Libro
-                </a>
-            )}
+                    {infoLink && (
+                        <button className="buttonBuy">
+                        <svg viewBox="0 0 16 16" className="bi bi-cart-check" height="24" width="24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+                            <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"></path>
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                        </svg>
+                        {infoLink && (
+                            <a href={infoLink} target="_blank" rel="noopener noreferrer" className="text">
+                            Comprar
+                            </a>
+                        )}
+                    </button>
+                    )}
+                </div>
+            </div>
 
             <form onSubmit={handleReviewSubmit}>
                 <div className="mb-3">
@@ -131,7 +147,7 @@ export const BookDetailsCritic = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Enviar Reseña</button>
+                <button type="submit" className="btn btn-success">Enviar Reseña</button>
             </form>
 
             <h2 className="mt-4">Reseñas</h2>
@@ -164,11 +180,10 @@ export const BookDetailsCritic = () => {
             </ul>
 
             <Link to="/listaLibrosCritico">
-                <span className="btn btn-primary btn-lg" role="button">
-                    Back to list
+                <span className="btn btn-primary btn mt-3" role="button">
+                    Volver a la lista
                 </span>
             </Link>
         </div>
     );
 };
-

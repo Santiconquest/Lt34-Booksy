@@ -60,7 +60,6 @@ const Layout = () => {
                         <Route element={<PrivateRouteCritico element={<ListaLibrosCritico />} />} path="/listaLibrosCritico" />
                         <Route element={<PrivateRouteCritico element={<CriticReviews />} />} path="/verReviewCritico" />
                         <Route element={<PrivateRouteCritico element={<ProfileCritico />} />} path="/perfilCritico" />
-                        <Route element={<PrivateRouteCritico element={<VisionAPI />} />} path="/visionAPI" />
                         <Route element={<ProfileLector />} path="/perfilLector" />
                         <Route element={<PrivateRouteAdmin element={<Books />} />} path="/books" />
                         <Route element={<PrivateRouteAdmin element={<AddBook />} />} path="/addbook" />
@@ -69,10 +68,10 @@ const Layout = () => {
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginAdmin />} path="/loginAdmin" /> 
                         <Route element={<LoginLector />} path="/loginLector" />  
-                        <Route element={<Chat />} path="/chat" />  
+                        <Route element={<Chat />} path="/chat" /> 
+                        <Route element={<VisionAPI />} path="/visionAPI" />  
                         <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<PrivateRouteLector element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
-                        <Route element={<PrivateRouteLector element={<VisionAPI />} />} path="/visionAPI" />
                         <Route element={<PrivateRouteLector element={<BookRecommendations />} />} path="/bookRecommendations" />
                         <Route element={<PrivateRouteLector element={<FavoritosLector />} />} path="/favoritosLector" />
                         <Route element={<PrivateRouteLector element={<WishlistLector />} />} path="/wishlistLector" />

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from 'react-icons/fa'; // Importando los íconos
 import "../../styles/bookDetail.css";
 
 export const BookDetail = () => {
@@ -94,32 +95,17 @@ export const BookDetail = () => {
                     <p><strong>Año Publicado:</strong> {book.year}</p>
                     <p><strong>Descripción:</strong> {description || "No disponible"}</p>
                     
-                    {/* From Uiverse.io by JaydipPrajapati1910 */}
+                    {/* Botón de compra */}
                     <button className="buttonBuy">
-                    <svg viewBox="0 0 16 16" className="bi bi-cart-check" height="24" width="24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
-                        <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"></path>
-                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                    </svg>
-                    {infoLink && (
-                        <a href={infoLink} target="_blank" rel="noopener noreferrer" className="text">
-                        Comprar
-                        </a>
-                    )}
-                    </button>
-
-
-
-                    <button 
-                        onClick={handleAddToFavorites} 
-                        className="btn btn-primary mt-3 me-2"
-                    >
-                        {store.favorites.includes(book.id) ? "Quitar de Favoritos" : "Añadir a Favoritos"}
-                    </button>
-                    <button 
-                        onClick={handleAddToWishlist} 
-                        className="btn btn-secondary mt-3"
-                    >
-                        {store.wishlist.includes(book.id) ? "Quitar de Wishlist" : "Añadir a Wishlist"}
+                        <svg viewBox="0 0 16 16" className="bi bi-cart-check" height="24" width="24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+                            <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"></path>
+                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                        </svg>
+                        {infoLink && (
+                            <a href={infoLink} target="_blank" rel="noopener noreferrer" className="text">
+                            Comprar
+                            </a>
+                        )}
                     </button>
                 </div>
             </div>
@@ -139,4 +125,3 @@ export const BookDetail = () => {
         </div>
     );
 };
-

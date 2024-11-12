@@ -27,37 +27,35 @@ export const Navbar = () => {
 
     return (
         <header className="bg-dark py-2 d-none d-md-block pb-1" style={{ marginTop: 0 }}>
-            <div className="container-md">
+            <div className="container-md page-container">
                 <div className="row align-items-center navbar">
                     <div className="col" style={{ maxWidth: "500px", }}>
-                        <h1 className="fw-bold text-white mb-3">Booksy</h1>
-                    </div>
-
-                    
-                    <div className="col d-flex">
+                        <h1 className="text-white mb-3">Booksy</h1>
+                        <div className="col d-flex">
                         {store.auth && (
-                            <button className="btn2">
+                            
                             <Link 
-                                to={
-                                store.userType === "lector"
-                                    ? "/readersListOfBooks"
-                                    : store.userType === "critic"
-                                    ? "/listaLibrosCritico"
-                                    : store.userType === "admin"
-                                    ? "/books"
-                                    : "/"
+                                to={ 
+                                    store.userType === "lector" 
+                                    ? "/readersListOfBooks" 
+                                    : store.userType === "critic" 
+                                    ? "/listaLibrosCritico" 
+                                    : store.userType === "admin" 
+                                    ? "/books" 
+                                    : "/" 
                                 }
-                                className="nav-link"
-                            >
-                                
-                                {store.userType === "admin"
-                                    ? "Añadir/Quitar/Editar Libro"
+                                className="bg-dark fs-6 no-underline"
+                                >
+                                {store.userType === "admin" 
+                                    ? "Añadir/Quitar/Editar Libro" 
                                     : "Lista de Libros"}
-                                
                             </Link>
-                            </button>
+
+                            
                         )}
                         </div>
+                    </div>
+
 
 
                     <div className="col-auto d-flex">
