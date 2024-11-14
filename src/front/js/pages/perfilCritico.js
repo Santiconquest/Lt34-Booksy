@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import "../../styles/profileLector.css"; // Asegúrate de tener estilos compartidos
 
-const ProfileCritico = () => {
+const ProfileCritico = () => { 
     const { store, actions } = useContext(Context);
     const [critic, setCritic] = useState([]);                  
 
@@ -60,39 +61,40 @@ const ProfileCritico = () => {
     useEffect(() => {
         setCritic(store.critico);
     }, [store.critico]); 
- 
 
     return (
-        <div className="container">
-            <h1 className="my-5">Critic Profile</h1>
-            <div>
-                <h1>Upload Profile Image</h1>
-                <input type="file" onChange={(e)=>handleImageUpload(e)} />
-                
-                <img src={critic.images} alt="Uploaded" style={{ width: "150px", height: "auto" }} />
-                
-            </div>
-            
-            {critic ? (
-                <div className="card my-5">
-                    <div className="card-body">
-                        <h5 className="card-title">{critic.nombre} {critic.apellido}</h5>
+        <div className="container profile-container my-5 card-addbook">
+            <div className="card shadow-sm">
+                <div className="card-header text-center">
+                    <h4>{critic.nombre} {critic.apellido}</h4>
+                </div>
+                <div className="card-body">
+                    <div className="d-flex flex-column align-items-center">
+                        <div className="profile-image mb-3">
+                            <img 
+                                src={critic.images || "https://via.placeholder.com/150"} 
+                                alt="Uploaded" 
+                                className="rounded-circle" 
+                                style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                            />
+                        </div>
+                        <input 
+                            type="file" 
+                            className="form-control mb-4" 
+                            onChange={handleImageUpload} 
+                            style={{ maxWidth: "300px" }} 
+                        />
                         <p className="card-text"><strong>Email:</strong> {critic.email}</p>
                         <p className="card-text"><strong>Gender:</strong> {critic.genero}</p>
                         <p className="card-text"><strong>About Me:</strong> {critic.acerca_de_mi}</p>
+                        <Link to="/listaLibrosCritico" className="btn btn-primary mt-3">
+                            Back to list
+                        </Link>
                     </div>
                 </div>
-            ) : (
-                <p>Loading profile...</p>
-            )}
-            <Link to="/listaLibrosCritico">
-                <span className="btn btn-primary btn-lg" role="button">
-                    Back to list
-                </span>
-            </Link>
+            </div>
         </div>
     );
 };
 
 export default ProfileCritico;
-

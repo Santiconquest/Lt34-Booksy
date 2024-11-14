@@ -153,32 +153,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().changeColor(0, "green");
 			},
 			uploadImage: async (files) => {
-                const store = getStore();
-                const preset_name = "imagenes";                         
-   				const cloud_name = "dul7enfrl"  
-                const data = new FormData();
-                data.append("file", files[0]);
-                data.append("upload_preset", preset_name);
-
-                setStore({ loading: true });
-
-                await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
-                    method: "POST",
-                    body: data
-                })
-                .then(response => response.json())
-                .then(file => {
-                    setStore({ imageUrl: file.secure_url, loading: false });
-					return file
-                })
-
-                .catch(error => {
-                    console.error("Error uploading image:", error);
-                    setStore({ loading: false });
-                });
-				
-				return store.imageUrl
+				const store = getStore();
+				const preset_name = "imagenes";                         
+				const cloud_name = "dul7enfrl";  
+				const data = new FormData();
+				data.append("file", files[0]);
+				data.append("upload_preset", preset_name);
+			
+				setStore({ loading: true });
+			
+				await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+					method: "POST",
+					body: data
+				})
+				.then(response => response.json())
+				.then(file => {
+					const imageUrl = file.secure_url;
+					setStore({ imageUrl, loading: false });
+					localStorage.setItem("imageUrl", imageUrl); // Guarda la URL en localStorage
+					return file;
+				})
+				.catch(error => {
+					console.error("Error uploading image:", error);
+					setStore({ loading: false });
+				});
+			
+				return store.imageUrl;
 			},
+			
 			logoutCritico: () => {
 				localStorage.removeItem("token")
 				localStorage.removeItem("userType")

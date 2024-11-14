@@ -1,21 +1,88 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Link, useLocation } from "react-router-dom";
+import "../../styles/readersListOfBooks.css";
 
 const BookRecommendations = () => {
     const { store, actions } = useContext(Context);
+    const location = useLocation(); 
 
     const handleGetRecommendations = () => {
         actions.getRecommendations();
     };
 
-    
     useEffect(() => {
         handleGetRecommendations();
     }, []); 
 
     return (
-        <div className="d-flex flex-column justify-content-start align-items-center vh-100 bg-light">
-            <div className="text-center" style={{ maxWidth: '800px', margin: '20px auto' }}>
+        <>
+        <div className="container page-container">
+        <div className="row" style={{ width: '100%' }}>
+            <div className="col-12 col-md-3" >
+
+            <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+              <div className="collapse d-md-block" id="sidenavCollapse">
+                <div className="card-body">
+
+                <h6 className="fw-bold text-uppercase mb-3 mt-2">
+                     Mi Biblioteca
+                </h6>
+
+                <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">            
+                        <Link to="/readersListOfBooks" className="nav-item nav-link">
+                            Lista de Libros
+                        </Link>
+                        <Link to="/favoritosLector" className="nav-item nav-link">
+                            Favoritos
+                        </Link>
+                        <Link to="/wishlistLector" className="nav-item nav-link">
+                            Wishlist
+                        </Link>
+                    </nav>
+                </div>
+                </div>
+              </div>
+
+            </div>
+            <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+              <div className="collapse d-md-block" id="sidenavCollapse">
+                <div className="card-body">
+
+                <h6 className="fw-bold text-uppercase mb-3 mt-2">
+                    Herramientas Booksy
+                </h6>
+
+                <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">
+                        <Link to="/chat" className="nav-item nav-link">
+                            ChatScribe
+                        </Link>
+                        <Link to="/visionAPI" className="nav-item nav-link">
+                            ScanBook
+                        </Link>
+                        <Link 
+                            to="/bookRecommendations" 
+                            className={`nav-item nav-link ${location.pathname === "/bookRecommendations" ? "active" : ""}`} // Agregar clase activa según la ruta
+                        >
+                            Sugerencias AI
+                        </Link>
+                    </nav>    
+                </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+
+          <div className="col-12 col-md-9">
+            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
+              <div className="card-body">
+              <div className="row">
+              <div className="text-center" style={{ maxWidth: '800px', margin: '20px auto' }}>
                 <h1 className="display-4 mb-3 text-primary">Recomendación de Booksy</h1>
                 <button 
                     className="btn btn-primary btn-lg shadow-lg mb-3" 
@@ -36,8 +103,16 @@ const BookRecommendations = () => {
                         <p className="text-dark">No hay recomendaciones disponibles.</p> 
                     )}
                 </div>
+            </div>            </div>
+
+              </div>
             </div>
+
+
+          </div>
         </div>
+        </div>
+        </>
     );
 };
 
