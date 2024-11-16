@@ -5,15 +5,17 @@ import "../../styles/readersListOfBooks.css";
 
 const VisionAPI = () => {
   const [image, setImage] = useState(null);
+  const [imageName, setImageName] = useState(''); // Nuevo estado para el nombre del archivo
   const [searchResults, setSearchResults] = useState([]);
   const location = useLocation(); 
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setImageName(file.name); // Guardar el nombre del archivo
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        setImage(reader.result); // Guardar la imagen como base64
       };
       reader.readAsDataURL(file);
     }
@@ -73,7 +75,6 @@ const VisionAPI = () => {
       console.error('Error al llamar a la API de búsqueda personalizada de Google:', error);
     }
   };
-
   return (
     <>
       <div className="container page-container">
@@ -138,14 +139,14 @@ const VisionAPI = () => {
 
 
             <div className="col-12 col-md-9">
-              <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
-                <div className="card-body">
+            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
+              <div className="card-body">
                 <div className="row">
-
-
-                  <h1 className="text-center">ScanBook</h1>
+                  <div className="text-start">
+                    <h5 className="recomm-title mb-4">ScanBook</h5>
+                  </div>
                   <p className="text-center">
-                  Sube una foto del libro de tu interés nosotros hacemos el resto =)
+                    Sube una foto del libro de tu interés nosotros hacemos el resto =)
                   </p>
                   <form onSubmit={handleSubmit} className="text-center mb-4">
                     <div className="form-group">
@@ -159,7 +160,13 @@ const VisionAPI = () => {
                         />
                       </label>
                     </div>
-                    <button type="submit" className="btn btn-primary mt-2">Enviar</button>
+                    {imageName && <p className="mt-2">Imagen seleccionada: {imageName}</p>} {/* Mostrar el nombre del archivo */}
+                    {image && (
+                      <div className="mt-3">
+                        <img src={image} alt="Vista previa" style={{ maxWidth: '100%', maxHeight: '300px' }} /> {/* Mostrar la imagen */}
+                      </div>
+                    )}
+                    <button type="submit" className="btn btn-primary mt-2">Escanear</button>
                   </form>
                   {searchResults.length > 0 && (
                     <div>
@@ -177,15 +184,11 @@ const VisionAPI = () => {
                     </div>
                   )}
                 </div>
-                </div>
-
-
-                </div>
               </div>
             </div>
+          </div>
+        </div>
       </div>
-
-      
     </>
   );
 };

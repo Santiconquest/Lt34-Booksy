@@ -82,14 +82,11 @@ const BookRecommendations = () => {
             <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
               <div className="card-body">
               <div className="row">
-              <div className="text-center" style={{ maxWidth: '800px', margin: '20px auto' }}>
-                <h1 className="display-4 mb-3 text-primary">Recomendación de Booksy</h1>
-                <button 
-                    className="btn btn-primary btn-lg shadow-lg mb-3" 
-                    onClick={handleGetRecommendations}
-                >
-                    Obtener Recomendaciones
-                </button>
+              <div className="text-start">
+                <h5 className="recomm-title mb-4">Recomendación de Booksy</h5>
+                </div>
+                <div className="text-center">
+                
                 <div className="mt-3" style={{ minHeight: '100px' }}>
                     {store.loading ? ( 
                         <div className="spinner-grow text-primary" role="status">
@@ -102,7 +99,15 @@ const BookRecommendations = () => {
                     ) : (
                         <p className="text-dark">No hay recomendaciones disponibles.</p> 
                     )}
+
+                    <button 
+                        className="btn btn-primary btn-lg shadow-lg mb-3 mt-3 " 
+                        onClick={handleGetRecommendations}
+                    >
+                        Mas Sugerencias
+                    </button>
                 </div>
+                
             </div>            </div>
 
               </div>

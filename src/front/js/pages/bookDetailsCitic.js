@@ -137,8 +137,8 @@ export const BookDetailsCritic = () => {
               <div className="row">
 
 
-              <div className="book-detail-container">
-                <h1 className="mt-5">{bookData.titulo}</h1>
+              <div className="book-detail-container ms-2">
+                
                 <div className="book-detail-content">
                     <img 
                         src={bookData.cover} 
@@ -146,7 +146,7 @@ export const BookDetailsCritic = () => {
                         className="img-fluid" 
                     />
                     <div>
-                        <h2>Detalles del Libro</h2>
+                        <h2>{bookData.titulo}</h2>
                         <p><strong>Autor:</strong> {bookData.autor}</p>
                         <p><strong>Cantidad de Páginas:</strong> {bookData.cantidad_paginas}</p>
                         <p><strong>Género:</strong> {bookData.genero}</p>

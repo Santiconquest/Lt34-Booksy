@@ -1,15 +1,11 @@
 /* styles.css */
-body {
-    background-color: #f8f9fa; /* Color de fondo suave */
-    display: flex; /* Utilizar flexbox */
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
-    height: 100vh; /* Altura completa de la ventana */
-    margin: 0; /* Eliminar márgenes predeterminados */
-}
 
-h1 {
-    font-size: 2.5rem; /* Tamaño de fuente más grande */
+
+h5 {
+    font-size: 0.80rem !important; /* Tamaño de fuente más grande */
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
 }
 
 h2 {

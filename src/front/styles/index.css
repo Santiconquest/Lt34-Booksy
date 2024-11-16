@@ -1,3 +1,10 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+
+  .card:hover,
+  .card:focus,
+  .card:active {
+   
+    transform: none !important; 
+  }
+  
+
+  

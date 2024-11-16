@@ -2,6 +2,13 @@
     margin-top: -34px !important;
 }
 
+
+
+.tarjeta-libro:hover{
+    border: 0.5px solid rgb(188, 188, 188);
+
+  }
+
 /* .tabs {
     display: flex;
     justify-content: center;
@@ -28,19 +35,22 @@
 
 .favorite-icon {
     cursor: pointer;
-    font-size: 1rem; 
-    color: gray; 
-    transition: color 0.3s ease, transform 0.3s ease;
+    font-size: 1.25rem; 
+    color: rgb(224, 96, 96); 
+    transition: 0.25s;
+  transform: scale(1.25);
+    
 }
 
 .favorite-icon.favorite {
     color: gray; 
-    transform: scale(1.2); 
+    
 }
 
 .favorite-icon:hover {
-    color: gray; 
-    transform: scale(1.2); 
+    color: rgb(225, 35, 35) !important; 
+    transition: 0.25s;
+  transform: scale(1.25);
 }
 
 
@@ -73,16 +83,19 @@
     margin: 0; 
 }
 
-.remove-favorite-icon, .remove-wishlist-icon {
-    cursor: pointer; 
-    color: red; 
-    margin-left: 8px;
-}
+
 
 .wishlist-icon {
     cursor: pointer;
-    font-size: 1rem; 
-    color: gray; 
+    font-size: 1.25rem; 
+    color: rgb(58, 58, 58); 
+    transition: color 0.3s ease;
+}
+.wishlist-icon:hover{
+  color:rgb(0, 0, 0);
+  transition: 0.25s;
+  transform: scale(1.25);
+
 }
 
 .wishlist-icon.text-primary {

@@ -224,17 +224,20 @@ export const ReadersListOfBooks = () => {
           <div className="col-12 col-md-9">
 
             
-            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
-              <div className="card-body">
+            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3 ">
+              <div className="card-body pt-0">
 
                 
               <div className="row">
                 {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
                     <div key={index} className="col-md-6">
-                        <h2>{genero}</h2>
+                        <div className="text-start mb-4">
+                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
+                            </div>
+                        
                         <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
                             {booksByGenero[genero].map((book, idx) => (
-                                <div key={idx} className="card" style={{ width: '18rem', marginRight: '1rem' }}>
+                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem' }}>
                                     <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
                                         <img
                                             src={book.cover}
@@ -244,14 +247,15 @@ export const ReadersListOfBooks = () => {
                                         />
                                     </Link>
                                     <div className="card-body">
-                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
-                                        <h5 className="card-title" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
+                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark text-center">
+                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
                                     </Link>
-                                        <p className="card-text">
-                                            <strong>Autor:</strong> {truncateText(book.autor, 4)}<br />
-                                            <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
-                                            <strong>Año Publicado:</strong> {book.year}
+                                        <p className="card-text text-center">
+                                            <strong></strong> {truncateText(book.autor, 4)}<br />
+                                            
+                                            <strong></strong> {book.year}
                                         </p>
+                                        <div className="text-center">
                                         <span 
                                             onClick={() => handleFavoriteToggle(book.id)} 
                                             className="favorite-icon"
@@ -264,6 +268,7 @@ export const ReadersListOfBooks = () => {
                                         >
                                             <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
                                         </span>
+                                        </div>
                                     </div>
                                 </div>
                             ))} 
@@ -273,23 +278,29 @@ export const ReadersListOfBooks = () => {
 
                 {activeTab === "autor" && Object.keys(booksByAutor).map((autor, index) => (
                     <div key={index} className="col-md-6">
-                        <h2>{autor}</h2>
+                        <div className="text-start mb-4">
+                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 4)}</h5>
+                            </div>
                         <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
                             {booksByAutor[autor].map((book, idx) => (
-                                <div key={idx} className="card" style={{ width: '18rem', marginRight: '1rem' }}>
+                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem' }}>
+                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
                                     <img
                                         src={book.cover}
                                         alt={book.titulo}
                                         className="card-img-top"
                                         style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
                                     />
+                                    </Link>
                                     <div className="card-body">
-                                        <h5 className="card-title">{truncateText(book.titulo, 5)}</h5> 
-                                        <p className="card-text">
-                                            <strong>Género:</strong> {book.genero} <br />
-                                            <strong>Cantidad de Páginas:</strong> {book.cantidad_paginas} <br />
-                                            <strong>Año Publicado:</strong> {book.year}
+                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark text-center">
+                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5> 
+                                    </Link>    
+                                        <p className="card-text text-center">
+                                            <strong></strong> {book.genero} <br />
+                                            <strong></strong> {book.year}
                                         </p>
+                                        <div className="text-center">
                                         <span 
                                             onClick={() => handleFavoriteToggle(book.id)} 
                                             className="favorite-icon"
@@ -302,6 +313,7 @@ export const ReadersListOfBooks = () => {
                                         >
                                             <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
                                         </span>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

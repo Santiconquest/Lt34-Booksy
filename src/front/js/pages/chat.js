@@ -217,6 +217,9 @@ export const Chat = () => {
 
                 
               <div className="row">
+              <div className="text-start">
+                <h5 className="recomm-title mb-4">ChatScribe</h5>
+                </div>
               <div className="text-center" style={{ maxWidth: '800px', margin: '20px auto' }}>
               <div className="container">
             <div className="row clearfix">
