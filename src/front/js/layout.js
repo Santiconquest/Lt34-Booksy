@@ -35,6 +35,8 @@ import AutorDetail from "./pages/autorDetail";
 import VisionAPI from "./pages/visionAPI";
 import PrivateRouteCritico from "./pages/privateRouteCritico";
 import PrivateRouteAdmin from "./pages/privateRouteAdmin";
+import { SidebarLector } from "./component/sidebarLector";
+
 
 //create your first component
 const Layout = () => {
@@ -60,7 +62,7 @@ const Layout = () => {
                         <Route element={<PrivateRouteCritico element={<ListaLibrosCritico />} />} path="/listaLibrosCritico" />
                         <Route element={<PrivateRouteCritico element={<CriticReviews />} />} path="/verReviewCritico" />
                         <Route element={<PrivateRouteCritico element={<ProfileCritico />} />} path="/perfilCritico" />
-                        <Route element={<ProfileLector />} path="/perfilLector" />
+                       
                         <Route element={<PrivateRouteAdmin element={<Books />} />} path="/books" />
                         <Route element={<PrivateRouteAdmin element={<AddBook />} />} path="/addbook" />
                         <Route element={<PrivateRouteAdmin element={<EditBook />} />} path="/editbook/:id" />
@@ -72,6 +74,7 @@ const Layout = () => {
                         <Route element={<VisionAPI />} path="/visionAPI" />  
                         <Route element={<LoginLector />} path="/loginLector" /> 
                         <Route element={<PrivateRouteLector element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
+                        <Route element={<PrivateRouteLector element={<ProfileLector />} />} path="/perfilLector" />
                         <Route element={<PrivateRouteLector element={<BookRecommendations />} />} path="/bookRecommendations" />
                         <Route element={<PrivateRouteLector element={<FavoritosLector />} />} path="/favoritosLector" />
                         <Route element={<PrivateRouteLector element={<WishlistLector />} />} path="/wishlistLector" />

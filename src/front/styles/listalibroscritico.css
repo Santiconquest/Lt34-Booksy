@@ -458,3 +458,29 @@ font-size: 13px;
   color: rgb(82, 82, 82)
 }
 
+
+.icon-link {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #007bff; /* Azul similar al de los botones */
+  border-radius: 4px;
+  background-color: #f8f9fa; /* Fondo gris claro */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.icon-link:hover {
+  background-color: #007bff;
+  color: #ffffff; /* Cambia a blanco cuando el mouse está sobre el enlace */
+}
+
+.icon-link:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(38, 143, 255, 0.5); /* Agrega un resplandor en foco */
+}
+
+.icon-link .fa-eye {
+  margin-right: 8px; /* Espaciado entre el icono y el texto */
+}

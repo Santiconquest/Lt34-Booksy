@@ -26,7 +26,7 @@ export const Navbar = () => {
     };
 
     return (
-        <header className="bg-dark py-2 d-none d-md-block pb-1" style={{ marginTop: 0 }}>
+        <header className="navbar-color py-2 d-none d-md-block pb-1" style={{ marginTop: 0 }}>
             <div className="container-md page-container">
                 <div className="row align-items-center navbar">
                     <div className="col" style={{ maxWidth: "500px", }}>

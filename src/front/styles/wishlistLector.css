@@ -4,11 +4,12 @@
     margin-top: 20px;
 }
 
-.card {
-    transition: transform 0.2s;
+.tarjeta-wish {
+    border: none !important;
 }
 
 .card:hover {
     transform: scale(1.05);
 }
+
 

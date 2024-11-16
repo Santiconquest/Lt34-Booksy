@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/listalibroscritico.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faPen as eyeIcon } from '@fortawesome/free-solid-svg-icons';
 
 export const ListaLibrosCritico = () => {
     const { store, actions } = useContext(Context);
@@ -136,80 +139,96 @@ export const ListaLibrosCritico = () => {
               </div>
 
               <div className="col-12 col-md-9">
-  <div className="card card-bleed shadow-light-lg mb-6">
-    <div className="card-body">
-      <div className="row">
-        {activeTab === "genero" &&
-          Object.keys(booksByGenero).map((genero, index) => (
-            <div key={index} className="col-md-6 mb-4">
-              <h2>{genero}</h2>
-              <div className="row flex-nowrap" style={{ overflowX: "auto" }}>
-                {booksByGenero[genero].map((book, idx) => (
-                  <div key={idx} className="card me-3" style={{ width: "18rem" }}>
-                    <Link to={`/books/${book.id}`}>
-                      <img
-                        src={book.cover}
-                        alt={book.titulo}
-                        className="card-img-top"
-                        style={{ height: "200px", objectFit: "contain" }}
-                      />
-                    </Link>
-                    <div className="card-body">
-                      <Link className="no-underline2 " to={`/books/${book.id}`}>
-                        <h5 className="text">{truncateText(book.titulo, 5)}</h5>
-                      
-                      </Link>
-                      <p>
-                        <strong>Autor:</strong> {truncateText(book.autor, 4)}<br />
-                        <strong>Páginas:</strong> {book.cantidad_paginas}<br />
-                        <strong>Año:</strong> {book.year}
-                      </p>
-                      <div className="d-flex justify-content-center">
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
 
-        {activeTab === "autor" &&
-          Object.keys(booksByAutor).map((autor, index) => (
-            <div key={index} className="col-md-6 mb-4">
-              <h2>{autor}</h2>
-              <div className="row flex-nowrap" style={{ overflowX: "auto" }}>
-                {booksByAutor[autor].map((book, idx) => (
-                  <div key={idx} className="card me-3" style={{ width: "18rem" }}>
-                    <img
-                      src={book.cover}
-                      alt={book.titulo}
-                      className="card-img-top"
-                      style={{ height: "200px", objectFit: "contain" }}
-                    />
-                    <div className="card-body">
-                      <Link className="no-underline2 " to={`/books/${book.id}`}>
-                          <h5 className="text">{truncateText(book.titulo, 5)}</h5>
-                      </Link>
-                      <p>
-                        <strong>Género:</strong> {book.genero}<br />
-                        <strong>Páginas:</strong> {book.cantidad_paginas}<br />
-                        <strong>Año:</strong> {book.year}
-                      </p>
-                      <div className="d-flex justify-content-center">
-                      
-                      
-                     
-                      </div>
+            
+            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3 ">
+              <div className="card-body pt-0">
+
+                
+              <div className="row">
+                {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
+                    <div key={index} className="col-md-6">
+                        <div className="text-start mb-4">
+                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
+                            </div>
+                        
+                        <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
+                            {booksByGenero[genero].map((book, idx) => (
+                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem', border: "none" }}>
+                                    
+                                        <img
+                                            src={book.cover}
+                                            alt={book.titulo}
+                                            className="card-img-top"
+                                            style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
+                                        />
+                                    
+                                    <div className="card-body">
+                                    
+                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
+                                    
+                                        <p className="card-text text-center">
+                                            <strong></strong> {truncateText(book.autor, 4)}<br />
+                                            
+                                            <strong></strong> {book.year}
+                                        </p>
+                                        <div className="text-center">
+                                            <Link to={`/books/${book.id}`} className="icon-link">
+                                                <FontAwesomeIcon icon={eyeIcon} /> Escribir Reseña
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))} 
+                        </div>
                     </div>
-                  </div>
                 ))}
+
+                {activeTab === "autor" && Object.keys(booksByAutor).map((autor, index) => (
+                    <div key={index} className="col-md-6">
+                        <div className="text-start mb-4">
+                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 4)}</h5>
+                            </div>
+                        <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
+                            {booksByAutor[autor].map((book, idx) => (
+                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem', border: "none" }}>
+                                    
+                                    <img
+                                        src={book.cover}
+                                        alt={book.titulo}
+                                        className="card-img-top"
+                                        style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
+                                    />
+                                    
+                                    <div className="card-body">
+                                    
+                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5> 
+                                      
+                                        <p className="card-text text-center">
+                                            <strong></strong> {book.genero} <br />
+                                            <strong></strong> {book.year}
+                                        </p>
+                                        <div className="text-center">
+                                        <div className="text-center">
+                                            <Link to={`/books/${book.id}`} className="icon-link">
+                                                <FontAwesomeIcon icon={eyeIcon} /> Escribir Reseña
+                                            </Link>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
               </div>
             </div>
-          ))}
-      </div>
-    </div>
-  </div>
-</div>
+
+
+          </div>
 
             </div>
 
