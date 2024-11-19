@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/navbar.css";
+import white from "../../img/white.jpg"; 
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -59,12 +60,22 @@ export const Navbar = () => {
     };
 
     
-    const userName = store.userType === "lector" ? `${lector.name} ${lector.lastname}` : `${critic.nombre} ${critic.apellido}`;
-    const userImage = store.userType === "lector" ? lector.images : critic.images || "default-image-url"; // Reemplaza con una URL de imagen predeterminada si no se encuentra
-
-    if (loading) {
-        return <div>Loading...</div>; 
-    }
+    const userName = store.userType === "lector" 
+    ? `${lector.name} ${lector.lastname}` 
+    : store.userType === "critic" 
+    ? `${critic.nombre} ${critic.apellido}` 
+    : store.userType === "admin" 
+    ? "My Account" 
+    : "";
+    const userImage = store.userType === "lector" 
+    ? lector.images 
+    : store.userType === "critic" 
+    ? critic.images 
+    : store.userType === "admin" 
+    ? `${white}`  // Asegúrate de tener la URL de una imagen blanca aquí
+    : "default-image-url";
+ 
+   
 
     return (
         <header className="navbar-color py-2 d-none d-md-block pb-1" style={{ marginTop: 0 }}>

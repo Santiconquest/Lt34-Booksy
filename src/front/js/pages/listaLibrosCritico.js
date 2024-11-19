@@ -139,37 +139,35 @@ export const ListaLibrosCritico = () => {
               </div>
 
               <div className="col-12 col-md-9">
-
-            
-            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3 ">
-              <div className="card-body pt-0">
-
-                
-              <div className="row">
+    <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
+        <div className="card-body pt-0 mt-2">
+            <div className="row">
                 {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
-                    <div key={index} className="col-md-6">
+                    <div key={index} className="col-12">
                         <div className="text-start mb-4">
-                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
-                            </div>
-                        
+                            <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
+                        </div>
+
                         <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
                             {booksByGenero[genero].map((book, idx) => (
-                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem', border: "none" }}>
+                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '15rem', marginRight: '1rem', border: "none" }}>
                                     
-                                        <img
-                                            src={book.cover}
-                                            alt={book.titulo}
-                                            className="card-img-top"
-                                            style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
-                                        />
+                                    <img
+                                        src={book.cover}
+                                        alt={book.titulo}
+                                        className="card-img-top"
+                                        style={{ width: '100%', height: '280px', objectFit: 'contain' }} 
+                                    />
                                     
-                                    <div className="card-body">
-                                    
-                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
-                                    
-                                        <p className="card-text text-center">
-                                            <strong></strong> {truncateText(book.autor, 4)}<br />
-                                            
+                                    <div className="card-body text-start">
+                                        <div className={`ticker-wrapper ${book.titulo.length > 20 ? 'animate-ticker' : ''}`}>
+                                            <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                <strong>{book.titulo}</strong>
+                                            </h5>
+                                        </div>
+
+                                        <p className="card-text text-start">
+                                            <strong></strong> {truncateText(book.autor, 3)}<br />
                                             <strong></strong> {book.year}
                                         </p>
                                         <div className="text-center">
@@ -179,42 +177,44 @@ export const ListaLibrosCritico = () => {
                                         </div>
                                     </div>
                                 </div>
-                            ))} 
+                            ))}
                         </div>
                     </div>
                 ))}
 
                 {activeTab === "autor" && Object.keys(booksByAutor).map((autor, index) => (
-                    <div key={index} className="col-md-6">
+                    <div key={index} className="col-12">
                         <div className="text-start mb-4">
-                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 4)}</h5>
-                            </div>
+                            <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 6)}</h5>
+                        </div>
                         <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
                             {booksByAutor[autor].map((book, idx) => (
-                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem', border: "none" }}>
+                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '15rem', marginRight: '1rem', border: "none" }}>
                                     
                                     <img
                                         src={book.cover}
                                         alt={book.titulo}
                                         className="card-img-top"
-                                        style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
+                                        style={{ width: '100%', height: '280px', objectFit: 'contain' }} 
                                     />
                                     
                                     <div className="card-body">
-                                    
-                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5> 
-                                      
-                                        <p className="card-text text-center">
+                                        <div className={`ticker-wrapper ${book.titulo.length > 20 ? 'animate-ticker' : ''}`}>
+                                            <h5 className="card-title mb-0 text-start" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            <strong>{book.titulo}</strong>
+                                            </h5>
+                                        </div>
+
+                                        <p className="card-text text-start">
                                             <strong></strong> {book.genero} <br />
                                             <strong></strong> {book.year}
                                         </p>
                                         <div className="text-center">
-                                        <div className="text-center">
-                                            <Link to={`/books/${book.id}`} className="icon-link">
-                                                <FontAwesomeIcon icon={eyeIcon} /> Escribir Reseña
-                                            </Link>
-                                        </div>
-
+                                            <div className="text-center">
+                                                <Link to={`/books/${book.id}`} className="icon-link">
+                                                    <FontAwesomeIcon icon={eyeIcon} /> Escribir Reseña
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -223,18 +223,11 @@ export const ListaLibrosCritico = () => {
                     </div>
                 ))}
             </div>
-
+        </div>
+    </div>
               </div>
-            </div>
-
-
-          </div>
 
             </div>
-
-            <Link to="/">
-                <button className="btn btn-primary my-5">Back home</button>
-            </Link>
         </div>
     );
 };

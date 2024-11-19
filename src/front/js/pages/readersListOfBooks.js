@@ -176,7 +176,7 @@ export const ReadersListOfBooks = () => {
               <div className="collapse d-md-block" id="sidenavCollapse">
                 <div className="card-body">
 
-                <h6 className="fw-bold text-uppercase mb-3 mt-4">
+                <h6 className="fw-bold text-uppercase mb-3 mt-1">
                      Mi Biblioteca
                 </h6>
 
@@ -199,7 +199,7 @@ export const ReadersListOfBooks = () => {
               <div className="collapse d-md-block" id="sidenavCollapse">
                 <div className="card-body">
 
-                <h6 className="fw-bold text-uppercase mb-3 mt-4">
+                <h6 className="fw-bold text-uppercase mb-3 mt-1">
                     Herramientas Booksy
                 </h6>
 
@@ -224,103 +224,102 @@ export const ReadersListOfBooks = () => {
           <div className="col-12 col-md-9">
 
             
-            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3 ">
-              <div className="card-body pt-0">
-
-                
-              <div className="row">
+          <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3  ">
+            <div className="card-body pt-0 mt-2">
+                <div className="row">
                 {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
-                    <div key={index} className="col-md-6">
-                        <div className="text-start mb-4">
-                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
-                            </div>
-                        
-                        <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
-                            {booksByGenero[genero].map((book, idx) => (
-                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem' }}>
-                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
-                                        <img
-                                            src={book.cover}
-                                            alt={book.titulo}
-                                            className="card-img-top"
-                                            style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
-                                        />
-                                    </Link>
-                                    <div className="card-body">
-                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark text-center">
-                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5>
-                                    </Link>
-                                        <p className="card-text text-center">
-                                            <strong></strong> {truncateText(book.autor, 4)}<br />
-                                            
-                                            <strong></strong> {book.year}
-                                        </p>
-                                        <div className="text-center">
-                                        <span 
-                                            onClick={() => handleFavoriteToggle(book.id)} 
-                                            className="favorite-icon"
-                                        >
-                                            <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
-                                        </span>
-                                        <span 
-                                            onClick={() => handleWishlistToggle(book.id)} 
-                                            className="wishlist-icon ms-2"
-                                        >
-                                            <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
-                                        </span>
-                                        </div>
-                                    </div>
+                    <div key={index} className="col-12">
+                    <div className="text-start mb-4">
+                        <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
+                    </div>
+                    <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
+                        {booksByGenero[genero].map((book, idx) => (
+                        <div key={idx} className="tarjeta-libro me-0" style={{ width: '15rem', marginRight: '1rem' }}>
+                        <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
+                            <img
+                                src={book.cover}
+                                alt={book.titulo}
+                                className="card-img-top"
+                                style={{ width: '100%', height: '280px', objectFit: 'contain' }}
+                            />
+                        </Link>
+                        <div className="card-body">
+                            <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark text-start">
+                                <div className={`ticker-wrapper ${book.titulo.length > 20 ? 'animate-ticker' : ''}`}>
+                                <h5 className="card-title mb-0"><strong> {book.titulo}</strong></h5>
                                 </div>
-                            ))} 
+                            </Link>
+                            <p className="card-text text-start" style={{ marginBottom: '0' }}>
+                                 {truncateText(book.autor, 6)}<br />
+                                <strong></strong> {book.year}
+                            </p>
+                            <div className="text-end">
+                                <span 
+                                    onClick={() => handleFavoriteToggle(book.id)} 
+                                    className="favorite-icon"
+                                >
+                                    <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
+                                </span>
+                                <span 
+                                    onClick={() => handleWishlistToggle(book.id)} 
+                                    className="wishlist-icon ms-2"
+                                >
+                                    <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
+                                </span>
+                            </div>
                         </div>
+                    </div>
+                    
+                        ))}
+                    </div>
                     </div>
                 ))}
 
                 {activeTab === "autor" && Object.keys(booksByAutor).map((autor, index) => (
-                    <div key={index} className="col-md-6">
-                        <div className="text-start mb-4">
-                                <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 4)}</h5>
-                            </div>
-                        <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
-                            {booksByAutor[autor].map((book, idx) => (
-                                <div key={idx} className="tarjeta-libro me-0" style={{ width: '18rem', marginRight: '1rem' }}>
-                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
-                                    <img
-                                        src={book.cover}
-                                        alt={book.titulo}
-                                        className="card-img-top"
-                                        style={{ width: '100%', height: '200px', objectFit: 'contain' }} 
-                                    />
-                                    </Link>
-                                    <div className="card-body">
-                                    <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark text-center">
-                                        <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{truncateText(book.titulo, 5)}</h5> 
-                                    </Link>    
-                                        <p className="card-text text-center">
-                                            <strong></strong> {book.genero} <br />
-                                            <strong></strong> {book.year}
-                                        </p>
-                                        <div className="text-center">
-                                        <span 
-                                            onClick={() => handleFavoriteToggle(book.id)} 
-                                            className="favorite-icon"
-                                        >
-                                            <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
-                                        </span>
-                                        <span 
-                                            onClick={() => handleWishlistToggle(book.id)} 
-                                            className="wishlist-icon ms-2"
-                                        >
-                                            <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
-                                        </span>
-                                        </div>
-                                    </div>
+                    <div key={index} className="col-12">
+                    <div className="text-start mb-4">
+                        <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 6)}</h5>
+                    </div>
+                    <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
+                        {booksByAutor[autor].map((book, idx) => (
+                        <div key={idx} className="tarjeta-libro me-0" style={{ width: '15rem', marginRight: '1rem' }}>
+                        <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark">
+                            <img
+                                src={book.cover}
+                                alt={book.titulo}
+                                className="card-img-top"
+                                style={{ width: '100%', height: '280px', objectFit: 'contain' }}
+                            />
+                        </Link>
+                        <div className="card-body">
+                            <Link to={`/bookdetails/${book.id}`} className="card-title mb-0 text-decoration-none text-dark text-start">
+                                <div className={`ticker-wrapper ${book.titulo.length > 20 ? 'animate-ticker' : ''}`}>
+                                    <h5 className="card-title mb-0" style={{ marginBottom: '5px', height: '30px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                        <strong>{book.titulo}</strong>
+                                    </h5>
                                 </div>
-                            ))}
+                            </Link>
+                            <p className="card-text text-start mb-0" style={{ marginBottom: '0' }}>
+                                {truncateText(book.genero, 3)}<br />
+                                <strong></strong> {book.year}
+                            </p>
+                            <div className="text-end">
+                                <span onClick={() => handleFavoriteToggle(book.id)} className="favorite-icon">
+                                    <FontAwesomeIcon icon={store.favorites.includes(book.id) ? solidHeart : regularHeart} />
+                                </span>
+                                <span onClick={() => handleWishlistToggle(book.id)} className="wishlist-icon ms-2">
+                                    <FontAwesomeIcon icon={store.wishlist.includes(book.id) ? solidBookmark : regularBookmark} />
+                                </span>
+                            </div>
                         </div>
                     </div>
+                    
+                        ))}
+                    </div>
+                    </div>
                 ))}
-            </div>
+                </div>
+  
 
               </div>
             </div>

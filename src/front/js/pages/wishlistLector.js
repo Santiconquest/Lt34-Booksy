@@ -73,13 +73,13 @@ export const WishlistLector = () => {
                                         if (!wishlistBook) return null; 
 
                                         return (
-                                            <div key={wishlistId} className="col-md-3 mb-2 me-2"> 
+                                            <div key={wishlistId} className="col-md-3 mb-1"> 
                                                 <div className="tarjeta-wish" style={{ height: '334px', border: "none"}}>
-                                                    <img
+                                                    <img 
                                                         src={wishlistBook.cover}
                                                         alt={wishlistBook.titulo}
                                                         className="card-img-top"
-                                                        style={{ maxHeight: '200px', width: '100%', objectFit: 'contain', margin: 'auto' }} 
+                                                        style={{ maxHeight: '200px', width: '100%', objectFit: 'contain', margin: 'auto', height: '200px' }} 
                                                     />
                                                     <div className="card-body text-center">
                                                         <h5 className="card-title mb-1" style={{ height: '30px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
@@ -89,7 +89,7 @@ export const WishlistLector = () => {
                                                             {truncateTitle(wishlistBook.autor, 20)}
                                                         </p>
                                                         <div className="d-flex justify-content-center">
-                                                            <Link to={`/bookdetails/${wishlistBook.id}`} className="icon-link">
+                                                            <Link to={`/bookdetails/${wishlistBook.id}`} className="">
                                                                 <FontAwesomeIcon icon={eyeIcon} className="icon-style eye" />
                                                             </Link>
                                                             <span 

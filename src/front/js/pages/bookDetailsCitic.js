@@ -2,6 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/bookDetailsCritic.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons';
+import { faPen as penIcon } from '@fortawesome/free-solid-svg-icons'; // Para el lápiz
+
+
 
 export const BookDetailsCritic = () => {
     const { store, actions } = useContext(Context);
@@ -202,9 +207,14 @@ export const BookDetailsCritic = () => {
                             <div className="float-end">
                                 {editingReviewId !== r.id && (
                                     <>
-                                        <button className="btn btn-secondary btn-sm" onClick={() => handleEditClick(r)}>Editar</button>
-                                        <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>Eliminar</button>
-                                    </>
+                                    <button className="btn btn-secondary btn-sm me-2" onClick={() => handleEditClick(r)}>
+                                        <FontAwesomeIcon icon={penIcon} /> {/* Ícono de lápiz */}
+                                    </button>
+                                    <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>
+                                        <FontAwesomeIcon icon={trashIcon} /> {/* Ícono de basurero */}
+                                    </button>
+                                </>
+                                
                                 )}
                             </div>
                         </li>
