@@ -3,7 +3,6 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/profileLector.css";
 
-
 const ProfileLector = () => {
     const { store, actions } = useContext(Context);
     const [lector, setLector] = useState([]);  
@@ -47,15 +46,24 @@ const ProfileLector = () => {
 
     useEffect(() => {
         const fetchLector = async () => {
-            await actions.getLector();
+            
+            const lectorId = store.lectorId;  
+            if (lectorId) {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/lector/${lectorId}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setLector(data); 
+                    } else {
+                        console.error("No se encontró el lector");
+                    }
+                } catch (error) {
+                    console.error("Error al obtener los datos del lector:", error);
+                }
+            }
         };
         fetchLector();
-    }, []);
-
-    useEffect(() => {
-        setLector(store.lector);
-        console.log(store.lector);
-    }, [store.lector]); 
+    }, [store.lectorId]);  
 
     return (
         <div className="container profile-container my-5 card-addbook">

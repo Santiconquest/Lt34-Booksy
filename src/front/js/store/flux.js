@@ -17,7 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			auth: !!localStorage.getItem("token"),
 			userType: localStorage.getItem("userType") || "",
 			userEmail: null,
-			userId: null,
+			userId: localStorage.getItem("userId") || null,
 			lectorId: localStorage.getItem("lectorId") || null,
 			books : [],
 			recommendations: [],
@@ -29,7 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			administradores:[],
 			autorDetail:{},
 			critico: [],
-			imageUrl: "", 
+			imageUrl: localStorage.getItem("imageUrl") || "",
+			// imageUrl: "", 
             loading: false, 
 			lector: [{}],
 			userEmailLector: null,
@@ -138,15 +139,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			
 			getCritico: async () => {
+				const { userId } = getStore();
+				if (!userId) {
+					console.log("No userId found");
+					return;
+				}
+			
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+					const response = await fetch(`${process.env.BACKEND_URL}/api/critico/${userId}`);
+					if (!response.ok) {
+						throw new Error("Error fetching critic");
+					}
 					const data = await response.json();
-					console.log("Critico data fetched:", data[0].nombre); 
-					setStore({ critico: data[0] });
+					console.log("Critico data fetched:", data);
+					setStore({ critico: data });
 				} catch (error) {
 					console.log("Error fetching critic:", error);
 				}
 			},
+			
+			
 			
 			
 			exampleFunction: () => {
@@ -184,7 +196,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			logoutCritico: () => {
 				localStorage.removeItem("token")
 				localStorage.removeItem("userType")
-				setStore({ auth: false, userEmail: null });
+				localStorage.removeItem("imageUrl") 
+				localStorage.removeItem("userId") 
+				setStore({ auth: false, userEmail: null, imageUrl: "", userId: "" });
 			},
 
 			signupCritico: (email,password,name,lastName,gender,aboutMe) => {
@@ -252,8 +266,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				loginCritico: (email, password) => {
 					const requestOptions = {
 						method: 'POST',
-						headers: { 'content-Type': 'application/json' },
-						body: JSON.stringify({ "email": email, "password": password })
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ email, password })
 					};
 					fetch(`${process.env.BACKEND_URL}/api/loginCritico`, requestOptions)
 						.then(response => {
@@ -262,16 +276,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 								setStore({
 									auth: true,
 									userEmail: email,
-									userType: "critic",  // Asegúrate de que se actualiza el userType
+									userType: "critic",
 								});
 							}
 							return response.json();
 						})
 						.then(data => {
 							localStorage.setItem("token", data.access_token);
+							localStorage.setItem("userId", data.id);
 							setStore({ userId: data.id });
+							console.log("userId stored:", data.id); // Verifica que el ID se almacena
 						});
 				},
+				
 				
 				
 			addLector:(email,password,name,lastname)=>{
@@ -707,7 +724,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("lectorName");
 				localStorage.removeItem("lectorId");
 				localStorage.removeItem("userType"); 
-				setStore({ auth: false, lectorName: "", lectorId: null, userType: "" });  
+				localStorage.removeItem("imageUrl"); 
+				setStore({ auth: false, lectorName: "", lectorId: null, userType: "", imageUrl: "" });  
 			},
 
 			logoutAdmin: () => {
@@ -885,18 +903,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
             },	
 				
-				getCritico: async () => {
-					try {
-						const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
-						const data = await response.json();
-						console.log("Critico data fetched:", data); 
-						setStore({ critico: data [0] });
-					} catch (error) {
-						console.log("Error fetching critic:", error);
-					}
-				}
+			
+			
 				
-            },	
+            }	
 			
 		}
 	};
