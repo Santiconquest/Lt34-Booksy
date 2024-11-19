@@ -4,10 +4,7 @@
 
 
 
-.tarjeta-libro:hover{
-    border: 0.5px solid rgb(188, 188, 188);
 
-  }
 
 /* .tabs {
     display: flex;
@@ -457,6 +454,49 @@ body {
 
 h6 {
   font-size: 13px;
+}
+
+/* Estilo de la card */
+.tarjeta-libro h5 {
+  margin-bottom: 5px;
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+/* Contenedor del ticker */
+.ticker-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Movimiento del texto con animación solo al hacer hover */
+.ticker-wrapper h5 {
+  display: inline-block;
+  white-space: nowrap;
+  transform: translateX(0);
+  transition: transform 0.5s ease;
+  width: auto;
+}
+
+/* Cuando el título es largo, aplica la animación */
+.tarjeta-libro:hover .ticker-wrapper.animate-ticker h5 {
+  animation: tickerAnimation 10s linear infinite;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+@keyframes tickerAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 

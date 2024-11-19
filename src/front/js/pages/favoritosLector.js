@@ -61,7 +61,7 @@ export const FavoritosLector = () => {
                     <div className="card shadow-light-lg mb-6 me-0 ms-3">
                         <div className="card-body">
                             <div className="text mb-4">
-                                <h5 className="recomm-title">Favoritos</h5>
+                                <h5 className="recomm-title">Favoritos</h5> 
                             </div>
                             {store.books.length === 0 ? (
                                 <p>Cargando libros...</p>
@@ -80,13 +80,13 @@ export const FavoritosLector = () => {
                                                         src={favoriteBook.cover}
                                                         alt={favoriteBook.titulo}
                                                         className="card-img-top"
-                                                        style={{ maxHeight: '200px', objectFit: 'contain' }}
+                                                        style={{ maxHeight: '200px', objectFit: 'contain', height: '200px' }}
                                                     />
                                                     <div className="card-body text-center">
                                                         <h5 className="card-title mb-1" style={{ height: '30px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{truncateTitle(favoriteBook.titulo, 40)}</h5>
                                                         <p className="card-text mb-2" style={{ height: '35px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{truncateTitle(favoriteBook.autor, 20)}</p>
                                                         <div className="d-flex justify-content-center">
-                                                            <Link to={`/bookdetails/${favoriteBook.id}`} className="icon-link">
+                                                            <Link to={`/bookdetails/${favoriteBook.id}`} className="">
                                                                 <FontAwesomeIcon icon={eyeIcon} className="icon-style eye" />
                                                             </Link>
                                                             <span 
