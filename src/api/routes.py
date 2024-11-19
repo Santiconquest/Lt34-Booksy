@@ -336,6 +336,15 @@ def get_lector_by_id(lector_id):
     
     return jsonify(lector.serialize()), 200
 
+@api.route('/critico/<int:critico_id>', methods=['GET'])
+def get_critico_by_id(critico_id):
+    critico = Critico.query.get(critico_id)
+    
+    if critico is None:
+        return jsonify({"error": "Lector no encontrado"}), 404
+    
+    return jsonify(critico.serialize()), 200
+
 
 @api.route('/loginLector', methods=['POST'])
 def login_lector():
