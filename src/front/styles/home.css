@@ -11,13 +11,139 @@
 
   }
   
+  .text-center h1,
+  .text-center p {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .header-home {
+    width: 100%;
+    background-size: cover;
+    background-position: center; 
+    position: relative;
+    height: 400px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  
+  .text-container {
+    color: #a8a8a8;
+    text-align: center;
+    max-width: 80%; 
+    padding-left: 150px;
+  }
+  
+  .text-container h1 {
+    margin-bottom: 10px; 
+  }
+  
+  .text-container h3 {
+    margin-top: 0; 
+  }
+  
+  
+  .image-container {
+    display: flex;
+    justify-content: center; 
+    cursor: pointer;
+    width: 100%;
+    padding-right: 150px;
+  }
+  
+  .image-container img {
+    width: 100%; 
+    max-width: 1000px; 
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+  
+  
+  .text-container h1, .text-container h3 {
+    margin: 10;
+  }
+  
+  
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para los cuadros */
+    border: none; /* Sin borde para un estilo más limpio */
+  }
+  
+  .card-body {
+    text-align: center;
+  }
+  
+  .card-title {
+    font-weight: bold;
+  }
 
-  h5 {
-    font-size: 1.1875rem !important; /* Tamaño de fuente más grande */
-    font-family: var(--bs-body-font-family);
-    font-size: var(--bs-body-font-size);
-    font-weight: var(--bs-body-font-weight);
+
+.header-home {
+  transition: background 1s ease, clip-path 1s ease; /* Hace que el fondo y la forma cambien suavemente */
+}
+.header-home {
+  background-color: white; /* Fondo azul */
+  color: white;
+  padding: 50px 0;
+}
+
+.section-blue {
+  background-color: rgb(8, 32, 118);
+  color: white;
+  padding: 50px 0;
+}
+
+.card-img-left {
+  width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.contact-section {
+  background-color: #f5f5f5;
+  padding: 50px 0;
 }
   
- 
+  .card-text {
+    font-size: 14px;
+  }
   
+  .btn-primary {
+    background-color: #007bff; /* Color de fondo del botón */
+    border: none;
+  }
+  
+  .contact-section {
+    background-color: #f0f2f5;
+    padding: 40px 20px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .contact-section h2 {
+    color: #343a40;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .contact-section p {
+    color: #6c757d;
+  }
+  
+  .social-icons a {
+    color: #007bff;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+  
+  .social-icons a:hover {
+    text-decoration: underline;
+  }
+  
+
+
+

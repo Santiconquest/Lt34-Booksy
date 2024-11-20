@@ -4,6 +4,8 @@
 }
 
 
+
+
 .navbar .btn, 
 .navbar .dropdown-toggle {
     background-color: rgb(82, 102, 179); 
@@ -28,13 +30,15 @@
 }
 
 .navbar {
-  padding-bottom: 5.75rem !important;
-    padding-top: 4.5rem !important;
+  padding-bottom: 1rem !important;      
+  width: 100%;                                         
+  max-width: 100%;                   
 }
+
 
 .navbar .btn:hover, 
 .navbar .dropdown-toggle:hover {
-    background-color: rgb(107, 126, 205)  !important; 
+    background-color: rgba(151, 142, 142, 0.2) !important; 
     color: white; 
     cursor: pointer; 
 }
@@ -45,7 +49,7 @@
 
 .navbar .btn:active, 
 .navbar .dropdown-toggle:active {
-    background-color: rgba(22, 28, 45, 0.4) !important;  
+    background-color: rgba(255, 255, 255, 0.4) !important;  
     color: white; 
 }
 
@@ -66,9 +70,8 @@
 }
 
 .page-container {
-  max-width: 1200px; /* Ancho máximo que desees */
-  margin: 0 auto;    /* Centra el contenido */
-  padding: 0 80px;   /* Espaciado a los lados */
+  max-width: 1200px; 
+  margin: 0 ;   
 }
 
 
