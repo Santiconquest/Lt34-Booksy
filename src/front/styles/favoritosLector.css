@@ -12,3 +12,42 @@
 .card:hover {
     transform: scale(1.05);
 }
+
+.icon-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.icon-style {
+    font-size: 1.25rem;
+    color: #fa7272;
+    transition: color 0.3s ease;
+    cursor: pointer;
+}
+.eye {
+    transition: transform 0.3s ease; /* Transición suave */
+    color: rgb(109, 109, 216);
+    transition:  0.3s ;
+}
+.eye:hover {
+    color: blue !important;
+    
+}
+
+.trash-icon{
+    transition: transform 0.3s ease; /* Transición suave */
+    color: rgb(230, 90, 90);
+    transition:  0.3s ;
+}
+
+.icon-style:hover {
+    color: #f50000; /* Cambiar al color que desees al pasar el ratón */
+    
+}
+
+
+
+.ms-3 {
+    margin-left: 1rem; /* Agregar espacio entre los iconos */
+}
+

@@ -1,0 +1,7 @@
+.card-addbook{
+    
+    max-width: 1200px; /* Ancho máximo que desees */
+    margin: 0 auto;    /* Centra el contenido */
+    padding: 0 80px;   /* Espaciado a los lados */
+    
+}

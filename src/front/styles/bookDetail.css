@@ -43,7 +43,7 @@
     transition: 400ms;
   }
   
-  .buttonBuy .text {
+  .buttonBuy .texto {
     color: white;
     font-weight: 700;
     font-size: 1em;
@@ -58,7 +58,7 @@
     background-color: transparent;
   }
   
-  .buttonBuy:hover .text {
+  .buttonBuy:hover .texto {
     color: #181717;
   }
   
@@ -122,9 +122,3 @@
   color: #777;
 }
 
-
-.text-center {
-  color: #999;
-  font-style: italic;
-  font-size: 1rem;
-}

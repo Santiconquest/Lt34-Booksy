@@ -12,7 +12,7 @@ const LoginCritico = () => {
 
     useEffect(() => {
         if (store.auth) {
-            navigate("/");
+            navigate("/listaLibrosCritico");
         }
     }, [store.auth, navigate]);
 

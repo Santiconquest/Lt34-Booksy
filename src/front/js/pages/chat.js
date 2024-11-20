@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Link, useLocation } from "react-router-dom";
 import "../../styles/chat.css";
 
 export const Chat = () => {
@@ -9,6 +10,7 @@ export const Chat = () => {
     const [messageInput, setMessageInput] = useState("");
     const [activeChatId, setActiveChatId] = useState(null);
     const [activeChat, setActiveChat] = useState(null); 
+    const location = useLocation(); 
 
     const userId = store.lectorId;
 
@@ -150,12 +152,81 @@ export const Chat = () => {
     }
 
     return (
-        <div className="container">
+        <>
+        <div className="container page-container">
+        <div className="row" style={{ width: '100%' }}>
+            <div className="col-12 col-md-3" >
+
+            <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+              <div className="collapse d-md-block" id="sidenavCollapse">
+                <div className="card-body">
+
+                <h6 className="fw-bold text-uppercase mb-3 mt-2">
+                     Mi Biblioteca
+                </h6>
+
+                <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">            
+                        <Link to="/readersListOfBooks" className="nav-item nav-link">
+                            Lista de Libros
+                        </Link>
+                        <Link to="/favoritosLector" className="nav-item nav-link">
+                            Favoritos
+                        </Link>
+                        <Link to="/wishlistLector" className="nav-item nav-link">
+                            Wishlist
+                        </Link>
+                    </nav>
+                </div>
+                </div>
+              </div>
+
+            </div>
+            <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+              <div className="collapse d-md-block" id="sidenavCollapse">
+                <div className="card-body">
+
+                <h6 className="fw-bold text-uppercase mb-3 mt-2">
+                    Herramientas Booksy
+                </h6>
+
+                <div className="row card-list list text-gray-700 mb-0">
+                    <nav className="nav flex-column">
+                        <Link to="/chat" className={`nav-item nav-link ${location.pathname === "/chat" ? "active" : ""}`} >
+                            ChatScribe
+                        </Link>
+                        <Link to="/visionAPI" className="nav-item nav-link">
+                            ScanBook
+                        </Link>
+                        <Link 
+                            to="/bookRecommendations" 
+                            className={`nav-item nav-link ${location.pathname === "/bookRecommendations" ? "active" : ""}`} 
+                        >
+                            Sugerencias AI
+                        </Link>
+                    </nav>    
+                </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div className="col-12 col-md-9">
+            <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
+              <div className="card-body">
+
+                
+              <div className="row">
+              <div className="text-start">
+                <h5 className="recomm-title mb-4">ChatScribe</h5>
+                </div>
+              <div className="text-center" style={{ maxWidth: '800px', margin: '20px auto' }}>
+              <div className="container">
             <div className="row clearfix">
                 <div className="col-lg-12">
-                    <div className="card chat-app">
+                   
                         <div id="plist" className="people-list">
-                            <div className="input-group">
+                            <div className="input-group mt-4">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text"><i className="fa fa-search"></i></span>
                                 </div>
@@ -237,12 +308,24 @@ export const Chat = () => {
                                         <button className="btn btn-primary" onClick={handleSendMessage}>Send</button>
                                     </div>
                                 </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+            </div>            
+            </div>
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        </div>
+        
+        </>
     );
 };
 

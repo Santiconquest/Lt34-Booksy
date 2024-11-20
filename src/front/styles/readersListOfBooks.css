@@ -2,6 +2,10 @@
     margin-top: -34px !important;
 }
 
+
+
+
+
 /* .tabs {
     display: flex;
     justify-content: center;
@@ -28,19 +32,22 @@
 
 .favorite-icon {
     cursor: pointer;
-    font-size: 1rem; 
-    color: gray; 
-    transition: color 0.3s ease, transform 0.3s ease;
+    font-size: 1.25rem; 
+    color: rgb(224, 96, 96); 
+    transition: 0.25s;
+  transform: scale(1.25);
+    
 }
 
 .favorite-icon.favorite {
     color: gray; 
-    transform: scale(1.2); 
+    
 }
 
 .favorite-icon:hover {
-    color: gray; 
-    transform: scale(1.2); 
+    color: rgb(225, 35, 35) !important; 
+    transition: 0.25s;
+  transform: scale(1.25);
 }
 
 
@@ -73,16 +80,19 @@
     margin: 0; 
 }
 
-.remove-favorite-icon, .remove-wishlist-icon {
-    cursor: pointer; 
-    color: red; 
-    margin-left: 8px;
-}
+
 
 .wishlist-icon {
     cursor: pointer;
-    font-size: 1rem; 
-    color: gray; 
+    font-size: 1.25rem; 
+    color: rgb(58, 58, 58); 
+    transition: color 0.3s ease;
+}
+.wishlist-icon:hover{
+  color:rgb(0, 0, 0);
+  transition: 0.25s;
+  transform: scale(1.25);
+
 }
 
 .wishlist-icon.text-primary {
@@ -98,7 +108,7 @@
 }
 
 .card-body {
-    min-height: 168px;
+    min-height: 70px;
 }
 
 
@@ -179,6 +189,7 @@
   text-align: left;
   margin-bottom: 5px;
   border-radius: 0px;
+  margin-left: -4px;
   
 }
 
@@ -193,18 +204,18 @@
 }
 
 .nav-link.active {
-  border-left: 4px solid #007bff; 
+  border-left: 2px solid #007bff; 
   color: #007bff; 
   border-bottom:none ;
 }
 
 .nav-link:hover {
-  border-left: 4px solid #007bff; 
+  border-left: 3px solid #007bff; 
 }
 
 
 .nav-item .nav-link.active {
-  border-left: 4px solid blue; /* Línea de borde izquierdo cuando la pestaña está activa */
+  border-left: 4px solid blue;
 }
 
 
@@ -443,6 +454,49 @@ body {
 
 h6 {
   font-size: 13px;
+}
+
+/* Estilo de la card */
+.tarjeta-libro h5 {
+  margin-bottom: 5px;
+  height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+/* Contenedor del ticker */
+.ticker-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Movimiento del texto con animación solo al hacer hover */
+.ticker-wrapper h5 {
+  display: inline-block;
+  white-space: nowrap;
+  transform: translateX(0);
+  transition: transform 0.5s ease;
+  width: auto;
+}
+
+/* Cuando el título es largo, aplica la animación */
+.tarjeta-libro:hover .ticker-wrapper.animate-ticker h5 {
+  animation: tickerAnimation 10s linear infinite;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+@keyframes tickerAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 
