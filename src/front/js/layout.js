@@ -35,6 +35,7 @@ import AutorDetail from "./pages/autorDetail";
 import VisionAPI from "./pages/visionAPI";
 import PrivateRouteCritico from "./pages/privateRouteCritico";
 import PrivateRouteAdmin from "./pages/privateRouteAdmin";
+import EquipmentPage from "./component/equipment";
 
 //create your first component
 const Layout = () => {
@@ -78,6 +79,7 @@ const Layout = () => {
                         <Route element={<PrivateRouteLector element={<BookDetail />} />} path="/bookdetails/:id" /> 
                         <Route element={<Lector />} path="/lector/:idLector" />
                         <Route element={<AutorDetail />} path="/autorDetail/:autorName" />
+                        <Route element={<EquipmentPage />} path="/equipment" />
 
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
