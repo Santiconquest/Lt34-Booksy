@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import "../../styles/bookDetailsCritic.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons';
-import { faPen as penIcon } from '@fortawesome/free-solid-svg-icons'; // Para el lápiz
+import { faPen as penIcon } from '@fortawesome/free-solid-svg-icons'; 
 
 
 
@@ -18,6 +18,36 @@ export const BookDetailsCritic = () => {
     const [editingReviewId, setEditingReviewId] = useState(null);
     const [editedComment, setEditedComment] = useState("");
     const location = useLocation(); 
+    const [users, setUsers] = useState([]);
+
+    const fetchCritic = async () => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+            const data = await response.json();
+            console.log(data);
+    
+
+            const extractedUsers = data.map(user => ({
+                id: user.id,
+                name: user.nombre
+            }));
+    
+            console.log(extractedUsers); 
+            setUsers(extractedUsers);
+        } catch (error) {
+            console.error("Error al obtener los usuarios:", error);
+        }
+    };
+    
+      
+      useEffect(() => {
+        fetchCritic();
+      }, []);
+
+      const getCriticName = (id) => {
+        const critic = users.find(user => user.id === id);
+        return critic ? critic.name : "Crítico desconocido";
+    };
 
     async function fetchBook(bookDataTitulo) {
         try {
@@ -189,37 +219,41 @@ export const BookDetailsCritic = () => {
 
                 <h2 className="mt-4">Reseñas</h2>
                 <ul className="list-group">
-                    {reviews.map((r) => (
-                        <li key={r.id} className="list-group-item">
-                            <strong>{r.id_critico}:</strong> {editingReviewId === r.id ? (
-                                <form onSubmit={handleEditSubmit}>
-                                    <textarea
-                                        value={editedComment}
-                                        onChange={(e) => setEditedComment(e.target.value)}
-                                        required
-                                    />
-                                    <button type="submit" className="btn btn-success btn-sm">Guardar</button>
-                                    <button type="button" className="btn btn-secondary btn-sm" onClick={() => setEditingReviewId(null)}>Cancelar</button>
-                                </form>
-                            ) : (
-                                <span>{r.comentario}</span>
-                            )}
-                            <div className="float-end">
-                                {editingReviewId !== r.id && (
-                                    <>
-                                    <button className="btn btn-secondary btn-sm me-2" onClick={() => handleEditClick(r)}>
-                                        <FontAwesomeIcon icon={penIcon} /> {/* Ícono de lápiz */}
-                                    </button>
-                                    <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>
-                                        <FontAwesomeIcon icon={trashIcon} /> {/* Ícono de basurero */}
-                                    </button>
-                                </>
-                                
+                    {reviews.map((r) => {
+                        const criticName = users.find(user => user.id === r.id_critico)?.name || "Crítico desconocido";
+
+                        return (
+                            <li key={r.id} className="list-group-item">
+                                <strong>{criticName}:</strong> {editingReviewId === r.id ? (
+                                    <form onSubmit={handleEditSubmit}>
+                                        <textarea
+                                            value={editedComment}
+                                            onChange={(e) => setEditedComment(e.target.value)}
+                                            required
+                                        />
+                                        <button type="submit" className="btn btn-success btn-sm">Guardar</button>
+                                        <button type="button" className="btn btn-secondary btn-sm" onClick={() => setEditingReviewId(null)}>Cancelar</button>
+                                    </form>
+                                ) : (
+                                    <span>{r.comentario}</span>
                                 )}
-                            </div>
-                        </li>
-                    ))}
+                                <div className="float-end">
+                                    {editingReviewId !== r.id && (
+                                        <>
+                                            <button className="btn btn-secondary btn-sm me-2" onClick={() => handleEditClick(r)}>
+                                                <FontAwesomeIcon icon={penIcon} />
+                                            </button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>
+                                                <FontAwesomeIcon icon={trashIcon} />
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </li>
+                        );
+                    })}
                 </ul>
+
 
                 <Link to="/listaLibrosCritico">
                     <span className="btn btn-primary btn mt-3" role="button">

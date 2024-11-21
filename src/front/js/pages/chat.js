@@ -11,12 +11,35 @@ export const Chat = () => {
     const [activeChatId, setActiveChatId] = useState(null);
     const [activeChat, setActiveChat] = useState(null); 
     const location = useLocation(); 
+    const [users, setUsers] = useState([]);
 
     const userId = store.lectorId;
 
-    useEffect(() => {
-        actions.getLector();
-    }, []);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
+            const data = await response.json();
+            console.log(data);
+    
+            // Extraer solo name e id
+            const extractedUsers = data.map(user => ({
+                id: user.id,
+                name: user.name
+            }));
+    
+            console.log(extractedUsers); // Muestra solo id y name
+            setUsers(extractedUsers);
+        } catch (error) {
+            console.error("Error al obtener los usuarios:", error);
+        }
+    };
+    
+      
+      useEffect(() => {
+        fetchUsers();
+      }, []);
+    
 
     useEffect(() => {
         if (userId) {
@@ -24,25 +47,30 @@ export const Chat = () => {
         }
     }, [userId]);
 
+    const fetchChats = async () => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/chat`);
+            const data = await response.json();
+            console.log(data);
+            if (Array.isArray(data)) {
+                const filteredChats = data.filter(chat => 
+                    chat.id_lector_1 == userId || chat.id_lector_2 == userId
+                );
+                console.log(filteredChats);
+                setChats(filteredChats);
+            } else {
+                console.error("Unexpected response format:", data);
+                setChats([]);
+            }
+        } catch (error) {
+            console.error("There was an error fetching the chats!", error);
+        }
+    };
+
     useEffect(() => {
-        fetch(`${process.env.BACKEND_URL}/api/chat`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                if (Array.isArray(data)) {
-                    const filteredChats = data.filter(chat => 
-                        chat.id_lector_1 == userId || chat.id_lector_2 == userId
-                    );
-                    console.log(filteredChats)
-                    setChats(filteredChats);
-                } else {
-                    console.error("Unexpected response format:", data);
-                    setChats([]);
-                }
-            })
-            .catch(error => {
-                console.error("There was an error fetching the chats!", error);
-            });
+        if (userId) {
+            fetchChats();
+        }
     }, [userId]);
 
     useEffect(() => {
@@ -237,7 +265,10 @@ export const Chat = () => {
                                     <li className="clearfix" key={chat.id} onClick={() => handleSelectChat(chat.id)}>
                                         <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" />
                                         <div className="about">
-                                            <div className="name">{chat.id_lector_1}</div>
+                                            <div className="name">
+                                                {/* Mostrar solo el nombre del lector que no es el usuario logueado */}
+                                                {users.find(user => user.id === (chat.id_lector_1 !== userId ? chat.id_lector_1 : chat.id_lector_2))?.name || "Usuario desconocido"}
+                                            </div>
                                             <div className="status">
                                                 <i className="fa fa-circle online"></i> online
                                             </div>
@@ -245,6 +276,8 @@ export const Chat = () => {
                                     </li>
                                 ))}
                             </ul>
+
+
                         </div>
 
                         <div className="chat">
@@ -255,12 +288,19 @@ export const Chat = () => {
                                             <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar" />
                                         </a>
                                         <div className="chat-about">
-                                            <h6 className="m-b-0">Chat with {activeChat ? activeChat.id_lector_1 : '...'} and {activeChat ? activeChat.id_lector_2 : '...'}</h6>
+                                            <h6 className="m-b-0">
+                                                 Chat...
+                                                {activeChat 
+                                                    ? users.find(user => user.id === (activeChat.id_lector_1 !== userId ? activeChat.id_lector_1 : activeChat.id_lector_2))?.name || "Usuario desconocido"
+                                                    : '...'}
+                                            </h6>
                                             <small>Last seen: a few minutes ago</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                       
+
 
                             <div className="chat-history">
                                 <ul className="m-b-0">
