@@ -26,7 +26,7 @@ const BookRecommendations = () => {
 
             <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
               <div className="collapse d-md-block" id="sidenavCollapse">
-                <div className="card-body">
+              <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "11px" }}>
 
                 <h6 className="fw-bold text-uppercase mb-3 mt-2">
                      Mi Biblioteca
@@ -51,7 +51,7 @@ const BookRecommendations = () => {
             </div>
             <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
               <div className="collapse d-md-block" id="sidenavCollapse">
-                <div className="card-body">
+              <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "8px" }}>
 
                 <h6 className="fw-bold text-uppercase mb-3 mt-2">
                     Herramientas Booksy
@@ -85,7 +85,7 @@ const BookRecommendations = () => {
             <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
               <div className="card-body">
               <div className="row">
-              <div className="text-start">
+              <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
                 <h5 className="recomm-title mb-4">Recomendación de Booksy</h5>
                 </div>
                 <div className="text-center">

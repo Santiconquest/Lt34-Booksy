@@ -92,7 +92,7 @@ export const BookDetail = () => {
 
               <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
                 <div className="collapse d-md-block" id="sidenavCollapse">
-                  <div className="card-body">
+                <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "8px" }}>
 
                   <h6 className="fw-bold text-uppercase mb-3 mt-2">
                       Mi Biblioteca
@@ -117,7 +117,7 @@ export const BookDetail = () => {
               </div>
               <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
                 <div className="collapse d-md-block" id="sidenavCollapse">
-                  <div className="card-body">
+                <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "8px" }}>
 
                   <h6 className="fw-bold text-uppercase mb-3 mt-2">
                       Herramientas Booksy
