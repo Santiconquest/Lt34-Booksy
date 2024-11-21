@@ -92,8 +92,10 @@ const BookRecommendations = () => {
                 
                 <div className="mt-3" style={{ minHeight: '100px' }}>
                     {store.loading ? ( 
+                        <div>
                         <div className="spinner-grow text-primary" role="status">
                             <span className="visually-hidden">Cargando...</span>
+                        </div>
                         </div>
                     ) : store.recommendations.length > 0 ? (
                         <div style={{ whiteSpace: 'pre-wrap' }}>
