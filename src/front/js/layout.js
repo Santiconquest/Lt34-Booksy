@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-
+ 
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
@@ -16,7 +16,6 @@ import Lector from "./pages/lector";
 import { LoginLector } from "./pages/loginLector";
 import LoginCritico from "./pages/loginCritico";
 import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
-import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { BookDetailsCritic } from "./pages/bookDetailsCitic";
 import { ReadersListOfBooks } from "./pages/readersListOfBooks";
@@ -52,7 +51,7 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <Navbar />
+                   
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
@@ -86,7 +85,7 @@ const Layout = () => {
 
                         <Route element={<h1>Not found!</h1>} path="*" /> 
                     </Routes>
-                    <Footer />
+                    
                 </ScrollToTop>
             </BrowserRouter>
         </div>

@@ -2,6 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/readersListOfBooks.css";
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 const BookRecommendations = () => {
     const { store, actions } = useContext(Context);
@@ -17,13 +19,14 @@ const BookRecommendations = () => {
 
     return (
         <>
+        <NavbarContenido/>
         <div className="container page-container">
         <div className="row" style={{ width: '100%' }}>
             <div className="col-12 col-md-3" >
 
             <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
               <div className="collapse d-md-block" id="sidenavCollapse">
-                <div className="card-body">
+              <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "11px" }}>
 
                 <h6 className="fw-bold text-uppercase mb-3 mt-2">
                      Mi Biblioteca
@@ -48,7 +51,7 @@ const BookRecommendations = () => {
             </div>
             <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
               <div className="collapse d-md-block" id="sidenavCollapse">
-                <div className="card-body">
+              <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "8px" }}>
 
                 <h6 className="fw-bold text-uppercase mb-3 mt-2">
                     Herramientas Booksy
@@ -82,15 +85,17 @@ const BookRecommendations = () => {
             <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
               <div className="card-body">
               <div className="row">
-              <div className="text-start">
+              <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
                 <h5 className="recomm-title mb-4">Recomendación de Booksy</h5>
                 </div>
                 <div className="text-center">
                 
                 <div className="mt-3" style={{ minHeight: '100px' }}>
                     {store.loading ? ( 
+                        <div>
                         <div className="spinner-grow text-primary" role="status">
                             <span className="visually-hidden">Cargando...</span>
+                        </div>
                         </div>
                     ) : store.recommendations.length > 0 ? (
                         <div style={{ whiteSpace: 'pre-wrap' }}>
@@ -117,6 +122,7 @@ const BookRecommendations = () => {
           </div>
         </div>
         </div>
+        <Footer/>
         </>
     );
 };

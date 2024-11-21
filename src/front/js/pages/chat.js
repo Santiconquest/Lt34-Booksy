@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/chat.css";
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 export const Chat = () => {
     const { store, actions } = useContext(Context);
@@ -181,13 +183,14 @@ export const Chat = () => {
 
     return (
         <>
+        <NavbarContenido/>
         <div className="container page-container">
         <div className="row" style={{ width: '100%' }}>
             <div className="col-12 col-md-3" >
 
             <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
               <div className="collapse d-md-block" id="sidenavCollapse">
-                <div className="card-body">
+              <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "11px" }}>
 
                 <h6 className="fw-bold text-uppercase mb-3 mt-2">
                      Mi Biblioteca
@@ -212,7 +215,7 @@ export const Chat = () => {
             </div>
             <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
               <div className="collapse d-md-block" id="sidenavCollapse">
-                <div className="card-body">
+              <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "8px" }}>
 
                 <h6 className="fw-bold text-uppercase mb-3 mt-2">
                     Herramientas Booksy
@@ -245,7 +248,7 @@ export const Chat = () => {
 
                 
               <div className="row">
-              <div className="text-start">
+              <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
                 <h5 className="recomm-title mb-4">ChatScribe</h5>
                 </div>
               <div className="text-center" style={{ maxWidth: '800px', margin: '20px auto' }}>
@@ -364,7 +367,7 @@ export const Chat = () => {
           </div>
         </div>
         </div>
-        
+        <Footer/>
         </>
     );
 };

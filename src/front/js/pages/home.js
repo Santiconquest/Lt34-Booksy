@@ -13,6 +13,8 @@ import scanImage from "../../img/homeImage/scam.png";
 import criticImage from "../../img/homeImage/critic.jpg";
 import profeImage from "../../img/homeImage/profecional.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { Navbar } from "../component/navbar.js";
+import { Footer } from "../component/footer.js";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -24,6 +26,7 @@ export const Home = () => {
 
   return (
     <>
+    <Navbar/>
       <div className="header-home d-flex justify-content-between align-items-center" style={{ height: "600px" }}>
         <div className="text-container m-5">
             <h1 style={{ color: 'gray' }}>Welcome to <strong>Booksy</strong></h1>

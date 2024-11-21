@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Typed from "typed.js";
 import equipmente from "../../img/homeImage/equipment.jpg";
+import {Navbar} from "./navbar.js"
 
 const EquipmentPage = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const EquipmentPage = () => {
 
   return (
     <>
+    <Navbar />
       <div
         className="container d-flex flex-column justify-content-center align-items-center"
         style={{ height: "50vh", background: "withe" }}

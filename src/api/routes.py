@@ -424,6 +424,7 @@ def remove_favorite(lector_id, book_id):
         return jsonify({"msg": "Libro eliminado de favoritos"}), 200
     return jsonify({"msg": "Favorito no encontrado"}), 404
 
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @api.route('/lector/<int:lector_id>/recommendations', methods=['POST'])
 def get_recommendations(lector_id):

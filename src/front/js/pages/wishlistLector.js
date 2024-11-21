@@ -7,6 +7,8 @@ import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons';
 import { faEye as eyeIcon } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/wishlistLector.css"; 
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 export const WishlistLector = () => {
     const { store, actions } = useContext(Context);
@@ -26,13 +28,14 @@ export const WishlistLector = () => {
 
     return (
         <>
+        <NavbarContenido/>
         <div className="container page-container">
             <div className="row" style={{ width: '100%' }}>
                 <div className="col-12 col-md-3">
                     <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
                         <div className="collapse d-md-block" id="sidenavCollapse">
                             <div className="card-body">
-                                <h6 className="fw-bold text-uppercase mb-3 mt-2">Mi Biblioteca</h6>
+                            <h6 className="fw-bold text-uppercase mb-3 mt-2 text-start" style={{ paddingLeft: '12px', paddingTop: "3px" }}>Mi Biblioteca</h6>
                                 <nav className="nav flex-column">
                                     <Link to="/readersListOfBooks" className="nav-item nav-link">Lista de Libros</Link>
                                     <Link to="/favoritosLector" className="nav-item nav-link">Favoritos</Link>
@@ -57,8 +60,8 @@ export const WishlistLector = () => {
 
                 <div className="col-12 col-md-9">
                     <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
-                        <div className="card-body">
-                            <div className="text-start mb-4">
+                    <div className="card-body text-start" style={{ paddingLeft: '15px', paddingTop: "10px" }}>
+                            <div className="text-start mb-4" >
                                 <h5 className="recomm-title">Wishlist</h5>
                             </div>
 
@@ -111,6 +114,7 @@ export const WishlistLector = () => {
                 </div>
             </div>
         </div>
+        <Footer/>
         </>
     );
 };

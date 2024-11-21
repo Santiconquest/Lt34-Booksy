@@ -3,8 +3,8 @@ import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/navbar.css";
 import white from "../../img/white.jpg"; 
- 
-export const Navbar = () => {
+
+export const NavbarContenido = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const [lector, setLector] = useState([]); 
@@ -78,21 +78,11 @@ export const Navbar = () => {
    
 
     return (
-        <header 
-            className="d-none d-md-block" 
-            style={{
-                borderBottom: "1px solid rgb(200, 200, 200)", 
-            }}
-        >
-
-
+        <header className="navbar-color py-2 d-none d-md-block pb-1" style={{ marginTop: 0 }}>
             <div className="container-md page-container">
-                <div className="row align-items-center navbar">
-                    <div className="col" style={{ maxWidth: "100%", }}>
-                        <Link to="/" style={{ textDecoration: "none" }}>
-                            <h1 className="mb-1" style={{ color: "rgb(54 97 255)" }}>Booksy</h1>
-                        </Link>
-
+                <div className="row align-items-center navbar" style={{ paddingBottom: "5rem", height: "250px" }}>
+                    <div className="col" style={{ maxWidth: "500px" }}>
+                        <h1 className="text-white mb-3">Booksy</h1>
                         <div className="col d-flex">
                             {store.auth && (
                                 <Link 
@@ -167,33 +157,15 @@ export const Navbar = () => {
                         ) : (
                             <>
                                 <div className="d-flex">
-                                    <div className="row justify-content-center mt-2" style={{width: "680px"}}>
-                                        <div className="col-auto">
-                                            {/* <Link 
-                                                to="/equipment" 
-                                                className="btn-link text-decoration-none"
-                                                style={{
-                                                    color: "#007bff", 
-                                                    fontSize: "1rem", 
-                                                }}
-                                            >
-                                                Team
-                                            </Link> */}
-                                        </div>
-                                    </div>
-
-
                                     <div className="dropdown mr-2">
-                                        <Link to="/equipment">
-                                    <button
-                                            style={{ backgroundColor: "rgb(54 97 255)", color: "white", border: "none" }}
-                                            className="btn btn-sm "
+                                        <button
+                                            className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 dropdown-toggle"
                                             type="button"
-                                            
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false"
                                         >
-                                            Team
+                                            Login
                                         </button>
-                                        </Link>
                                         <ul className="dropdown-menu">
                                             <li>
                                                 <Link className="dropdown-item" to="/loginLector">
@@ -213,16 +185,14 @@ export const Navbar = () => {
                                         </ul>
                                     </div>
                                     <div className="dropdown">
-                                    {/* <button
-                                            style={{ backgroundColor: "rgb(54 97 255)", color: "white", border: "none" }}
-                                            className="btn btn-sm dropdown-toggle"
+                                        <button
+                                            className="btn btn-sm bg-gray-300 text-white hover:bg-opacity-25 active:bg-opacity-50 dropdown-toggle"
                                             type="button"
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false"
                                         >
                                             Signup
-                                        </button> */}
-
+                                        </button>
                                         <ul className="dropdown-menu">
                                             <li>
                                                 <Link className="dropdown-item" to="/signupLector">
