@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Typed from "typed.js";
 import equipmente from "../../img/homeImage/equipment.jpg";
-import {Navbar} from "/workspaces/Lt34-Booksy/src/front/js/component/navbar.js"
+import {Navbar} from "./navbar.js"
 
 const EquipmentPage = () => {
   useEffect(() => {

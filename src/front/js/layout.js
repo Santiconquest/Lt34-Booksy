@@ -16,7 +16,6 @@ import Lector from "./pages/lector";
 import { LoginLector } from "./pages/loginLector";
 import LoginCritico from "./pages/loginCritico";
 import { ListaLibrosCritico } from "./pages/listaLibrosCritico";
-import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { BookDetailsCritic } from "./pages/bookDetailsCitic";
 import { ReadersListOfBooks } from "./pages/readersListOfBooks";
