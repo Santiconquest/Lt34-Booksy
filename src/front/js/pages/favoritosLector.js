@@ -8,6 +8,8 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons';
 import { faEye as eyeIcon } from '@fortawesome/free-solid-svg-icons';
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 export const FavoritosLector = () => {
     const { store, actions } = useContext(Context);
@@ -26,6 +28,8 @@ export const FavoritosLector = () => {
     };
 
     return (
+        <>
+        <NavbarContenido/>
         <div className="container page-container">
             <div className="row" style={{ width: '100%' }}>
                 {/* Sidebar Izquierdo */}
@@ -108,5 +112,7 @@ export const FavoritosLector = () => {
                 </div>
             </div>
         </div>
+        <Footer/>
+        </>
     );
 };

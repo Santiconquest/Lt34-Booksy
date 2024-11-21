@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/profileLector.css";
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 const ProfileLector = () => {
     const { store, actions } = useContext(Context);
@@ -66,6 +68,8 @@ const ProfileLector = () => {
     }, [store.lectorId]);  
 
     return (
+        <>
+        <NavbarContenido/>
         <div className="container profile-container my-5 card-addbook">
             <div className="card shadow-sm">
                 <div className="card-header  text-center">
@@ -95,6 +99,8 @@ const ProfileLector = () => {
                 </div>
             </div>
         </div>
+        <Footer/>
+        </>
     );
 };
 

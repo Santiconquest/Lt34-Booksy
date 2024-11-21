@@ -7,6 +7,8 @@ import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
 import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons';
 import { faEye as eyeIcon } from '@fortawesome/free-solid-svg-icons';
 import "../../styles/wishlistLector.css"; 
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 export const WishlistLector = () => {
     const { store, actions } = useContext(Context);
@@ -26,6 +28,7 @@ export const WishlistLector = () => {
 
     return (
         <>
+        <NavbarContenido/>
         <div className="container page-container">
             <div className="row" style={{ width: '100%' }}>
                 <div className="col-12 col-md-3">
@@ -111,6 +114,7 @@ export const WishlistLector = () => {
                 </div>
             </div>
         </div>
+        <Footer/>
         </>
     );
 };

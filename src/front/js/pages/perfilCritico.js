@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import "../../styles/profileLector.css"; // Asegúrate de tener estilos compartidos
+import "../../styles/profileLector.css"; 
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 const ProfileCritico = () => {
     const { store, actions } = useContext(Context);
@@ -69,6 +71,8 @@ const ProfileCritico = () => {
     }, [store.critico]);
 
     return (
+        <>
+        <NavbarContenido/>
         <div className="container profile-container my-5 card-addbook">
             {loading ? (
                 <div>Loading...</div>  // Aquí puedes poner un spinner o un texto de "Cargando..."
@@ -104,6 +108,8 @@ const ProfileCritico = () => {
                 </div>
             )}
         </div>
+        <Footer/>
+        </>
     );
 };
 

@@ -3,6 +3,8 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 
 export const CriticReviews = () => {
@@ -52,6 +54,7 @@ export const CriticReviews = () => {
     
     return (
         <>
+        <NavbarContenido/>
         <div className="container page-container">
         <div className="row" style={{ width: '100%' }}>
             <div className="col-12 col-md-3" >
@@ -135,7 +138,7 @@ export const CriticReviews = () => {
             </div>
           </div>
         </div>
-            
+            <Footer/>
         </>
     );
 };

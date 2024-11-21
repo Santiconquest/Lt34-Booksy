@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/readersListOfBooks.css";
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 const VisionAPI = () => {
   const [image, setImage] = useState(null);
@@ -77,6 +79,7 @@ const VisionAPI = () => {
   };
   return (
     <>
+    <NavbarContenido/>
       <div className="container page-container">
           <div className="row" style={{ width: '100%' }}>
               <div className="col-12 col-md-3" >
@@ -189,6 +192,7 @@ const VisionAPI = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

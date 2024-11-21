@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/chat.css";
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 export const Chat = () => {
     const { store, actions } = useContext(Context);
@@ -153,6 +155,7 @@ export const Chat = () => {
 
     return (
         <>
+        <NavbarContenido/>
         <div className="container page-container">
         <div className="row" style={{ width: '100%' }}>
             <div className="col-12 col-md-3" >
@@ -324,7 +327,7 @@ export const Chat = () => {
           </div>
         </div>
         </div>
-        
+        <Footer/>
         </>
     );
 };

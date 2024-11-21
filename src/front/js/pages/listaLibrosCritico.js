@@ -3,7 +3,8 @@ import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/listalibroscritico.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 import { faPen as eyeIcon } from '@fortawesome/free-solid-svg-icons';
 
 export const ListaLibrosCritico = () => {
@@ -54,6 +55,8 @@ export const ListaLibrosCritico = () => {
     };
 
     return (
+        <>
+        <NavbarContenido/>
       <div className="container page-container"> 
           <div className="row" style={{ width: '100%' }}> 
 
@@ -229,5 +232,7 @@ export const ListaLibrosCritico = () => {
 
             </div>
         </div>
+        <Footer/>
+        </>
     );
 };

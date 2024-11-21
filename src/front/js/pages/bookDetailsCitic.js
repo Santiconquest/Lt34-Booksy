@@ -5,6 +5,8 @@ import "../../styles/bookDetailsCritic.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash as trashIcon } from '@fortawesome/free-solid-svg-icons';
 import { faPen as penIcon } from '@fortawesome/free-solid-svg-icons'; // Para el lápiz
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 
 
@@ -112,6 +114,7 @@ export const BookDetailsCritic = () => {
 
     return (
         <>
+        <NavbarContenido/>
             <div className="container page-container">
         <div className="row" style={{ width: '100%' }}>
             <div className="col-12 col-md-3" >
@@ -142,7 +145,7 @@ export const BookDetailsCritic = () => {
               <div className="row">
 
 
-              <div className="book-detail-container ms-2">
+              <div className="book-detail-container ms-2 text-start">
                 
                 <div className="book-detail-content">
                     <img 
@@ -158,7 +161,7 @@ export const BookDetailsCritic = () => {
                         <p><strong>Año Publicado:</strong> {bookData.year}</p>
 
                         {infoLink && (
-                            <button className="buttonBuy">
+                            <button className="buttonBuy mb-4">
                             <svg viewBox="0 0 16 16" className="bi bi-cart-check" height="24" width="24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
                                 <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"></path>
                                 <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
@@ -175,7 +178,7 @@ export const BookDetailsCritic = () => {
 
                 <form onSubmit={handleReviewSubmit}>
                     <div className="mb-3">
-                        <label htmlFor="review" className="form-label">Agregar una reseña</label>
+                        <label htmlFor="review" className="form-label"><h5>Agregar una reseña</h5></label>
                         <textarea
                             id="review"
                             className="form-control"
@@ -187,7 +190,7 @@ export const BookDetailsCritic = () => {
                     <button type="submit" className="btn btn-success">Enviar Reseña</button>
                 </form>
 
-                <h2 className="mt-4">Reseñas</h2>
+                <h5 className="mt-4">Reseñas</h5>
                 <ul className="list-group">
                     {reviews.map((r) => (
                         <li key={r.id} className="list-group-item">
@@ -236,7 +239,7 @@ export const BookDetailsCritic = () => {
           </div>
         </div>
 
-            
+        <Footer/>    
         </>
     );
 };

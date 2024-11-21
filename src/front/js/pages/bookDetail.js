@@ -4,6 +4,8 @@ import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import { FaHeart, FaRegHeart, FaBookmark, FaRegBookmark } from 'react-icons/fa'; // Importando los íconos
 import "../../styles/bookDetail.css";
+import { NavbarContenido } from "../component/navbarContenido.js";
+import { Footer } from "../component/footer.js";
 
 export const BookDetail = () => {
     const { id } = useParams();
@@ -83,6 +85,7 @@ export const BookDetail = () => {
 
     return (
         <>
+        <NavbarContenido/>
             <div className="container page-container">
           <div className="row" style={{ width: '100%' }}>
               <div className="col-12 col-md-3" >
@@ -158,7 +161,7 @@ export const BookDetail = () => {
                         alt={book.titulo} 
                         className="img-fluid mt-2 ms-3" 
                     />
-                    <div>
+                    <div className="text-start">
                         <h2>{book.titulo}</h2>
                         <p><strong>Autor:</strong> {book.autor}</p>
                         <p><strong>Género:</strong> {book.genero}</p>
@@ -181,7 +184,7 @@ export const BookDetail = () => {
                     </div>
                 </div>
 
-                <h2 className="mt-4">Reseñas</h2>
+                <h5 className="mt-4 text-start">Reseñas</h5>
                 <ul className="list-group">
                     {reviews.length > 0 ? (
                         reviews.map((review) => (
@@ -204,7 +207,7 @@ export const BookDetail = () => {
             </div>
       </div>
 
-            
+            <Footer/>
         </>
     );
 };
