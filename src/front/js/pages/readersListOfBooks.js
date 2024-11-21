@@ -231,7 +231,7 @@ export const ReadersListOfBooks = () => {
                 <div className="row">
                 {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
                     <div key={index} className="col-12">
-                    <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
+                    <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px", height: "40px" }}>
                         <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
                     </div>
                     <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
@@ -279,7 +279,7 @@ export const ReadersListOfBooks = () => {
 
                 {activeTab === "autor" && Object.keys(booksByAutor).map((autor, index) => (
                     <div key={index} className="col-12">
-                    <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
+                    <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px", height: "40px" }}>
                         <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 6)}</h5>
                     </div>
                     <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>
