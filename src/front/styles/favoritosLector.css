@@ -4,6 +4,17 @@
     margin-top: 20px;
 }
 
+.nav-link {
+    cursor: pointer;
+    padding: 5px 25px;
+    padding-left: 1.25rem; /* Ajuste de espaciado a la izquierda */
+    text-align: left;
+    margin-bottom: 5px;
+    border-radius: 0px;
+    margin-left: -8px !important;
+    
+  }
+
 .card {
     transition: transform 0.2s;
     width: 100%;

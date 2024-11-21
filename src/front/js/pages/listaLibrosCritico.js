@@ -61,7 +61,7 @@ export const ListaLibrosCritico = () => {
           <div className="row" style={{ width: '100%' }}> 
 
               <div className="col-12 col-md-3" >
-                  <div className="card card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5"> 
+              <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5" style={{ padding: '12px' }}>
 
                       <div className="collapse d-md-block" id="sidenavCollapse">
                           <div className="card-body">
@@ -147,7 +147,7 @@ export const ListaLibrosCritico = () => {
             <div className="row">
                 {activeTab === "genero" && Object.keys(booksByGenero).map((genero, index) => (
                     <div key={index} className="col-12">
-                        <div className="text-start mb-4">
+                        <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
                             <h5 className="mb-4 mt-2 recomm-title">{truncateText(genero, 4)}</h5>
                         </div>
 
@@ -187,7 +187,7 @@ export const ListaLibrosCritico = () => {
 
                 {activeTab === "autor" && Object.keys(booksByAutor).map((autor, index) => (
                     <div key={index} className="col-12">
-                        <div className="text-start mb-4">
+                        <div className="card-body text-start" style={{ paddingLeft: '18px', paddingTop: "1px" }}>
                             <h5 className="mb-4 mt-2 recomm-title">{truncateText(autor, 6)}</h5>
                         </div>
                         <div className="row flex-row flex-nowrap" style={{ overflowX: "auto" }}>

@@ -37,7 +37,7 @@ export const FavoritosLector = () => {
                     <div className="card mb-3 border-bottom shadow-light-lg me-5">
                         <div className="collapse d-md-block">
                             <div className="card-body">
-                                <h6 className="fw-bold text-uppercase mb-3 mt-2">Mi Biblioteca</h6>
+                                <h6 className="fw-bold text-uppercase mb-3 mt-2 text-start" style={{ paddingLeft: '12px', paddingTop: "3px" }}>Mi Biblioteca</h6>
                                 <nav className="nav flex-column">
                                     <Link to="/readersListOfBooks" className="nav-item nav-link">Lista de Libros</Link>
                                     <Link to="/favoritosLector" className={`nav-item nav-link ${location.pathname === "/favoritosLector" ? "active" : ""}`}>Favoritos</Link>
@@ -63,7 +63,7 @@ export const FavoritosLector = () => {
                 {/* Sección Principal de Favoritos */}
                 <div className="col-12 col-md-9">
                     <div className="card shadow-light-lg mb-6 me-0 ms-3">
-                        <div className="card-body">
+                    <div className="card-body text-start" style={{ paddingLeft: '15px', paddingTop: "10px" }}>
                             <div className="text mb-4">
                                 <h5 className="recomm-title">Favoritos</h5> 
                             </div>

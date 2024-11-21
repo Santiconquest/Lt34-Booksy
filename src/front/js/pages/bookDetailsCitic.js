@@ -119,7 +119,7 @@ export const BookDetailsCritic = () => {
         <div className="row" style={{ width: '100%' }}>
             <div className="col-12 col-md-3" >
 
-            <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+            <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5" style={{ paddingLeft: '12px',paddingTop: '12px', paddingBottom: "0px" }}>
               <div className="collapse d-md-block" id="sidenavCollapse">
                 <div className="card-body">
 
@@ -181,10 +181,11 @@ export const BookDetailsCritic = () => {
                         <label htmlFor="review" className="form-label"><h5>Agregar una reseña</h5></label>
                         <textarea
                             id="review"
-                            className="form-control"
+                            className="form-control "
                             value={review}
                             onChange={(e) => setReview(e.target.value)}
                             required
+                            style={{ maxWidth: "700px"}}
                         />
                     </div>
                     <button type="submit" className="btn btn-success">Enviar Reseña</button>
@@ -200,6 +201,7 @@ export const BookDetailsCritic = () => {
                                         value={editedComment}
                                         onChange={(e) => setEditedComment(e.target.value)}
                                         required
+                                        style={{ maxWidth: "700px"}}
                                     />
                                     <button type="submit" className="btn btn-success btn-sm">Guardar</button>
                                     <button type="button" className="btn btn-secondary btn-sm" onClick={() => setEditingReviewId(null)}>Cancelar</button>

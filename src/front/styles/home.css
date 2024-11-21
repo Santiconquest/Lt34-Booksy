@@ -90,7 +90,7 @@
 
 .section-blue {
   background-color: rgb(8, 32, 118);
-  color: white;
+  color: rgb(93, 93, 93);
   padding: 50px 0;
 }
 
@@ -101,7 +101,7 @@
 }
 
 .card-body {
-  padding: 20px;
+  padding: 8px;
 }
 
 .contact-section {
