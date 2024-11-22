@@ -396,8 +396,8 @@ export const Chat = () => {
                                                 </div>
                                             </li>
 
-                                            <li className="clearfix">
-                                                <div className={`message ${message.origin === userId ? 'my-message float-right' : 'other-message float-left'}`}>
+                                            <li className="clearfix text-start">
+                                                <div className={`message ${message.origin === userId ? 'my-message float-right' : 'other-message float-left'} `}>
                                                     {message.origin === userId && (
                                                         <span className="message-data-time-right mx-5">{message.hour}, {message.date}</span>
                                                     )}

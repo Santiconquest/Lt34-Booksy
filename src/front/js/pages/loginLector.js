@@ -36,9 +36,9 @@ export const LoginLector = () => {
                     <div className="row align-items-center justify-content-center gx-0 min-vh-100" >
                         <div className="col-12 col-md-6 col-lg-4 py-8 py-md-11">
                             {/* Heading */}
-                            <h1 className="mb-0 fw-bold mt-5">Log in Lectores</h1>
+                            <h1 className="mb-0 fw-bold mt-5">Bienvenido, Lector</h1>
                             {/* Text */}
-                            <p className="mb-6 text-body-secondary">Became part of a great community</p>
+                            <p className="mb-6 text-body-secondary">Gracias por ser parte de esta gran comunidad</p>
                             {/* Form */} 
                             <form className="mx-auto" onSubmit={handleSubmit}>
 

@@ -57,15 +57,15 @@ const SignupCritico = () => {
                 <div className="row align-items-center justify-content-center gx-0 min-vh-100"> 
                     <div  className="col-12 col-md-6 col-lg-4 py-8 py-md-11">
                         {/* Heading */}
-                        <h1 className="mb-0 fw-bold mt-5">Register as a Critic</h1>
+                        <h1 className="mb-0 fw-bold mt-5">Critico Profesional</h1>
                         {/* Text */}
-                        <p className="mb-6 text-body-secondary">Give us your best feedback</p>
+                        <p className="mb-6 text-body-secondary">Danos tu mejor opinión</p>
                         {/* Form */}
                         <form className="mx-auto" onSubmit={sendData}>
                             {/* Name, LastName and Gender*/}
                             <div className="form-group">
                                 <div className="col">
-                                    <label htmlFor="inputName" className="form-label">Name</label>
+                                    <label htmlFor="inputName" className="form-label">Nombre</label>
                                     <input
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
@@ -75,7 +75,7 @@ const SignupCritico = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <label htmlFor="inputLastName" className="form-label">Last Name</label>
+                                    <label htmlFor="inputLastName" className="form-label">Apellido</label>
                                     <input
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
@@ -85,23 +85,23 @@ const SignupCritico = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <label htmlFor="inputGender" className="form-label">Gender</label>
+                                    <label htmlFor="inputGender" className="form-label">Genero</label>
                                     <select
                                         value={gender}
                                         onChange={(e) => setGender(e.target.value)}
                                         className="form-select"
                                         aria-label="Default select example"
                                     >
-                                        <option value="" disabled>Select Gender</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Male">Male</option>
+                                        <option value="" disabled>Selecciona tu Género</option>
+                                        <option value="Female">Femenino</option>
+                                        <option value="Male">Masculino</option>
                                     </select>
                                 </div>
                             </div>
                             {/* Email and password*/}
                             <div className="form-group">
                                 <div className="col">
-                                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                                    <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                                     <input
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -122,7 +122,7 @@ const SignupCritico = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                                    <label htmlFor="confirmPassword" className="form-label">Confirmar Password</label>
                                     <input
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -132,7 +132,7 @@ const SignupCritico = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <label htmlFor="exampleFormControlTextarea1" className="form-label">About me</label>
+                                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Acerca de tí</label>
                                     <textarea
                                         value={aboutMe}
                                         onChange={(e) => setAboutMe(e.target.value)}
@@ -144,7 +144,7 @@ const SignupCritico = () => {
                             </div>
                             {error && <div className="text-danger my-2">{error}</div>}
                              {/* Submit*/}
-                            <button type="submit" className="btn btn-primary my-5 w-100">Register</button>
+                            <button type="submit" className="btn btn-primary my-5 w-100">Registrarse</button>
                         </form>
                         {/* <Link to="/">
                             <button className="btn btn-primary">Back Booksy</button>

@@ -424,7 +424,7 @@ def remove_favorite(lector_id, book_id):
         return jsonify({"msg": "Libro eliminado de favoritos"}), 200
     return jsonify({"msg": "Favorito no encontrado"}), 404
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "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"
 
 @api.route('/lector/<int:lector_id>/recommendations', methods=['POST'])
 def get_recommendations(lector_id):
@@ -604,6 +604,17 @@ def get_category():
     
 
     return jsonify(results), 200
+
+@api.route('/reviews/book/<int:book_id>', methods=['GET'])
+def get_reviews_by_book(book_id):
+    # Filtrar reseñas por el id del libro
+    book_reviews = Review.query.filter_by(id_book=book_id).all()
+    
+    # Serializar las reseñas
+    results = list(map(lambda review: review.serialize(), book_reviews))
+
+    return jsonify(results), 200
+
 
 @api.route('/category', methods=['POST'])
 def add_category():

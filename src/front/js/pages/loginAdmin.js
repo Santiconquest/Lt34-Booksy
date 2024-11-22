@@ -35,13 +35,13 @@ const LoginAdmin = () => {
                     <div className="row align-items-center justify-content-center gx-0 min-vh-100" >
                         <div className="col-12 col-md-6 col-lg-4 py-8 py-md-11">
                             {/* Heading */}
-                            <h1 className="mb-0 fw-bold mt-5">Log in Admin</h1>
+                            <h1 className="mb-0 fw-bold mt-5">Bienvenido, Admin</h1>
                             {/* Text */}
-                            <p className="mb-6 text-body-secondary">Create a unique online experience for your visitors</p>
+                            <p className="mb-6 text-body-secondary">Crea una experiencia unica para nuestros visitantes</p>
                             {/* Form */}
                             <form className="mx-auto" onSubmit={sendData}>
                                 <div className="mb-3">
-                                    <label htmlFor="exampleInputEmail" className="form-label">Email address</label>
+                                    <label htmlFor="exampleInputEmail" className="form-label">Email</label>
                                     <input 
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}

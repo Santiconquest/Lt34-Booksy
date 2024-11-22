@@ -52,15 +52,15 @@ const SignupLector = () => {
             <div className="row align-items-center justify-content-center gx-0 min-vh-100">
                 <div className="col-12 col-md-6 col-lg-4 py-8 py-md-11">
                     {/* Heading */}
-                    <h1 className="mb-0 fw-bold">Register as a Reader</h1>
+                    <h1 className="mb-0 fw-bold">Registrate como un Lector</h1>
                     {/* Text */}
-                    <p className="mb-6 text-body-secondary">Became part of a great community</p>
+                    <p className="mb-6 text-body-secondary">Coviertete en parte de esta gran comunidad</p>
                     {/* Form */}
                     <form className="mb-6" onSubmit={sendData}>
                         {/* Name and LastName*/}
                         <div className="form-group">
                             <div className="col">
-                                <label htmlFor="inputName" className="form-label">Name</label>
+                                <label htmlFor="inputName" className="form-label">Nombre</label>
                                 <input
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -71,7 +71,7 @@ const SignupLector = () => {
                                 />
                             </div>
                             <div className="col">
-                                <label htmlFor="inputLastname" className="form-label">Last Name</label>
+                                <label htmlFor="inputLastname" className="form-label">Apellido</label>
                                 <input
                                     value={lastname}
                                     onChange={(e) => setLastname(e.target.value)}
@@ -85,7 +85,7 @@ const SignupLector = () => {
                         {/* Email*/}
                         <div className="form-group">
                             <div className="col">
-                                <label htmlFor="exampleInputEmail2" className="form-label">Email address</label>
+                                <label htmlFor="exampleInputEmail2" className="form-label">Email</label>
                                 <input
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -111,7 +111,7 @@ const SignupLector = () => {
                                     />
                                 </div>
                                 <div className="col">
-                                    <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                                    <label htmlFor="confirmPassword" className="form-label">Confirmar Password</label>
                                     <input
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -124,7 +124,7 @@ const SignupLector = () => {
                         </div>
                         {error && <div className="text-danger my-2">{error}</div>}
                           {/* Submit*/}
-                        <button type="submit" className="btn btn-primary w-100">Register</button>
+                        <button type="submit" className="btn btn-primary w-100">Registrarse</button>
                     </form>
                     {/* <Link to="/">
                         <button className="btn btn-primary p-2">Back Booksy</button>

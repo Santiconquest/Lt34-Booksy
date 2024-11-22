@@ -108,7 +108,7 @@ export const CriticReviews = () => {
             <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
               <div className="card-body">
               <div className="">
-                <div className="text mb-4">
+                <div className="text mb-4 text-start ms-3 mt-1">
                     <h5 className="recomm-title">Mis Reseñas</h5>
                 </div>
                 {editingReviewId ? ( 
@@ -120,7 +120,7 @@ export const CriticReviews = () => {
                                 onChange={(e) => setEditedComment(e.target.value)}
                                 required
                             />
-                            <button type="submit" className="btn btn-success">Guardar</button>
+                            <button type="submit" className="btn btn-success me-2">Guardar</button>
                             <button type="button" className="btn btn-secondary" onClick={() => setEditingReviewId(null)}>Cancelar</button>
                         </div>
                     </form>
@@ -129,17 +129,17 @@ export const CriticReviews = () => {
     {reviews.map((r) => (
         <li key={r.id} className="list-group-item d-flex justify-content-between align-items-center">
             <div>
-                <strong>{r.id_critico}:</strong> {r.comentario}
+                <strong></strong> {r.comentario}
             </div>
             <div>
                 <button 
-                    className="btn btn-success btn-sm mr-2" 
+                    className="btn btn-success btn-sm mr-2 me-2" 
                     onClick={() => handleEditClick(r)} 
                 >
                     <FontAwesomeIcon icon={faPen} />
                 </button>
                 <button 
-                    className="btn btn-danger btn-sm" 
+                    className="btn btn-danger btn-sm " 
                     onClick={() => handleDeleteReview(r.id)} 
                 >
                     <FontAwesomeIcon icon={faTrash} />

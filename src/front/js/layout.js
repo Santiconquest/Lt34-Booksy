@@ -70,9 +70,10 @@ const Layout = () => {
                         <Route element={<BooksyAdmin />} path="/booksyAdmin" /> 
                         <Route element={<LoginAdmin />} path="/loginAdmin" /> 
                         <Route element={<LoginLector />} path="/loginLector" />  
-                        <Route element={<Chat />} path="/chat" /> 
+                        
                         <Route element={<VisionAPI />} path="/visionAPI" />  
                         <Route element={<LoginLector />} path="/loginLector" /> 
+                        <Route element={<PrivateRouteLector element={<Chat />} />} path="/chat" />
                         <Route element={<PrivateRouteLector element={<ReadersListOfBooks />} />} path="/readersListOfBooks" />
                         <Route element={<PrivateRouteLector element={<ProfileLector />} />} path="/perfilLector" />
                         <Route element={<PrivateRouteLector element={<BookRecommendations />} />} path="/bookRecommendations" />

@@ -213,21 +213,22 @@ export const BookDetailsCritic = () => {
                                     </form>
     
                                     <h5 className="mt-4">Reseñas</h5>
-                                    <ul className="list-group">
+                                    <ul className="list-group " style={{ maxWidth: "700px" }}>
                                         {reviews.map((r) => {
                                             const criticName = users.find(user => user.id === r.id_critico)?.name || "Crítico desconocido";
     
                                             return (
                                                 <li key={r.id} className="list-group-item">
                                                     <strong>{criticName}:</strong> {editingReviewId === r.id ? (
-                                                        <form onSubmit={handleEditSubmit}>
+                                                        <form onSubmit={handleEditSubmit}  >
                                                             <textarea
                                                                 value={editedComment}
                                                                 onChange={(e) => setEditedComment(e.target.value)}
                                                                 required
-                                                                style={{ maxWidth: "700px" }}
+                                                                style={{ maxWidth: "700px", width: "600px" }}
+                                                                
                                                             />
-                                                            <button type="submit" className="btn btn-success btn-sm">Guardar</button>
+                                                            <button type="submit" className="btn btn-success btn-sm me-2" >Guardar</button>
                                                             <button type="button" className="btn btn-secondary btn-sm" onClick={() => setEditingReviewId(null)}>Cancelar</button>
                                                         </form>
                                                     ) : (
@@ -237,10 +238,10 @@ export const BookDetailsCritic = () => {
                                                         {editingReviewId !== r.id && (
                                                             <>
                                                                 <button className="btn btn-secondary btn-sm me-2" onClick={() => handleEditClick(r)}>
-                                                                    <FontAwesomeIcon icon={penIcon} /> {/* Ícono de lápiz */}
+                                                                    <FontAwesomeIcon icon={penIcon} /> 
                                                                 </button>
                                                                 <button className="btn btn-danger btn-sm" onClick={() => handleDeleteReview(r.id)}>
-                                                                    <FontAwesomeIcon icon={trashIcon} /> {/* Ícono de basurero */}
+                                                                    <FontAwesomeIcon icon={trashIcon} /> 
                                                                 </button>
                                                             </>
                                                         )}

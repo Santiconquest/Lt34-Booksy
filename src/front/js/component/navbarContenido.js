@@ -129,7 +129,7 @@ export const NavbarContenido = () => {
                                     <>
                                         <li>
                                             <Link to="/verReviewCritico" className="dropdown-item">
-                                                My Reviews
+                                                Mis Reseñas
                                             </Link>
                                         </li>
                                         <li>

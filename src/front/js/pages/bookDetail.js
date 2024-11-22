@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import "../../styles/bookDetail.css";
 import { NavbarContenido } from "../component/navbarContenido.js";
 import { Footer } from "../component/footer.js";
-
+ 
 export const BookDetail = () => {
     const { id } = useParams();
     const { store, actions } = useContext(Context);
@@ -41,14 +41,15 @@ export const BookDetail = () => {
 
     const fetchBookReviews = async (bookId) => {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/reviews?book_id=${bookId}`);
+            const response = await fetch(`${process.env.BACKEND_URL}/api/reviews/book/${bookId}`);
             if (!response.ok) throw new Error("Error fetching reviews");
             const data = await response.json();
-            setReviews(data); 
+            setReviews(data); // Aquí guardas las reseñas en el estado
         } catch (error) {
             console.log("Error fetching reviews", error);
         }
     };
+    
 
     const fetchCritics = async () => {
         try {
@@ -94,8 +95,61 @@ export const BookDetail = () => {
             <div className="container page-container">
                 {/* Sidebar */}
                 <div className="row" style={{ width: '100%' }}>
-                    <div className="col-12 col-md-3">
-                        {/* Sidebar content */}
+                <div className="col-12 col-md-3" >
+
+                    <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+                    <div className="collapse d-md-block" id="sidenavCollapse">
+                    <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "11px" }}>
+
+                        <h6 className="fw-bold text-uppercase mb-3 mt-2">
+                            Mi Biblioteca
+                        </h6>
+
+                        <div className="row card-list list text-gray-700 mb-0">
+                            <nav className="nav flex-column">            
+                                <Link to="/readersListOfBooks" className="nav-item nav-link">
+                                    Lista de Libros
+                                </Link>
+                                <Link to="/favoritosLector" className="nav-item nav-link">
+                                    Favoritos
+                                </Link>
+                                <Link to="/wishlistLector" className="nav-item nav-link">
+                                    Wishlist
+                                </Link>
+                            </nav>
+                        </div>
+                        </div>
+                    </div>
+
+                    </div>
+                    <div className="card mb-3 card-bleed border-bottom border-bottom-md-0 shadow-light-lg me-5">
+                    <div className="collapse d-md-block" id="sidenavCollapse">
+                    <div className="card-body text-start" style={{ paddingLeft: '20px', paddingTop: "8px" }}>
+
+                        <h6 className="fw-bold text-uppercase mb-3 mt-2">
+                            Herramientas Booksy
+                        </h6>
+
+                        <div className="row card-list list text-gray-700 mb-0">
+                            <nav className="nav flex-column">
+                                <Link to="/chat" className={`nav-item nav-link ${location.pathname === "/chat" ? "active" : ""}`} >
+                                    ChatScribe
+                                </Link>
+                                <Link to="/visionAPI" className="nav-item nav-link">
+                                    ScanBook
+                                </Link>
+                                <Link 
+                                    to="/bookRecommendations" 
+                                    className={`nav-item nav-link ${location.pathname === "/bookRecommendations" ? "active" : ""}`} 
+                                >
+                                    Sugerencias AI
+                                </Link>
+                            </nav>    
+                        </div>
+                        </div>
+                    </div>
+
+                    </div>
                     </div>
                     <div className="col-12 col-md-9">
                         <div className="card card-bleed shadow-light-lg mb-6 me-0 ms-3">
@@ -115,15 +169,21 @@ export const BookDetail = () => {
                                                 <p><strong>Cantidad de Páginas:</strong> {book.cantidad_paginas}</p>
                                                 <p><strong>Año Publicado:</strong> {book.year}</p>
                                                 <p><strong>Descripción:</strong> {description}</p>
-                                                <button className="buttonBuy">
-                                                    <a href={infoLink} target="_blank" rel="noopener noreferrer" className="texto">
-                                                        Comprar
-                                                    </a>
+                                                <button className="buttonBuy mb-4">
+                                                    <svg viewBox="0 0 16 16" className="bi bi-cart-check" height="24" width="24" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+                                                        <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"></path>
+                                                        <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                                    </svg>
+                                                    {infoLink && (
+                                                        <a href={infoLink} target="_blank" rel="noopener noreferrer" className="text">
+                                                            Comprar
+                                                        </a>
+                                                    )}
                                                 </button>
                                             </div>
                                         </div>
                                         <h5 className="mt-4 text-start">Reseñas</h5>
-                                        <ul className="list-group">
+                                        <ul className="list-group text-start">
                                             {reviews.length > 0 ? (
                                                 reviews.map((review) => (
                                                     <li key={review.id} className="list-group-item">

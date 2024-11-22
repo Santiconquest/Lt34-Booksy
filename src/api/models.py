@@ -24,7 +24,7 @@ class Critico(db.Model):
     nombre = db.Column(db.String(80), unique=False, nullable=False)
     apellido = db.Column(db.String(80), unique=False, nullable=False)
     genero = db.Column(db.String(80), unique=False, nullable=False)
-    acerca_de_mi = db.Column(db.String(80), unique=False, nullable=False)
+    acerca_de_mi = db.Column(db.String(3000), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     images = db.Column(db.String(120), unique=False, nullable=False)

@@ -32,9 +32,9 @@ const LoginCritico = () => {
                         <div className="row align-items-center justify-content-center gx-0 min-vh-100" >
                             <div className="col-12 col-md-6 col-lg-4 py-8 py-md-11">
                                 {/* Heading */}
-                                <h1 className="mb-0 fw-bold mt-5">Log in Critic</h1>
+                                <h1 className="mb-0 fw-bold mt-5">Bienvenido, Critico Profesional</h1>
                                 {/* Text */}
-                                <p className="mb-6 text-body-secondary">Give us your best feedback</p>
+                                <p className="mb-6 text-body-secondary">Ingresa tus datos para iniciar sesión</p>
                                 {/* Form */}
                                 <form className="mx-auto" onSubmit={sendData}>
                                     <div className="mb-3">
