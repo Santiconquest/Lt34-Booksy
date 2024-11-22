@@ -12,6 +12,26 @@ export const CriticReviews = () => {
     const [reviews, setReviews] = useState([]);
     const [editingReviewId, setEditingReviewId] = useState(null); 
     const [editedComment, setEditedComment] = useState(""); 
+    const [users, setUsers] = useState([]);
+
+    // Fetch users (critics)
+    const fetchCritic = async () => {
+        try {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/critico`);
+            const data = await response.json();
+            const extractedUsers = data.map(user => ({
+                id: user.id,
+                name: user.nombre
+            }));
+            setUsers(extractedUsers);
+        } catch (error) {
+            console.error("Error al obtener los usuarios:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCritic();
+    }, []);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -42,7 +62,6 @@ export const CriticReviews = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         const updatedReview = { comentario: editedComment };
-    
         const edited = await actions.editReview(updatedReview, editingReviewId);
         if (edited) {
             setEditingReviewId(null); 
@@ -51,7 +70,13 @@ export const CriticReviews = () => {
             console.error("Error al editar la reseña.");
         }
     };
-    
+
+    // Get the critic's name by their ID
+    const getCriticName = (id) => {
+        const critic = users.find(user => user.id === id);
+        return critic ? critic.name : "Crítico desconocido";
+    };
+
     return (
         <>
         <NavbarContenido/>
@@ -138,7 +163,7 @@ export const CriticReviews = () => {
             </div>
           </div>
         </div>
-            <Footer/>
+            
         </>
     );
 };

@@ -218,8 +218,8 @@ export const Home = () => {
               <img src={IAImage} className="card-img-left" alt="Interacción con IA" style={{ width: "50%" }} />
               <div className="card-body d-flex align-items-center justify-content-center" style={{ width: "50%" }}>
                 <div>
-                  <h5 className="card-title">Interactúa con IA sobre Libros</h5>
-                  <p className="card-text">
+                  <h5 className="card-title" style={{ color: "#000" }}>Interactúa con IA sobre Libros</h5>
+                  <p className="card-text" style={{ color: "#000" }}>
                     Consulta recomendaciones y aprende más sobre tus libros favoritos con la ayuda de nuestra IA.
                   </p>
                 </div>
@@ -234,8 +234,8 @@ export const Home = () => {
                 <img src={scanImage} className="card-img-left" alt="Escaneo de libros" style={{ width: "50%", borderTopLeftRadius: "15px", borderBottomLeftRadius: "15px" }} />
                 <div className="card-body d-flex align-items-center justify-content-center" style={{ width: "50%", borderTopRightRadius: "15px", borderBottomRightRadius: "15px" }}>
                   <div>
-                    <h5 className="card-title">Escanea Parte de tu Libro</h5>
-                    <p className="card-text">
+                    <h5 className="card-title"  style={{ color: "#000" }}>Escanea Parte de tu Libro</h5>
+                    <p className="card-text" style={{ color: "#000" }}>
                       Escanea un fragmento de texto y encuentra el libro al instante en nuestra base de datos.
                     </p>
                   </div>
@@ -248,8 +248,8 @@ export const Home = () => {
                 <img src={profeImage} className="card-img-left" alt="Cuenta exclusiva para críticos" style={{ width: "50%", borderTopLeftRadius: "15px", borderBottomLeftRadius: "15px" }} />
                 <div className="card-body d-flex align-items-center justify-content-center" style={{ width: "50%", borderTopRightRadius: "15px", borderBottomRightRadius: "15px" }}>
                   <div>
-                    <h5 className="card-title">Cuenta Exclusiva para Críticos</h5>
-                    <p className="card-text">
+                    <h5 className="card-title" style={{ color: "#000" }}>Cuenta Exclusiva para Críticos</h5>
+                    <p className="card-text" style={{ color: "#000" }}>
                       ¿Eres un crítico profesional? Crea una cuenta especial que te permita acceder a herramientas avanzadas para críticos.
                     </p>
                   </div>
@@ -262,8 +262,8 @@ export const Home = () => {
                 <img src={criticImage} className="card-img-left" alt="Reseñas de libros" style={{ width: "50%", borderTopLeftRadius: "15px", borderBottomLeftRadius: "15px" }} />
                 <div className="card-body d-flex align-items-center justify-content-center" style={{ width: "50%", borderTopRightRadius: "15px", borderBottomRightRadius: "15px" }}>
                   <div>
-                    <h5 className="card-title">Haz Reseñas de Libros</h5>
-                    <p className="card-text">
+                    <h5 className="card-title" style={{ color: "#000" }}>Haz Reseñas de Libros</h5>
+                    <p className="card-text" style={{ color: "#000" }}>
                       Como crítico, tienes la oportunidad de escribir reseñas detalladas sobre los libros que lees y compartir tu perspectiva.
                     </p>
                   </div>
