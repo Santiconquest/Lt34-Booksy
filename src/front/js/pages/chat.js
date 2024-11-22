@@ -14,28 +14,76 @@ export const Chat = () => {
     const [activeChat, setActiveChat] = useState(null); 
     const location = useLocation(); 
     const [users, setUsers] = useState([]);
+    const [searchTerm, setSearchTerm] = useState(""); // Almacena el término de búsqueda
+    const [filteredUsers, setFilteredUsers] = useState([]); // Usuarios que coinciden con la búsqueda
+
 
     const userId = store.lectorId;
 
+    useEffect(() => {
+        if (searchTerm.trim() === "") {
+            setFilteredUsers([]);
+            return;
+        }
+    
+        const existingChatUserIds = new Set(chats.flatMap(chat => [chat.id_lector_1, chat.id_lector_2]));
+    
+        const filtered = users.filter(user =>
+            !existingChatUserIds.has(user.id) && // Excluir usuarios ya en chats
+            user.id !== userId &&               // Excluir el usuario logueado
+            user.name.toLowerCase().includes(searchTerm.toLowerCase()) // Coincidencia con el término de búsqueda
+        );
+    
+        setFilteredUsers(filtered);
+    }, [searchTerm, users, chats, userId]);
+    
+    
+
+    const handleCreateChat = async (selectedUserId) => {
+        try {
+            const newChat = {
+                id_lector_1: userId,
+                id_lector_2: selectedUserId,
+            };
+    
+            const response = await fetch(`${process.env.BACKEND_URL}/api/chat`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newChat),
+            });
+    
+            if (response.ok) {
+                await fetchChats(); // Refrescar la lista de chats
+                setSearchTerm("");  // Limpiar el término de búsqueda
+                setFilteredUsers([]); // Limpiar los usuarios filtrados
+            } else {
+                console.error("Error al crear el chat:", response.status);
+            }
+        } catch (error) {
+            console.error("Error creando un nuevo chat:", error);
+        }
+    };
+    
+    
 
     const fetchUsers = async () => {
         try {
             const response = await fetch(`${process.env.BACKEND_URL}/api/lector`);
             const data = await response.json();
-            console.log(data);
     
-            // Extraer solo name e id
             const extractedUsers = data.map(user => ({
                 id: user.id,
                 name: user.name
             }));
     
-            console.log(extractedUsers); // Muestra solo id y name
             setUsers(extractedUsers);
         } catch (error) {
             console.error("Error al obtener los usuarios:", error);
         }
     };
+    
     
       
       useEffect(() => {
@@ -53,12 +101,10 @@ export const Chat = () => {
         try {
             const response = await fetch(`${process.env.BACKEND_URL}/api/chat`);
             const data = await response.json();
-            console.log(data);
             if (Array.isArray(data)) {
                 const filteredChats = data.filter(chat => 
                     chat.id_lector_1 == userId || chat.id_lector_2 == userId
                 );
-                console.log(filteredChats);
                 setChats(filteredChats);
             } else {
                 console.error("Unexpected response format:", data);
@@ -68,6 +114,7 @@ export const Chat = () => {
             console.error("There was an error fetching the chats!", error);
         }
     };
+    
 
     useEffect(() => {
         if (userId) {
@@ -257,28 +304,57 @@ export const Chat = () => {
                 <div className="col-lg-12">
                    
                         <div id="plist" className="people-list">
-                            <div className="input-group mt-4">
-                                <div className="input-group-prepend">
-                                    <span className="input-group-text"><i className="fa fa-search"></i></span>
-                                </div>
-                                <input type="text" className="form-control" placeholder="Search..." />
+                        <div className="input-group mt-4">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text"><i className="fa fa-search"></i></span>
                             </div>
-                            <ul className="list-unstyled chat-list mt-2 mb-0">
-                                {chats.map(chat => chat?.id && (
-                                    <li className="clearfix" key={chat.id} onClick={() => handleSelectChat(chat.id)}>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" />
-                                        <div className="about">
-                                            <div className="name">
-                                                {/* Mostrar solo el nombre del lector que no es el usuario logueado */}
-                                                {users.find(user => user.id === (chat.id_lector_1 !== userId ? chat.id_lector_1 : chat.id_lector_2))?.name || "Usuario desconocido"}
-                                            </div>
-                                            <div className="status">
-                                                <i className="fa fa-circle online"></i> online
-                                            </div>
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Buscar usuario..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <ul className="list-unstyled chat-list mt-2 mb-0">
+                            {filteredUsers.map(user => (
+                                <li className="clearfix" key={user.id}>
+                                    <div className="about">
+                                        <div className="name">{user.name}</div>
+                                        <div className="status">
+                                            <button 
+                                                className="btn btn-primary btn-sm"
+                                                onClick={() => handleCreateChat(user.id)}
+                                            >
+                                                Iniciar Chat
+                                            </button>
                                         </div>
-                                    </li>
-                                ))}
-                            </ul>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <ul className="list-unstyled chat-list mt-2 mb-0">
+                            {chats.map(chat => chat?.id && (
+                                <li className="clearfix" key={chat.id} onClick={() => handleSelectChat(chat.id)}>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar" />
+                                    <div className="about">
+                                        <div className="name">
+                                            {
+                                                // Encuentra el usuario que no es el logueado
+                                                users.find(user => 
+                                                    user.id === (chat.id_lector_1 === userId ? chat.id_lector_2 : chat.id_lector_1)
+                                                )?.name || "Usuario desconocido"
+                                            }
+                                        </div>
+                                        <div className="status">
+                                            <i className="fa fa-circle online"></i> online
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+
 
 
                         </div>
